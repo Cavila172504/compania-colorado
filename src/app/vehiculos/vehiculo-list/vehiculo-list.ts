@@ -31,11 +31,12 @@ export class VehiculoListComponent implements OnInit {
   }
 
   get filteredVehiculos(): Vehiculo[] {
+    if (!this.vehiculos) return [];
     if (!this.filterTerm.trim()) return this.vehiculos;
     const term = this.filterTerm.toLowerCase();
     return this.vehiculos.filter(v =>
-      v.nro.toLowerCase().includes(term) ||
-      v.placa.toLowerCase().includes(term) ||
+      (v.nro || '').toLowerCase().includes(term) ||
+      (v.placa || '').toLowerCase().includes(term) ||
       (v.anio?.toString() || '').includes(term)
     );
   }
@@ -50,7 +51,14 @@ export class VehiculoListComponent implements OnInit {
     } finally {
       this.loading = false;
       this.cdr.detectChanges();
+      setTimeout(() => this.cdr.detectChanges(), 100);
     }
+  }
+
+  get canSave(): boolean {
+    const nro = (this.newVehiculo.nro || '').trim();
+    const placa = (this.newVehiculo.placa || '').trim();
+    return nro.length > 0 && placa.length > 0;
   }
 
   async exportToExcel() {
@@ -100,15 +108,31 @@ export class VehiculoListComponent implements OnInit {
   openModal(v?: Vehiculo) {
     if (v) {
       this.editingVehiculo = v;
-      this.newVehiculo = JSON.parse(JSON.stringify(v));
+      // Copy all properties to the form object
+      this.newVehiculo = {
+        id: v.id,
+        nro: v.nro || '',
+        tipo: v.tipo || 'Buseta',
+        marca: v.marca || '',
+        modelo: v.modelo || '',
+        placa: v.placa || '',
+        nro_serie: v.nro_serie || '',
+        color: v.color || '',
+        anio: v.anio || new Date().getFullYear(),
+        carga_maxima: v.carga_maxima || '',
+        estado: v.estado || 'Activo',
+        ciclo_mantenimiento: v.ciclo_mantenimiento || '',
+        km_initial: v.km_initial || 0
+      };
     } else {
       this.editingVehiculo = null;
       this.newVehiculo = this.resetVehiculo();
     }
     this.showModal = true;
+    this.cdr.detectChanges();
     setTimeout(() => {
       this.cdr.detectChanges();
-    }, 0);
+    }, 100);
   }
 
   closeModal() {
@@ -116,18 +140,25 @@ export class VehiculoListComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  async saveVehiculo() {
+  async saveVehiculo(keepOpen: boolean = false) {
+    if (!this.canSave) return;
+
     try {
       const res = this.editingVehiculo
         ? await this.vehiculosService.updateVehiculo(this.newVehiculo)
         : await this.vehiculosService.addVehiculo(this.newVehiculo);
 
       if (res && res.success) {
-        alert('Vehículo guardado correctamente');
-        this.closeModal();
-        this.loadVehiculos();
+        alert(this.editingVehiculo ? 'Unidad actualizada correctamente' : 'Unidad registrada exitosamente');
+
+        if (keepOpen) {
+          this.newVehiculo = this.resetVehiculo();
+        } else {
+          this.closeModal();
+        }
+        await this.loadVehiculos();
       } else {
-        alert('Error al guardar vehículo: ' + (res?.error || 'Error desconocido'));
+        alert('Error al guardar: ' + (res?.error || 'Error desconocido'));
       }
     } catch (e: any) {
       alert('Error de sistema: ' + e.message);
@@ -135,9 +166,21 @@ export class VehiculoListComponent implements OnInit {
   }
 
   async deleteVehiculo(id: number) {
+    if (!id) {
+      alert('Error: ID de vehículo no encontrado');
+      return;
+    }
     if (confirm('¿Está seguro de eliminar este vehículo?')) {
-      await this.vehiculosService.deleteVehiculo(id);
-      this.loadVehiculos();
+      try {
+        const res = await this.vehiculosService.deleteVehiculo(id);
+        if (res && res.success) {
+          this.loadVehiculos();
+        } else {
+          alert('Error al eliminar: ' + (res?.error || 'Error desconocido'));
+        }
+      } catch (e: any) {
+        alert('Error de sistema al eliminar: ' + e.message);
+      }
     }
   }
 }

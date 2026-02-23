@@ -83,12 +83,15 @@
                             </span>
                         </td>
                         <td class="px-8 py-6 text-right">
-                            <div
-                                class="flex items-center justify-end gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button (click)="openModal(v)"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-95">✏️</button>
-                                <button (click)="deleteVehiculo(v.id!)"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-95">🗑️</button>
+                            <div class="flex items-center justify-end gap-3">
+                                <button type="button" (click)="openModal(v)"
+                                    class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-xs font-bold whitespace-nowrap">
+                                    <span>✏️</span> Editar
+                                </button>
+                                <button type="button" (click)="deleteVehiculo(v.id!)"
+                                    class="w-10 h-10 flex items-center justify-center rounded-lg bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white transition-all text-sm">
+                                    <span>🗑️</span>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -116,65 +119,103 @@
         <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md fade-in" (click)="closeModal()"></div>
 
         <div (click)="$event.stopPropagation()"
-            class="relative z-10 w-full max-w-2xl glass-card border-white/10 overflow-hidden shadow-2xl flex flex-col max-h-[90vh] slide-up">
-            <div class="p-8 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+            class="relative z-10 w-full max-w-2xl glass-card border-white/10 overflow-hidden shadow-2xl flex flex-col max-h-[95vh] slide-up">
+            <div class="p-6 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
                 <div>
-                    <h2 class="text-2xl font-black text-white leading-none">{{ editingVehiculo ? 'Ficha Técnica: Editar'
-                        : 'Nueva Unidad de Flota' }}</h2>
+                    <h2 class="text-2xl font-black text-white leading-none">{{ editingVehiculo ? 'Editar Unidad' :
+                        'Nueva Unidad' }}</h2>
                     <p class="text-slate-500 text-[0.65rem] font-bold uppercase mt-2 tracking-[0.2em]">Registro Oficial
-                        de Transporte</p>
+                        de Flota</p>
                 </div>
                 <button (click)="closeModal()"
-                    class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 text-slate-500 hover:text-white transition-colors text-2xl font-black">&times;</button>
+                    class="text-slate-500 hover:text-white transition-colors text-2xl">&times;</button>
             </div>
 
-            <form (ngSubmit)="saveVehiculo()" class="flex-1 overflow-y-auto p-12">
-                <div class="max-w-md mx-auto space-y-8">
+            <div class="flex-1 overflow-y-auto p-8">
+                <div class="max-w-xl mx-auto space-y-6">
                     <div class="grid grid-cols-2 gap-6">
-                        <div class="space-y-3">
+                        <div class="space-y-2">
                             <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Nro
                                 Unidad</label>
-                            <input type="text" [(ngModel)]="newVehiculo.nro" name="nro" required placeholder="001"
-                                class="glass-input text-xl font-black">
+                            <input type="text" [(ngModel)]="newVehiculo.nro" name="nro" placeholder="Ej: 001"
+                                autocomplete="off" class="glass-input text-lg font-black">
                         </div>
-                        <div class="space-y-3">
+                        <div class="space-y-2">
                             <label
                                 class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Año</label>
-                            <input type="number" [(ngModel)]="newVehiculo.anio" name="anio"
+                            <input type="number" [(ngModel)]="newVehiculo.anio" name="anio" autocomplete="off"
                                 class="glass-input font-bold">
                         </div>
                     </div>
 
-                    <div class="space-y-3">
-                        <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Número de
-                            Placa</label>
-                        <input type="text" [(ngModel)]="newVehiculo.placa" name="placa" required placeholder="ABC-1234"
-                            class="glass-input text-xl font-black uppercase tracking-[0.2em] !text-yellow-500">
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Placa</label>
+                            <input type="text" [(ngModel)]="newVehiculo.placa" name="placa" placeholder="ABC-1234"
+                                autocomplete="off"
+                                class="glass-input text-lg font-black uppercase tracking-wider !text-yellow-500">
+                        </div>
+                        <div class="space-y-2">
+                            <label
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Tipo</label>
+                            <select [(ngModel)]="newVehiculo.tipo" name="tipo" class="glass-input font-bold">
+                                <option value="Buseta">Buseta</option>
+                                <option value="Furgoneta">Furgoneta</option>
+                                <option value="Bus">Bus</option>
+                                <option value="Camión">Camión</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-6">
-                        <div class="space-y-3">
+                        <div class="space-y-2">
                             <label
-                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Marca</label>
-                            <input type="text" [(ngModel)]="newVehiculo.marca" name="marca"
-                                placeholder="Hino, Hyundai..." class="glass-input font-medium uppercase text-sm">
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Color</label>
+                            <input type="text" [(ngModel)]="newVehiculo.color" name="color" placeholder="Ej: Blanco"
+                                autocomplete="off" class="glass-input">
                         </div>
-                        <div class="space-y-3">
+                        <div class="space-y-2">
                             <label
-                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Modelo</label>
-                            <input type="text" [(ngModel)]="newVehiculo.modelo" name="modelo"
-                                placeholder="County, H1..." class="glass-input font-medium uppercase text-sm">
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Serie</label>
+                            <input type="text" [(ngModel)]="newVehiculo.nro_serie" name="nro_serie"
+                                placeholder="Nro de Serie" autocomplete="off" class="glass-input font-mono">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Carga
+                                Máxima</label>
+                            <input type="text" [(ngModel)]="newVehiculo.carga_maxima" name="carga_maxima"
+                                placeholder="Ej: 3.5 Ton" autocomplete="off" class="glass-input">
+                        </div>
+                        <div class="space-y-2">
+                            <label
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Estado</label>
+                            <select [(ngModel)]="newVehiculo.estado" name="estado" class="glass-input font-bold">
+                                <option value="Activo">Activo</option>
+                                <option value="En Mantenimiento">En Mantenimiento</option>
+                                <option value="Inactivo">Inactivo</option>
+                            </select>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-14 pt-8 border-t border-white/5 flex gap-4">
-                    <button type="button" (click)="closeModal()" class="btn-secondary flex-1">Cancelar</button>
-                    <button type="submit" class="btn-primary flex-[2]">
-                        {{ editingVehiculo ? 'Actualizar Ficha' : 'Ingresar a Flota' }}
+                <div class="mt-12 pt-6 border-t border-white/5 flex flex-wrap gap-4">
+                    <button type="button" (click)="closeModal()" class="btn-secondary px-8">Cancelar</button>
+                    <div class="flex-1"></div>
+                    <button *ngIf="!editingVehiculo" type="button" (click)="saveVehiculo(true)" [disabled]="!canSave"
+                        [class.opacity-50]="!canSave"
+                        class="px-6 py-3 rounded-xl bg-blue-500/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all font-bold text-sm">
+                        Guardar y Añadir Otro
+                    </button>
+                    <button type="button" (click)="saveVehiculo(false)" [disabled]="!canSave"
+                        [class.opacity-50]="!canSave" class="btn-primary px-10">
+                        {{ editingVehiculo ? 'Actualizar Ficha' : 'Finalizar Registro' }}
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
