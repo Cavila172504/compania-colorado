@@ -1,0 +1,177 @@
+<div class="p-8 space-y-8 fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+            <h1 class="text-4xl font-black text-white tracking-tight">Rutas Escolares</h1>
+            <p class="text-slate-400 mt-1 font-medium italic">Gestión de recorridos, sectores e instituciones • Colorado
+                Express</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button (click)="exportToExcel()" class="btn-secondary group">
+                <span class="text-xl group-hover:scale-110 transition-transform">📊</span>
+                Exportar Excel
+            </button>
+            <button (click)="openModal()" class="btn-primary">
+                <span class="text-xl">+</span> Nueva Ruta
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <div class="relative w-full max-w-md group">
+            <span
+                class="absolute left-5 top-1/2 -translate-y-1/2 text-xl opacity-40 group-focus-within:opacity-100 transition-opacity">🔍</span>
+            <input type="text" [(ngModel)]="filterTerm" placeholder="Buscar por nombre, sector o institución..."
+                class="glass-input !pl-14">
+        </div>
+        <div class="flex-1"></div>
+        <div
+            class="px-4 py-2 rounded-xl bg-white/5 border border-white/5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
+            Total: {{filteredRutas.length}} rutas
+        </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="glass-card overflow-hidden slide-up">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse table-fixed">
+                <thead>
+                    <tr class="bg-white/5 text-[0.7rem] uppercase tracking-[0.2em] font-black text-slate-500">
+                        <th class="px-8 py-6 w-[25%]">Nombre de Ruta</th>
+                        <th class="px-8 py-6 w-[35%]">Institución / Sector</th>
+                        <th class="px-8 py-6 w-[20%] text-center">Nro Estudiantes</th>
+                        <th class="px-8 py-6 w-[20%] text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    <!-- Loading State -->
+                    <ng-container *ngIf="loading">
+                        <tr *ngFor="let i of [1,2,3,4,5]">
+                            <td class="px-8 py-6">
+                                <div class="h-6 skeleton w-32"></div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <div class="space-y-2">
+                                    <div class="h-5 skeleton w-48"></div>
+                                    <div class="h-3 skeleton w-32"></div>
+                                </div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <div class="h-10 skeleton w-16 mx-auto rounded-xl"></div>
+                            </td>
+                            <td class="px-8 py-6 flex justify-end gap-2">
+                                <div class="h-10 w-10 skeleton rounded-xl"></div>
+                                <div class="h-10 w-10 skeleton rounded-xl"></div>
+                            </td>
+                        </tr>
+                    </ng-container>
+
+                    <!-- Data Rows -->
+                    <tr *ngFor="let r of filteredRutas" class="hover:bg-white/[0.02] transition-colors group">
+                        <td class="px-8 py-6">
+                            <div
+                                class="text-lg font-black text-white group-hover:text-blue-400 transition-colors uppercase tracking-tight">
+                                {{r.nombre}}</div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="text-slate-200 font-bold text-sm">{{r.institucion}}</div>
+                            <div class="text-slate-500 text-[0.7rem] font-bold uppercase tracking-widest mt-0.5">
+                                {{r.sector}}</div>
+                        </td>
+                        <td class="px-8 py-6 text-center">
+                            <span
+                                class="inline-block px-4 py-1 bg-blue-500/10 text-blue-400 rounded-xl font-black text-sm border border-blue-500/20">
+                                {{r.num_estudiantes}}
+                            </span>
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            <div
+                                class="flex items-center justify-end gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button (click)="openModal(r)"
+                                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-95">✏️</button>
+                                <button (click)="deleteRuta(r.id!)"
+                                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-95">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Empty State -->
+                    <tr *ngIf="filteredRutas.length === 0 && !loading">
+                        <td colspan="4" class="px-8 py-32 text-center">
+                            <div class="flex flex-col items-center gap-4">
+                                <div class="text-6xl opacity-20">🗺️</div>
+                                <h3 class="text-xl font-black text-white">No hay rutas registradas</h3>
+                                <p class="text-slate-500 font-medium">Comienza registrando tu primer recorrido escolar
+                                    para el periodo lectivo.</p>
+                                <button *ngIf="filterTerm" (click)="filterTerm = ''"
+                                    class="mt-4 text-blue-500 font-bold hover:underline">Limpiar búsqueda</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+        <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md fade-in" (click)="closeModal()"></div>
+
+        <div (click)="$event.stopPropagation()"
+            class="relative z-10 w-full max-w-2xl glass-card border-white/10 overflow-hidden shadow-2xl flex flex-col max-h-[90vh] slide-up">
+            <div class="p-8 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+                <div>
+                    <h2 class="text-2xl font-black text-white leading-none">{{ editingRuta ? 'Configuración de Ruta' :
+                        'Apertura de Nuevo Recorrido' }}</h2>
+                    <p class="text-slate-500 text-[0.65rem] font-bold uppercase mt-2 tracking-[0.2em]">Logística y
+                        Planificación Escolar</p>
+                </div>
+                <button (click)="closeModal()"
+                    class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 text-slate-500 hover:text-white transition-colors text-2xl font-black">&times;</button>
+            </div>
+
+            <form (ngSubmit)="saveRuta()" class="flex-1 overflow-y-auto p-12">
+                <div class="max-w-md mx-auto space-y-8">
+                    <div class="space-y-3">
+                        <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Nombre de
+                            la Ruta</label>
+                        <input type="text" [(ngModel)]="newRuta.nombre" name="nombre" required
+                            placeholder="Ej: RUTA NORTE 1" class="glass-input text-xl font-black uppercase">
+                    </div>
+
+                    <div class="space-y-3">
+                        <label
+                            class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Institución
+                            Educativa</label>
+                        <input type="text" [(ngModel)]="newRuta.institucion" name="institucion" required
+                            placeholder="Nombre del Colegio o Escuela" class="glass-input font-bold">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-3">
+                            <label
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Sector /
+                                Zona</label>
+                            <input type="text" [(ngModel)]="newRuta.sector" name="sector"
+                                placeholder="Ej: Quitumbe, Carcelén..." class="glass-input font-medium text-sm">
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Nro
+                                Estudiantes</label>
+                            <input type="number" [(ngModel)]="newRuta.num_estudiantes" name="num_estudiantes"
+                                class="glass-input font-black text-blue-400">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-14 pt-8 border-t border-white/5 flex gap-4">
+                    <button type="button" (click)="closeModal()" class="btn-secondary flex-1">Cancelar</button>
+                    <button type="submit" class="btn-primary flex-[2]">
+                        {{ editingRuta ? 'Guardar Cambios' : 'Activar Recorrido' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

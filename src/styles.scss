@@ -1,1 +1,118 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-slate-950 text-slate-200 antialiased selection:bg-blue-500/30 selection:text-blue-200;
+    }
+}
+
+/* Custom premium styles */
+@layer components {
+    .glass-card {
+        @apply bg-slate-900/40 border border-white/10 backdrop-blur-xl rounded-3xl shadow-2xl;
+    }
+
+    .glass-input {
+        @apply w-full bg-slate-950/50 border border-white/5 rounded-2xl px-5 py-4 text-white focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all placeholder:text-slate-600 font-medium;
+    }
+
+    .btn-primary {
+        @apply bg-blue-600 hover:bg-blue-500 text-white px-6 py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-500/20 active:scale-95 disabled:opacity-30 disabled:pointer-events-none;
+    }
+
+    .btn-secondary {
+        @apply bg-white/5 hover:bg-white/10 text-slate-300 px-6 py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95;
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .slide-up {
+        animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Skeleton Loading Animation */
+    .skeleton {
+        @apply relative overflow-hidden bg-white/5 rounded-lg;
+    }
+
+    .skeleton::after {
+        @apply absolute inset-0 content-[''];
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+        animation: shimmer 1.5s infinite linear;
+    }
+
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-100%);
+        }
+
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    /* Premium Navigation Styles */
+    .nav-item {
+        @apply flex items-center gap-4 px-5 py-4 rounded-2xl text-slate-400 font-bold text-sm transition-all relative overflow-hidden active:scale-[0.98] hover:bg-white/[0.03] hover:text-white;
+    }
+
+    .nav-active {
+        @apply bg-blue-600/10 text-blue-400 hover:bg-blue-600/15 hover:text-blue-400 shadow-inner shadow-blue-500/5 font-black;
+    }
+
+    .nav-icon {
+        @apply text-xl transition-transform duration-300 group-hover:scale-110 group-[.nav-active]:scale-110;
+    }
+
+    .nav-text {
+        @apply relative z-10 tracking-tight;
+    }
+
+    .active-indicator {
+        @apply absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-blue-500 rounded-r-full opacity-0 transition-all duration-300 scale-y-50;
+    }
+
+    .nav-active .active-indicator {
+        @apply opacity-100 scale-y-100;
+    }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+}

@@ -1,0 +1,115 @@
+<div class="p-8 space-y-10 fade-in">
+    <!-- Hero Section -->
+    <div
+        class="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-blue-600 to-indigo-900 p-10 text-white shadow-2xl shadow-blue-500/20">
+        <div class="relative z-10 max-w-2xl space-y-4">
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">Panel de Control General</h1>
+            <p class="text-blue-100 text-lg font-medium opacity-90">Bienvenido al sistema de gestión de Colorado
+                Express. Visualiza el estado actual de tu operación en tiempo real.</p>
+        </div>
+        <!-- Decorative blob -->
+        <div class="absolute top-[-20%] right-[-10%] w-96 h-96 bg-blue-400 opacity-20 blur-[100px] rounded-full"></div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Vehículos Card -->
+        <div routerLink="/vehiculos"
+            class="glass-card p-8 group cursor-pointer hover:border-blue-500/30 transition-all active:scale-[0.98]">
+            <div class="flex items-center justify-between mb-6">
+                <div
+                    class="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
+                    🚐</div>
+                <div *ngIf="loading" class="animate-spin text-blue-500">⌛</div>
+            </div>
+            <div class="space-y-1">
+                <h3 class="text-slate-400 font-bold uppercase tracking-widest text-[0.65rem]">Flota Vehicular</h3>
+                <div class="flex items-baseline gap-3">
+                    <span class="text-5xl font-black text-white tracking-tighter">{{ stats.vehiculos }}</span>
+                    <span class="text-sm font-bold text-slate-500 italic">Unidades</span>
+                </div>
+            </div>
+            <div
+                class="mt-6 pt-6 border-t border-white/5 flex items-center justify-between text-blue-400 font-bold text-xs uppercase tracking-widest">
+                <span>Ver Listado</span>
+                <span>→</span>
+            </div>
+        </div>
+
+        <!-- Conductores Card -->
+        <div routerLink="/conductores"
+            class="glass-card p-8 group cursor-pointer hover:border-emerald-500/30 transition-all active:scale-[0.98]">
+            <div class="flex items-center justify-between mb-6">
+                <div
+                    class="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
+                    👨‍✈️</div>
+                <div *ngIf="loading" class="animate-spin text-emerald-500">⌛</div>
+            </div>
+            <div class="space-y-1">
+                <h3 class="text-slate-400 font-bold uppercase tracking-widest text-[0.65rem]">Personal Operativo</h3>
+                <div class="flex items-baseline gap-3">
+                    <span class="text-5xl font-black text-white tracking-tighter">{{ stats.conductores }}</span>
+                    <span class="text-sm font-bold text-slate-500 italic">Conductores</span>
+                </div>
+            </div>
+            <div
+                class="mt-6 pt-6 border-t border-white/5 flex items-center justify-between text-emerald-400 font-bold text-xs uppercase tracking-widest">
+                <span>Gestionar Personal</span>
+                <span>→</span>
+            </div>
+        </div>
+
+        <!-- Rutas Card -->
+        <div routerLink="/rutas"
+            class="glass-card p-8 group cursor-pointer hover:border-amber-500/30 transition-all active:scale-[0.98]">
+            <div class="flex items-center justify-between mb-6">
+                <div
+                    class="w-16 h-16 rounded-2xl bg-amber-500/10 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
+                    📍</div>
+                <div *ngIf="loading" class="animate-spin text-amber-500">⌛</div>
+            </div>
+            <div class="space-y-1">
+                <h3 class="text-slate-400 font-bold uppercase tracking-widest text-[0.65rem]">Rutas Escolares</h3>
+                <div class="flex items-baseline gap-3">
+                    <span class="text-5xl font-black text-white tracking-tighter">{{ stats.rutas }}</span>
+                    <span class="text-sm font-bold text-slate-500 italic">Rutas Activas</span>
+                </div>
+            </div>
+            <div
+                class="mt-6 pt-6 border-t border-white/5 flex items-center justify-between text-amber-400 font-bold text-xs uppercase tracking-widest">
+                <span>Ver Mapa/Lista</span>
+                <span>→</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="glass-card p-10 bg-gradient-to-r from-slate-900/50 to-slate-950/50">
+        <h2 class="text-xl font-bold text-white mb-8">Acciones Rápidas</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <button routerLink="/flujo-caja"
+                class="p-6 rounded-[2rem] bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all text-center space-y-3">
+                <span class="block text-3xl">💰</span>
+                <span class="block text-[0.65rem] font-black uppercase tracking-widest text-slate-300">Ingreso
+                    Diario</span>
+            </button>
+            <button routerLink="/vehiculos"
+                class="p-6 rounded-[2rem] bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all text-center space-y-3">
+                <span class="block text-3xl">🚐</span>
+                <span class="block text-[0.65rem] font-black uppercase tracking-widest text-slate-300">Nueva
+                    Unidad</span>
+            </button>
+            <button routerLink="/conductores"
+                class="p-6 rounded-[2rem] bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all text-center space-y-3">
+                <span class="block text-3xl">📋</span>
+                <span class="block text-[0.65rem] font-black uppercase tracking-widest text-slate-300">Cargar
+                    Nómina</span>
+            </button>
+            <button routerLink="/flujo-consolidado"
+                class="p-6 rounded-[2rem] bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all text-center space-y-3">
+                <span class="block text-3xl">📊</span>
+                <span class="block text-[0.65rem] font-black uppercase tracking-widest text-slate-300">Informes</span>
+            </button>
+        </div>
+    </div>
+</div>

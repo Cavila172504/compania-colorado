@@ -1,12 +1,15 @@
 {
   "name": "colorado-express",
   "version": "0.0.0",
+  "main": "electron/main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --output-path=dist/colorado-express",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "electron": "npm run build && electron .",
+    "build:exe": "npm run build && electron-builder --win"
   },
   "prettier": {
     "printWidth": 100,
@@ -36,7 +39,18 @@
     "@angular/build": "^21.1.2",
     "@angular/cli": "^21.1.2",
     "@angular/compiler-cli": "^21.1.0",
+    "@electron/rebuild": "^4.0.3",
+    "autoprefixer": "^10.4.19",
+    "better-sqlite3": "^12.6.2",
+    "electron": "^40.6.0",
+    "electron-builder": "^26.8.1",
+    "electron-store": "^11.0.2",
+    "exceljs": "^4.4.0",
     "jsdom": "^27.1.0",
+    "jspdf": "^4.2.0",
+    "jspdf-autotable": "^5.0.7",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.1",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
   }

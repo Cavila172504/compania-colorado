@@ -1,0 +1,157 @@
+<div class="p-8 space-y-8 fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+            <h1 class="text-4xl font-black text-white tracking-tight">Consolidado Mensual</h1>
+            <p class="text-slate-400 mt-1 font-medium italic">Resumen de todas las rutas y conductores • Colorado
+                Express</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+            <div class="flex items-center gap-2 bg-slate-900 border border-white/5 p-1 rounded-2xl">
+                <div class="flex items-center gap-2 px-4 py-2 bg-slate-950 rounded-xl border border-white/5">
+                    <span class="text-[0.6rem] font-black text-slate-500 uppercase tracking-widest">Mes</span>
+                    <select [(ngModel)]="mes" (change)="loadConsolidado()"
+                        class="bg-transparent text-white font-black outline-none cursor-pointer appearance-none">
+                        <option [value]="1">Enero</option>
+                        <option [value]="2">Febrero</option>
+                        <option [value]="3">Marzo</option>
+                        <option [value]="4">Abril</option>
+                        <option [value]="5">Mayo</option>
+                        <option [value]="6">Junio</option>
+                        <option [value]="7">Julio</option>
+                        <option [value]="8">Agosto</option>
+                        <option [value]="9">Septiembre</option>
+                        <option [value]="10">Octubre</option>
+                        <option [value]="11">Noviembre</option>
+                        <option [value]="12">Diciembre</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 bg-slate-950 rounded-xl border border-white/5">
+                    <span class="text-[0.6rem] font-black text-slate-500 uppercase tracking-widest">Año</span>
+                    <input type="number" [(ngModel)]="anio" (change)="loadConsolidado()"
+                        class="bg-transparent text-white font-black w-16 outline-none">
+                </div>
+            </div>
+
+            <button (click)="exportToExcel()" class="btn-secondary group">
+                <span class="text-xl group-hover:scale-110 transition-transform">📊</span>
+                Exportar Excel
+            </button>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 slide-up">
+        <div class="glass-card p-10 bg-gradient-to-br from-blue-600/5 to-transparent relative overflow-hidden group">
+            <div class="absolute -right-6 -bottom-6 text-7xl opacity-[0.03] group-hover:scale-110 transition-transform">
+                💰</div>
+            <span class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em] block mb-2">Total
+                Ingresos</span>
+            <div class="flex items-baseline gap-2">
+                <span class="text-4xl font-black text-emerald-400 tracking-tighter">{{getTotalIngresos() |
+                    currency}}</span>
+                <span class="text-[10px] text-slate-500 font-bold uppercase">Facturación</span>
+            </div>
+        </div>
+        <div class="glass-card p-10 bg-gradient-to-br from-red-600/5 to-transparent relative overflow-hidden group">
+            <div class="absolute -right-6 -bottom-6 text-7xl opacity-[0.03] group-hover:scale-110 transition-transform">
+                📉</div>
+            <span class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em] block mb-2">Total
+                Egresos</span>
+            <div class="flex items-baseline gap-2">
+                <span class="text-4xl font-black text-red-400 tracking-tighter">{{getTotalEgresos() | currency}}</span>
+                <span class="text-[10px] text-slate-500 font-bold uppercase">Deducciones</span>
+            </div>
+        </div>
+        <div
+            class="glass-card p-10 bg-gradient-to-br from-blue-500/20 to-blue-600/5 relative overflow-hidden group border-blue-500/10">
+            <div class="absolute -right-6 -bottom-6 text-7xl opacity-[0.1] group-hover:scale-110 transition-transform">
+                💎</div>
+            <span class="text-[0.65rem] font-black text-blue-500 uppercase tracking-[0.2em] block mb-2">Total a
+                Liquidar</span>
+            <div class="flex items-baseline gap-2">
+                <span class="text-4xl font-black text-white tracking-tighter">{{getTotalPagar() | currency}}</span>
+                <span class="text-[10px] text-blue-500 font-bold uppercase">Saldo Neto</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="glass-card overflow-hidden slide-up" style="animation-delay: 0.1s;">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-white/5 border-b border-white/5">
+                        <th class="p-8 text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em]">Conductor
+                        </th>
+                        <th class="p-8 text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em]">Ingresos
+                        </th>
+                        <th class="p-8 text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
+                            Deducciones</th>
+                        <th
+                            class="p-8 text-[0.65rem] font-black text-blue-500 uppercase tracking-[0.2em] bg-blue-500/5">
+                            Neto a Recibir</th>
+                        <th class="p-8 text-center text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em]">
+                            Rol</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    <!-- Loading State -->
+                    <tr *ngIf="loading">
+                        <td colspan="5" class="p-20 text-center">
+                            <div class="flex flex-col items-center gap-4">
+                                <span class="text-4xl animate-spin">⌛</span>
+                                <p class="text-slate-500 font-black uppercase tracking-widest text-xs">Cargando
+                                    contabilidad...</p>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Data Rows -->
+                    <tr *ngFor="let f of flujos" class="hover:bg-white/[0.02] transition-colors group">
+                        <td class="p-8">
+                            <div
+                                class="font-black text-lg text-white group-hover:text-blue-400 transition-colors uppercase tracking-tight">
+                                {{f.conductor_nombre}}</div>
+                            <div class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-widest mt-1">
+                                Conductor Registrado</div>
+                        </td>
+                        <td class="p-8 font-black text-emerald-400 text-lg tabular-nums">{{f.total_ingresos | currency}}
+                        </td>
+                        <td class="p-8">
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="font-bold text-red-400 tabular-nums">{{f.total_egresos | currency}}</span>
+                                <span class="text-[10px] text-slate-600 font-bold uppercase tracking-widest">Tot.
+                                    Descuentos</span>
+                            </div>
+                        </td>
+                        <td class="p-8 font-black text-white text-xl bg-blue-500/5 tabular-nums">{{f.total_recibir |
+                            currency}}</td>
+                        <td class="p-8 text-center">
+                            <button (click)="printRol(f)"
+                                class="w-12 h-12 rounded-2xl bg-slate-900 border border-white/5 text-blue-400 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all shadow-lg active:scale-90 mx-auto group/btn">
+                                <span class="text-xl group-hover/btn:scale-110 transition-transform">📄</span>
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Empty State -->
+                    <tr *ngIf="flujos.length === 0 && !loading">
+                        <td colspan="5" class="p-32 text-center">
+                            <div class="opacity-20 flex flex-col items-center gap-6">
+                                <span class="text-8xl">📓</span>
+                                <div>
+                                    <h3 class="text-2xl font-black text-white uppercase tracking-widest">Sin registros
+                                        contables</h3>
+                                    <p class="text-slate-500 font-bold mt-2 italic">Aún no hay ingresos procesados para
+                                        el periodo {{mes}}/{{anio}}</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
