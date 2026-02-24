@@ -106,9 +106,9 @@ export class VehiculoListComponent implements OnInit {
   }
 
   openModal(v?: Vehiculo) {
+    console.log('[VEHICULO-LIST] Opening modal. Mode:', v ? 'Edit' : 'New');
     if (v) {
       this.editingVehiculo = v;
-      // Copy all properties to the form object
       this.newVehiculo = {
         id: v.id,
         nro: v.nro || '',
@@ -125,7 +125,7 @@ export class VehiculoListComponent implements OnInit {
         km_initial: v.km_initial || 0
       };
     } else {
-      this.editingVehiculo = null;
+      this.editingVehiculo = null; // Important: ensure editing state is null
       this.newVehiculo = this.resetVehiculo();
     }
     this.showModal = true;
@@ -141,27 +141,47 @@ export class VehiculoListComponent implements OnInit {
   }
 
   async saveVehiculo(keepOpen: boolean = false) {
-    if (!this.canSave) return;
+    if (!this.canSave) {
+      console.warn('[VEHICULO-LIST] Save blocked: validation failed');
+      return;
+    }
 
     try {
+      console.log('[VEHICULO-LIST] Executing SAVE. Data:', this.newVehiculo);
       const res = this.editingVehiculo
         ? await this.vehiculosService.updateVehiculo(this.newVehiculo)
         : await this.vehiculosService.addVehiculo(this.newVehiculo);
 
       if (res && res.success) {
-        alert(this.editingVehiculo ? 'Unidad actualizada correctamente' : 'Unidad registrada exitosamente');
+        console.log('[VEHICULO-LIST] Save success. Res:', res);
+        const isEditing = !!this.editingVehiculo;
 
+        // Reset state BEFORE blocking alerts to prevent "hanging" UI
         if (keepOpen) {
+          const defaultAnio = this.newVehiculo.anio;
           this.newVehiculo = this.resetVehiculo();
+          this.newVehiculo.anio = defaultAnio; // Keep year convenience
+          this.editingVehiculo = null;
         } else {
           this.closeModal();
         }
+
+        // Refresh list
         await this.loadVehiculos();
+        this.cdr.detectChanges();
+
+        // Brief delay before alert to ensure UI has rendered and modal is gone/reset
+        setTimeout(() => {
+          alert(isEditing ? 'Unidad actualizada correctamente' : 'Unidad registrada exitosamente');
+        }, 100);
+
       } else {
+        console.error('[VEHICULO-LIST] Save error from service:', res?.error);
         alert('Error al guardar: ' + (res?.error || 'Error desconocido'));
       }
     } catch (e: any) {
-      alert('Error de sistema: ' + e.message);
+      console.error('[VEHICULO-LIST] System Exception:', e);
+      alert('Error de sistema crítico: ' + e.message);
     }
   }
 

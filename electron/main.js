@@ -93,15 +93,23 @@ ipcMain.handle('db-run', async (event, { query, params }) => {
         return { success: false, error: 'Database not initialized' };
     }
 
-    try {
-        console.log('[IPC-MAIN] Preparing statement...');
-        const stmt = db.prepare(query);
-        console.log('[IPC-MAIN] Executing statement...');
-        const result = stmt.run(...(params || []));
-        console.log('[IPC-MAIN] Run SUCCESS:', result);
-        return { success: true, data: result };
-    } catch (error) {
-        console.error('[IPC-MAIN] RUN ERROR:', error);
-        return { success: false, error: error.message };
-    }
+    const runPromise = (async () => {
+        try {
+            console.log('[IPC-MAIN] Preparing stmt for RUN...');
+            const stmt = db.prepare(query);
+            console.log('[IPC-MAIN] Executing stmt RUN...');
+            const result = stmt.run(...(params || []));
+            console.log('[IPC-MAIN] RUN Success:', result);
+            return { success: true, data: result };
+        } catch (error) {
+            console.error('[IPC-MAIN] RUN Error:', error);
+            return { success: false, error: error.message };
+        }
+    })();
+
+    const timeoutPromise = new Promise((resolve) =>
+        setTimeout(() => resolve({ success: false, error: 'Database operation timeout (5s)' }), 5000)
+    );
+
+    return Promise.race([runPromise, timeoutPromise]);
 });

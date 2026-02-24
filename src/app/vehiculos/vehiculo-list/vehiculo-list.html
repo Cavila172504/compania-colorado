@@ -134,13 +134,13 @@
             <div class="flex-1 overflow-y-auto p-8">
                 <div class="max-w-xl mx-auto space-y-6">
                     <div class="grid grid-cols-2 gap-6">
-                        <div class="space-y-2">
+                        <div class="space-y-4">
                             <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Nro
                                 Unidad</label>
                             <input type="text" [(ngModel)]="newVehiculo.nro" name="nro" placeholder="Ej: 001"
                                 autocomplete="off" class="glass-input text-lg font-black">
                         </div>
-                        <div class="space-y-2">
+                        <div class="space-y-4">
                             <label
                                 class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Año</label>
                             <input type="number" [(ngModel)]="newVehiculo.anio" name="anio" autocomplete="off"
@@ -149,54 +149,21 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-6">
-                        <div class="space-y-2">
+                        <div class="space-y-4">
                             <label
                                 class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Placa</label>
                             <input type="text" [(ngModel)]="newVehiculo.placa" name="placa" placeholder="ABC-1234"
                                 autocomplete="off"
                                 class="glass-input text-lg font-black uppercase tracking-wider !text-yellow-500">
                         </div>
-                        <div class="space-y-2">
-                            <label
-                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Tipo</label>
+                        <div class="space-y-4">
+                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Tipo
+                                de Vehículo</label>
                             <select [(ngModel)]="newVehiculo.tipo" name="tipo" class="glass-input font-bold">
                                 <option value="Buseta">Buseta</option>
                                 <option value="Furgoneta">Furgoneta</option>
                                 <option value="Bus">Bus</option>
                                 <option value="Camión">Camión</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label
-                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Color</label>
-                            <input type="text" [(ngModel)]="newVehiculo.color" name="color" placeholder="Ej: Blanco"
-                                autocomplete="off" class="glass-input">
-                        </div>
-                        <div class="space-y-2">
-                            <label
-                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Serie</label>
-                            <input type="text" [(ngModel)]="newVehiculo.nro_serie" name="nro_serie"
-                                placeholder="Nro de Serie" autocomplete="off" class="glass-input font-mono">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Carga
-                                Máxima</label>
-                            <input type="text" [(ngModel)]="newVehiculo.carga_maxima" name="carga_maxima"
-                                placeholder="Ej: 3.5 Ton" autocomplete="off" class="glass-input">
-                        </div>
-                        <div class="space-y-2">
-                            <label
-                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Estado</label>
-                            <select [(ngModel)]="newVehiculo.estado" name="estado" class="glass-input font-bold">
-                                <option value="Activo">Activo</option>
-                                <option value="En Mantenimiento">En Mantenimiento</option>
-                                <option value="Inactivo">Inactivo</option>
                             </select>
                         </div>
                     </div>
