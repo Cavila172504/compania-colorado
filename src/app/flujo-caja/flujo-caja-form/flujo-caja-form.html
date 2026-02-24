@@ -103,90 +103,101 @@
         <!-- Entry Form Column -->
         <div class="lg:col-span-8">
             <div class="glass-card p-8 min-h-full" *ngIf="selectedConductor">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
-                    <!-- Ingresos Section -->
-                    <div class="space-y-6">
-                        <h3 class="text-xs font-black text-blue-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                <div class="space-y-10">
+                    <!-- Ingresos Section (Full Width Top) -->
+                    <div class="bg-blue-600/5 p-8 rounded-3xl border border-blue-500/10">
+                        <h3
+                            class="text-xs font-black text-blue-500 uppercase tracking-[0.2em] flex items-center gap-2 mb-6">
                             <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                            Ingresos del Mes
+                            Ingresos Mensuales
                         </h3>
-                        <div class="space-y-2">
+                        <div class="max-w-md">
                             <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Total
                                 Ingresos Brutos</label>
-                            <div class="relative group">
+                            <div class="relative group mt-2">
                                 <span
-                                    class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 font-bold group-focus-within:text-blue-500 transition-colors">$</span>
+                                    class="absolute left-6 top-1/2 -translate-y-1/2 text-2xl text-slate-500 font-bold group-focus-within:text-blue-500 transition-colors">$</span>
                                 <input type="number" [(ngModel)]="flujo.total_ingresos" name="total_ingresos"
                                     (input)="calculate()"
-                                    class="w-full bg-slate-950 border border-white/10 rounded-2xl pl-10 pr-5 py-4 text-white text-xl font-black focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-sm">
+                                    class="w-full bg-slate-950 border border-white/10 rounded-2xl pl-12 pr-6 py-5 text-white text-3xl font-black focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-inner">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Egresos Section -->
-                    <div class="space-y-4">
+                    <!-- Egresos Section (2-Column Grid) -->
+                    <div class="space-y-6">
                         <h3 class="text-xs font-black text-red-500 uppercase tracking-[0.2em] flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-red-500"></span>
-                            Egresos y Rubros
+                            Egresos y Retenciones
                         </h3>
 
-                        <div class="grid grid-cols-1 gap-4">
-                            <!-- Egreso Item -->
-                            <div
-                                class="bg-white/[0.02] p-4 rounded-xl border border-white/5 flex items-center justify-between">
-                                <span class="text-xs font-bold text-slate-400 uppercase tracking-tight">Cuota Adm
-                                    (Fijo)</span>
-                                <span
-                                    class="font-black text-white px-3 py-1 bg-slate-950 rounded-lg text-sm border border-white/5">{{flujo.cuota_administrativa
-                                    | currency}}</span>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Fixed / Calculated Items -->
+                            <div class="space-y-4">
+                                <div
+                                    class="bg-white/[0.02] p-5 rounded-2xl border border-white/5 flex items-center justify-between">
+                                    <div class="space-y-1">
+                                        <span class="text-[0.6rem] font-black text-slate-500 uppercase">Cuota Adm
+                                            (Fijo)</span>
+                                        <div class="text-lg font-black text-white">{{flujo.cuota_administrativa |
+                                            currency}}</div>
+                                    </div>
+                                    <span class="text-2xl">🏢</span>
+                                </div>
+
+                                <div
+                                    class="bg-white/[0.02] p-5 rounded-2xl border border-white/5 flex items-center justify-between">
+                                    <div class="space-y-1">
+                                        <span class="text-[0.6rem] font-black text-slate-500 uppercase">Renta
+                                            (1%)</span>
+                                        <div class="text-lg font-black text-slate-300 italic">{{flujo.renta_1pct |
+                                            currency}}</div>
+                                    </div>
+                                    <span class="text-2xl">🏦</span>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Comisión
+                                        CADE</label>
+                                    <input type="number" [(ngModel)]="flujo.comision_cade" (input)="calculate()"
+                                        class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white font-bold focus:border-blue-500 outline-none">
+                                </div>
                             </div>
 
-                            <div
-                                class="bg-white/[0.02] p-4 rounded-xl border border-white/5 flex items-center justify-between">
-                                <span class="text-xs font-bold text-slate-400 uppercase tracking-tight">Renta
-                                    (1%)</span>
-                                <span class="font-black text-slate-300 text-sm italic">{{flujo.renta_1pct |
-                                    currency}}</span>
-                            </div>
+                            <!-- Manual Items -->
+                            <div class="space-y-4">
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Anticipo
+                                        Socio</label>
+                                    <input type="number" [(ngModel)]="flujo.anticipo_socio" (input)="calculate()"
+                                        class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 font-bold focus:border-blue-500 outline-none">
+                                </div>
 
-                            <div class="space-y-2 pt-2">
-                                <label
-                                    class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Comisión
-                                    CADE</label>
-                                <input type="number" [(ngModel)]="flujo.comision_cade" (input)="calculate()"
-                                    class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-2 text-white font-bold focus:border-blue-500 outline-none">
-                            </div>
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Abono
+                                        Préstamo</label>
+                                    <input type="number" [(ngModel)]="flujo.abono_prestamo" (input)="calculate()"
+                                        class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 font-bold focus:border-blue-500 outline-none transition-all">
+                                </div>
 
-                            <div class="space-y-2">
-                                <label
-                                    class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Anticipo
-                                    Socio</label>
-                                <input type="number" [(ngModel)]="flujo.anticipo_socio" (input)="calculate()"
-                                    class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-2 font-bold focus:border-blue-500 outline-none">
-                            </div>
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Aplicativo
+                                        "Mi buseta"</label>
+                                    <input type="number" [(ngModel)]="flujo.aplicativo_buseta" (input)="calculate()"
+                                        class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 font-bold focus:border-blue-500 outline-none transition-all">
+                                </div>
 
-                            <div class="space-y-2">
-                                <label
-                                    class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Abono
-                                    Préstamo</label>
-                                <input type="number" [(ngModel)]="flujo.abono_prestamo" (input)="calculate()"
-                                    class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-2 font-bold focus:border-blue-500 outline-none transition-all">
-                            </div>
-
-                            <div class="space-y-2">
-                                <label
-                                    class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Aplicativo
-                                    "Mi buseta"</label>
-                                <input type="number" [(ngModel)]="flujo.aplicativo_buseta" (input)="calculate()"
-                                    class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-2 font-bold focus:border-blue-500 outline-none transition-all">
-                            </div>
-
-                            <div class="space-y-2">
-                                <label
-                                    class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Comisión
-                                    Compañía</label>
-                                <input type="number" [(ngModel)]="flujo.comision_compania" (input)="calculate()"
-                                    class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-2 font-bold focus:border-blue-500 outline-none transition-all">
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Comisión
+                                        Compañía</label>
+                                    <input type="number" [(ngModel)]="flujo.comision_compania" (input)="calculate()"
+                                        class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 font-bold focus:border-blue-500 outline-none transition-all">
+                                </div>
                             </div>
                         </div>
                     </div>

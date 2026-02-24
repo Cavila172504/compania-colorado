@@ -129,7 +129,8 @@
         <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md fade-in" (click)="closeModal()"></div>
 
         <div (click)="$event.stopPropagation()"
-            class="relative z-50 w-full max-w-2xl glass-card border-white/10 overflow-hidden shadow-2xl flex flex-col max-h-[90vh] slide-up">
+            class="relative z-50 w-full max-w-3xl glass-card border-white/10 overflow-hidden shadow-2xl flex flex-col max-h-[85vh] slide-up">
+            <!-- Fixed Header -->
             <div class="p-6 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
                 <div>
                     <h2 class="text-2xl font-black text-white leading-none">{{ editingRuta ? 'Configuración de Ruta' :
@@ -141,25 +142,28 @@
                     class="text-slate-500 hover:text-white transition-colors text-2xl">&times;</button>
             </div>
 
-            <div class="flex-1 overflow-y-auto p-8">
-                <div class="max-w-xl mx-auto space-y-6">
-                    <div class="space-y-4">
-                        <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Nombre de
-                            la Ruta</label>
-                        <input type="text" [(ngModel)]="newRuta.nombre" name="nombre" placeholder="Ej: RUTA NORTE 1"
-                            autocomplete="off" class="glass-input text-lg font-black uppercase">
+            <!-- Scrollable Body -->
+            <div class="flex-1 overflow-y-auto p-8 lg:p-10">
+                <div class="max-w-3xl mx-auto space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <label
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Nombre
+                                de la Ruta</label>
+                            <input type="text" [(ngModel)]="newRuta.nombre" name="nombre" placeholder="Ej: RUTA NORTE 1"
+                                autocomplete="off" class="glass-input text-lg font-black uppercase">
+                        </div>
+                        <div class="space-y-4">
+                            <label
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Institución
+                                Educativa</label>
+                            <input type="text" [(ngModel)]="newRuta.institucion" name="institucion"
+                                placeholder="Nombre del Colegio o Escuela" autocomplete="off"
+                                class="glass-input font-bold uppercase">
+                        </div>
                     </div>
 
-                    <div class="space-y-4">
-                        <label
-                            class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Institución
-                            Educativa</label>
-                        <input type="text" [(ngModel)]="newRuta.institucion" name="institucion"
-                            placeholder="Nombre del Colegio o Escuela" autocomplete="off"
-                            class="glass-input font-bold uppercase">
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-4">
                             <label
                                 class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Conductor
@@ -181,7 +185,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-4">
                             <label
                                 class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Sector /
@@ -198,37 +202,37 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="mt-12 pt-6 border-t border-white/5 flex flex-wrap gap-4 items-center">
-                    <!-- Feedback Messages -->
-                    <div *ngIf="saveSuccess"
-                        class="flex items-center gap-2 text-green-400 font-bold text-sm animate-pulse">
-                        <span class="text-lg">✅</span>
-                        {{ editingRuta ? '¡Configuración Guardada!' : '¡Ruta Activada!' }}
-                    </div>
-
-                    <div *ngIf="errorMessage" class="flex items-center gap-2 text-red-500 font-bold text-sm">
-                        <span class="text-lg">⚠️</span>
-                        {{ errorMessage }}
-                    </div>
-
-                    <button type="button" (click)="closeModal()" [disabled]="saving"
-                        class="btn-secondary px-8">Cancelar</button>
-                    <div class="flex-1"></div>
-
-                    <button *ngIf="!editingRuta" type="button" (click)="saveRuta(true)" [disabled]="!canSave || saving"
-                        [class.opacity-50]="!canSave || saving"
-                        class="px-6 py-3 rounded-xl bg-blue-500/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all font-bold text-sm flex items-center gap-2">
-                        <span *ngIf="saving" class="animate-spin text-lg">⏳</span>
-                        {{ saving ? 'Activando...' : 'Activar y Añadir Otra' }}
-                    </button>
-
-                    <button type="button" (click)="saveRuta(false)" [disabled]="!canSave || saving"
-                        [class.opacity-50]="!canSave || saving" class="btn-primary px-10 flex items-center gap-2">
-                        <span *ngIf="saving" class="animate-spin text-lg">⏳</span>
-                        {{ saving ? 'Procesando...' : (editingRuta ? 'Guardar Cambios' : 'Finalizar Registro') }}
-                    </button>
+            <!-- Fixed Footer -->
+            <div class="p-6 border-t border-white/5 flex flex-wrap gap-4 items-center bg-white/[0.01]">
+                <!-- Feedback Messages -->
+                <div *ngIf="saveSuccess" class="flex items-center gap-2 text-green-400 font-bold text-sm animate-pulse">
+                    <span class="text-lg">✅</span>
+                    {{ editingRuta ? '¡Configuración Guardada!' : '¡Ruta Activada!' }}
                 </div>
+
+                <div *ngIf="errorMessage" class="flex items-center gap-2 text-red-500 font-bold text-sm">
+                    <span class="text-lg">⚠️</span>
+                    {{ errorMessage }}
+                </div>
+
+                <button type="button" (click)="closeModal()" [disabled]="saving"
+                    class="btn-secondary px-8">Cancelar</button>
+                <div class="flex-1"></div>
+
+                <button *ngIf="!editingRuta" type="button" (click)="saveRuta(true)" [disabled]="!canSave || saving"
+                    [class.opacity-50]="!canSave || saving"
+                    class="px-6 py-3 rounded-xl bg-blue-500/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all font-bold text-sm flex items-center gap-2">
+                    <span *ngIf="saving" class="animate-spin text-lg">⏳</span>
+                    {{ saving ? 'Activando...' : 'Activar y Añadir Otra' }}
+                </button>
+
+                <button type="button" (click)="saveRuta(false)" [disabled]="!canSave || saving"
+                    [class.opacity-50]="!canSave || saving" class="btn-primary px-10 flex items-center gap-2">
+                    <span *ngIf="saving" class="animate-spin text-lg">⏳</span>
+                    {{ saving ? 'Procesando...' : (editingRuta ? 'Guardar Cambios' : 'Finalizar Registro') }}
+                </button>
             </div>
         </div>
     </div>
