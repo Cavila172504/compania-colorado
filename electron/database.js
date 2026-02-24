@@ -31,16 +31,8 @@ function initDatabase() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nro TEXT,
         tipo TEXT,
-        marca TEXT,
-        modelo TEXT,
         placa TEXT UNIQUE,
-        nro_serie TEXT,
-        color TEXT,
-        anio INTEGER,
-        carga_maxima TEXT,
-        estado TEXT,
-        ciclo_mantenimiento TEXT,
-        km_initial INTEGER
+        anio INTEGER
       );
 
       CREATE TABLE IF NOT EXISTS conductores (
@@ -93,10 +85,7 @@ function initDatabase() {
       console.log('[DB-INIT] Migration: Added ruta_id to conductores');
     } catch (e) { }
 
-    try {
-      db.exec(`ALTER TABLE vehiculos ADD COLUMN km_initial INTEGER;`);
-      console.log('[DB-INIT] Migration: Added km_initial to vehiculos');
-    } catch (e) { }
+
 
     // Seed default admin user
     try {

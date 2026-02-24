@@ -16,9 +16,10 @@ export class VehiculoListComponent implements OnInit {
   loading: boolean = true;
   showModal: boolean = false;
   editingVehiculo: Vehiculo | null = null;
-
   newVehiculo: Vehiculo = this.resetVehiculo();
   filterTerm: string = '';
+  saving: boolean = false;
+  saveSuccess: boolean = false;
 
   constructor(
     private vehiculosService: VehiculosService,
@@ -58,7 +59,7 @@ export class VehiculoListComponent implements OnInit {
   get canSave(): boolean {
     const nro = (this.newVehiculo.nro || '').trim();
     const placa = (this.newVehiculo.placa || '').trim();
-    return nro.length > 0 && placa.length > 0;
+    return nro.length > 0 && placa.length > 0 && !this.saving;
   }
 
   async exportToExcel() {
@@ -68,9 +69,7 @@ export class VehiculoListComponent implements OnInit {
         { header: 'NRO UNIDAD', key: 'nro', width: 15 },
         { header: 'PLACA', key: 'placa', width: 20 },
         { header: 'AÑO', key: 'anio', width: 15 },
-        { header: 'MARCA', key: 'marca', width: 25 },
-        { header: 'MODELO', key: 'modelo', width: 25 },
-        { header: 'ESTADO', key: 'estado', width: 20 }
+        { header: 'TIPO', key: 'tipo', width: 20 }
       ];
 
       await this.excelService.exportToExcel(
@@ -81,7 +80,6 @@ export class VehiculoListComponent implements OnInit {
       );
     } catch (error) {
       console.error('Error exporting to excel:', error);
-      alert('Error al exportar a Excel');
     } finally {
       this.loading = false;
       this.cdr.detectChanges();
@@ -92,96 +90,78 @@ export class VehiculoListComponent implements OnInit {
     return {
       nro: '',
       tipo: 'Furgoneta',
-      marca: '',
-      modelo: '',
       placa: '',
-      nro_serie: '',
-      color: '',
-      anio: new Date().getFullYear(),
-      carga_maxima: '',
-      estado: 'Activo',
-      ciclo_mantenimiento: '',
-      km_initial: 0
+      anio: new Date().getFullYear()
     };
   }
 
   openModal(v?: Vehiculo) {
-    console.log('[VEHICULO-LIST] Opening modal. Mode:', v ? 'Edit' : 'New');
+    this.saveSuccess = false;
+    this.saving = false;
     if (v) {
       this.editingVehiculo = v;
       this.newVehiculo = {
         id: v.id,
         nro: v.nro || '',
         tipo: v.tipo || 'Buseta',
-        marca: v.marca || '',
-        modelo: v.modelo || '',
         placa: v.placa || '',
-        nro_serie: v.nro_serie || '',
-        color: v.color || '',
-        anio: v.anio || new Date().getFullYear(),
-        carga_maxima: v.carga_maxima || '',
-        estado: v.estado || 'Activo',
-        ciclo_mantenimiento: v.ciclo_mantenimiento || '',
-        km_initial: v.km_initial || 0
+        anio: v.anio || new Date().getFullYear()
       };
     } else {
-      this.editingVehiculo = null; // Important: ensure editing state is null
+      this.editingVehiculo = null;
       this.newVehiculo = this.resetVehiculo();
     }
     this.showModal = true;
     this.cdr.detectChanges();
-    setTimeout(() => {
-      this.cdr.detectChanges();
-    }, 100);
   }
 
   closeModal() {
+    if (this.saving) return;
     this.showModal = false;
+    this.saveSuccess = false;
     this.cdr.detectChanges();
   }
 
   async saveVehiculo(keepOpen: boolean = false) {
-    if (!this.canSave) {
-      console.warn('[VEHICULO-LIST] Save blocked: validation failed');
-      return;
-    }
+    if (!this.canSave || this.saving) return;
+
+    this.saving = true;
+    this.saveSuccess = false;
+    this.cdr.detectChanges();
 
     try {
-      console.log('[VEHICULO-LIST] Executing SAVE. Data:', this.newVehiculo);
       const res = this.editingVehiculo
         ? await this.vehiculosService.updateVehiculo(this.newVehiculo)
         : await this.vehiculosService.addVehiculo(this.newVehiculo);
 
       if (res && res.success) {
-        console.log('[VEHICULO-LIST] Save success. Res:', res);
-        const isEditing = !!this.editingVehiculo;
+        this.saveSuccess = true;
 
-        // Reset state BEFORE blocking alerts to prevent "hanging" UI
         if (keepOpen) {
-          const defaultAnio = this.newVehiculo.anio;
+          const prevAnio = this.newVehiculo.anio;
           this.newVehiculo = this.resetVehiculo();
-          this.newVehiculo.anio = defaultAnio; // Keep year convenience
+          this.newVehiculo.anio = prevAnio;
           this.editingVehiculo = null;
         } else {
-          this.closeModal();
+          setTimeout(() => this.closeModal(), 800);
         }
 
-        // Refresh list
         await this.loadVehiculos();
-        this.cdr.detectChanges();
-
-        // Brief delay before alert to ensure UI has rendered and modal is gone/reset
-        setTimeout(() => {
-          alert(isEditing ? 'Unidad actualizada correctamente' : 'Unidad registrada exitosamente');
-        }, 100);
-
       } else {
-        console.error('[VEHICULO-LIST] Save error from service:', res?.error);
-        alert('Error al guardar: ' + (res?.error || 'Error desconocido'));
+        alert('Error: ' + (res?.error || 'No se pudo guardar'));
       }
     } catch (e: any) {
-      console.error('[VEHICULO-LIST] System Exception:', e);
-      alert('Error de sistema crítico: ' + e.message);
+      alert('Error de sistema: ' + e.message);
+    } finally {
+      this.saving = false;
+      this.cdr.detectChanges();
+
+      if (keepOpen) {
+        setTimeout(() => {
+          this.saveSuccess = false;
+          this.cdr.detectChanges();
+        }, 2000);
+      }
     }
   }
 

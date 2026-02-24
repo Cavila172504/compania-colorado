@@ -133,6 +133,7 @@
 
             <div class="flex-1 overflow-y-auto p-8">
                 <div class="max-w-xl mx-auto space-y-6">
+                    <!-- Fila 1: Identificación -->
                     <div class="grid grid-cols-2 gap-6">
                         <div class="space-y-4">
                             <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Nro
@@ -167,19 +168,33 @@
                             </select>
                         </div>
                     </div>
+
+
                 </div>
 
-                <div class="mt-12 pt-6 border-t border-white/5 flex flex-wrap gap-4">
-                    <button type="button" (click)="closeModal()" class="btn-secondary px-8">Cancelar</button>
+                <div class="mt-12 pt-6 border-t border-white/5 flex flex-wrap gap-4 items-center">
+                    <!-- Success Message -->
+                    <div *ngIf="saveSuccess"
+                        class="flex items-center gap-2 text-green-400 font-bold text-sm animate-pulse">
+                        <span class="text-lg">✅</span>
+                        {{ editingVehiculo ? '¡Actualizado!' : '¡Guardado con éxito!' }}
+                    </div>
+
+                    <button type="button" (click)="closeModal()" [disabled]="saving"
+                        class="btn-secondary px-8">Cancelar</button>
                     <div class="flex-1"></div>
-                    <button *ngIf="!editingVehiculo" type="button" (click)="saveVehiculo(true)" [disabled]="!canSave"
-                        [class.opacity-50]="!canSave"
-                        class="px-6 py-3 rounded-xl bg-blue-500/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all font-bold text-sm">
-                        Guardar y Añadir Otro
+
+                    <button *ngIf="!editingVehiculo" type="button" (click)="saveVehiculo(true)"
+                        [disabled]="!canSave || saving" [class.opacity-50]="!canSave || saving"
+                        class="px-6 py-3 rounded-xl bg-blue-500/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all font-bold text-sm flex items-center gap-2">
+                        <span *ngIf="saving" class="animate-spin text-lg">⏳</span>
+                        {{ saving ? 'Guardando...' : 'Guardar y Añadir Otro' }}
                     </button>
-                    <button type="button" (click)="saveVehiculo(false)" [disabled]="!canSave"
-                        [class.opacity-50]="!canSave" class="btn-primary px-10">
-                        {{ editingVehiculo ? 'Actualizar Ficha' : 'Finalizar Registro' }}
+
+                    <button type="button" (click)="saveVehiculo(false)" [disabled]="!canSave || saving"
+                        [class.opacity-50]="!canSave || saving" class="btn-primary px-10 flex items-center gap-2">
+                        <span *ngIf="saving" class="animate-spin text-lg">⏳</span>
+                        {{ saving ? 'Procesando...' : (editingVehiculo ? 'Actualizar Ficha' : 'Finalizar Registro') }}
                     </button>
                 </div>
             </div>
