@@ -5,11 +5,7 @@ export interface Conductor {
     id?: number;
     doc_identidad: string;
     nombre: string;
-    nro_licencia: string;
-    direccion: string;
     telefono: string;
-    calificacion: number;
-    ruta_id?: number;
 }
 
 @Injectable({
@@ -30,20 +26,31 @@ export class ConductoresService {
 
     async addConductor(c: Conductor) {
         return await this.electron.invoke('db-run', {
-            query: `INSERT INTO conductores (doc_identidad, nombre, nro_licencia, direccion, telefono, calificacion, ruta_id) 
-              VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            params: [c.doc_identidad, c.nombre, c.nro_licencia, c.direccion, c.telefono, c.calificacion, c.ruta_id]
+            query: `INSERT INTO conductores (doc_identidad, nombre, telefono) 
+              VALUES (?, ?, ?)`,
+            params: [c.doc_identidad, c.nombre, c.telefono]
         });
     }
 
     async updateConductor(c: Conductor) {
         return await this.electron.invoke('db-run', {
-            query: `UPDATE conductores SET doc_identidad=?, nombre=?, nro_licencia=?, direccion=?, telefono=?, calificacion=?, ruta_id=? WHERE id=?`,
-            params: [c.doc_identidad, c.nombre, c.nro_licencia, c.direccion, c.telefono, c.calificacion, c.ruta_id, c.id]
+            query: `UPDATE conductores SET doc_identidad=?, nombre=?, telefono=? WHERE id=?`,
+            params: [c.doc_identidad, c.nombre, c.telefono, c.id]
         });
     }
 
     async deleteConductor(id: number) {
+        // First, nullify references in other tables to avoid foreign key constraint errors
+        await this.electron.invoke('db-run', {
+            query: 'UPDATE rutas SET conductor_id = NULL WHERE conductor_id = ?',
+            params: [id]
+        });
+        await this.electron.invoke('db-run', {
+            query: 'UPDATE flujo_caja SET conductor_id = NULL WHERE conductor_id = ?',
+            params: [id]
+        });
+
+        // Now delete the conductor
         return await this.electron.invoke('db-run', {
             query: 'DELETE FROM conductores WHERE id = ?',
             params: [id]

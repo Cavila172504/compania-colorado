@@ -16,9 +16,11 @@ export class ConductorListComponent implements OnInit {
   loading: boolean = true;
   showModal: boolean = false;
   editingConductor: Conductor | null = null;
-
   newConductor: Conductor = this.resetConductor();
   filterTerm: string = '';
+  saving: boolean = false;
+  saveSuccess: boolean = false;
+  errorMessage: string = '';
 
   constructor(
     private conductoresService: ConductoresService,
@@ -31,11 +33,12 @@ export class ConductorListComponent implements OnInit {
   }
 
   get filteredConductores(): Conductor[] {
+    if (!this.conductores) return [];
     if (!this.filterTerm.trim()) return this.conductores;
     const term = this.filterTerm.toLowerCase();
     return this.conductores.filter(c =>
-      c.nombre.toLowerCase().includes(term) ||
-      c.doc_identidad.includes(term) ||
+      (c.nombre || '').toLowerCase().includes(term) ||
+      (c.doc_identidad || '').includes(term) ||
       (c.telefono || '').includes(term)
     );
   }
@@ -50,6 +53,7 @@ export class ConductorListComponent implements OnInit {
     } finally {
       this.loading = false;
       this.cdr.detectChanges();
+      setTimeout(() => this.cdr.detectChanges(), 100);
     }
   }
 
@@ -57,11 +61,9 @@ export class ConductorListComponent implements OnInit {
     this.loading = true;
     try {
       const columns = [
-        { header: 'DOCUMENTO', key: 'doc_identidad', width: 20 },
         { header: 'NOMBRE COMPLETO', key: 'nombre', width: 40 },
-        { header: 'TELÉFONO', key: 'telefono', width: 20 },
-        { header: 'DIRECCIÓN', key: 'direccion', width: 50 },
-        { header: 'LICENCIA', key: 'nro_licencia', width: 20 }
+        { header: 'CÉDULA', key: 'doc_identidad', width: 20 },
+        { header: 'CELULAR', key: 'telefono', width: 20 }
       ];
 
       await this.excelService.exportToExcel(
@@ -72,7 +74,6 @@ export class ConductorListComponent implements OnInit {
       );
     } catch (error) {
       console.error('Error exporting to excel:', error);
-      alert('Error al exportar a Excel');
     } finally {
       this.loading = false;
       this.cdr.detectChanges();
@@ -83,24 +84,21 @@ export class ConductorListComponent implements OnInit {
     return {
       doc_identidad: '',
       nombre: '',
-      nro_licencia: '',
-      direccion: '',
-      telefono: '',
-      calificacion: 5
+      telefono: ''
     };
   }
 
   openModal(c?: Conductor) {
+    this.saveSuccess = false;
+    this.saving = false;
+    this.errorMessage = '';
     if (c) {
       this.editingConductor = c;
       this.newConductor = {
         id: c.id,
         doc_identidad: c.doc_identidad || '',
         nombre: c.nombre || '',
-        nro_licencia: c.nro_licencia || '',
-        direccion: c.direccion || '',
-        telefono: c.telefono || '',
-        calificacion: c.calificacion || 5
+        telefono: c.telefono || ''
       };
     } else {
       this.editingConductor = null;
@@ -108,16 +106,23 @@ export class ConductorListComponent implements OnInit {
     }
     this.showModal = true;
     this.cdr.detectChanges();
-    setTimeout(() => this.cdr.detectChanges(), 100);
+
+    // Auto focus first field
+    setTimeout(() => {
+      const input = document.querySelector('input[name="nombre"]') as HTMLInputElement;
+      if (input) input.focus();
+    }, 300);
   }
 
   closeModal() {
+    if (this.saving) return;
     this.showModal = false;
+    this.saveSuccess = false;
+    this.errorMessage = '';
     this.cdr.detectChanges();
   }
 
   onlyNumbers(event: any) {
-    // Allow if it's a number or a control key
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       event.preventDefault();
@@ -129,15 +134,19 @@ export class ConductorListComponent implements OnInit {
     const telf = (this.newConductor.telefono || '').trim();
     const nombre = (this.newConductor.nombre || '').trim();
 
-    return nombre.length > 0 &&
+    return nombre.length >= 3 &&
       cedula.length === 10 &&
-      !isNaN(Number(cedula)) &&
-      telf.length === 10 &&
-      !isNaN(Number(telf));
+      telf.length >= 9 &&
+      !this.saving;
   }
 
-  async saveConductor() {
-    if (!this.canSave) return;
+  async saveConductor(keepOpen: boolean = false) {
+    if (!this.canSave || this.saving) return;
+
+    this.saving = true;
+    this.saveSuccess = false;
+    this.errorMessage = '';
+    this.cdr.detectChanges();
 
     try {
       const res = this.editingConductor
@@ -145,20 +154,57 @@ export class ConductorListComponent implements OnInit {
         : await this.conductoresService.addConductor(this.newConductor);
 
       if (res && res.success) {
-        this.closeModal();
-        this.loadConductores();
+        this.saveSuccess = true;
+
+        if (keepOpen) {
+          this.newConductor = this.resetConductor();
+          this.editingConductor = null;
+          // Return focus to name input
+          setTimeout(() => {
+            const input = document.querySelector('input[name="nombre"]') as HTMLInputElement;
+            if (input) input.focus();
+          }, 100);
+        } else {
+          setTimeout(() => this.closeModal(), 800);
+        }
+
+        await this.loadConductores();
       } else {
-        alert('Error al guardar: ' + (res?.error || 'Error desconocido'));
+        this.errorMessage = 'Error: ' + (res?.error || 'No se pudo guardar');
       }
     } catch (e: any) {
-      alert('Error de sistema: ' + e.message);
+      this.errorMessage = 'Sist.: ' + e.message;
+    } finally {
+      this.saving = false;
+      this.cdr.detectChanges();
+
+      if (keepOpen && this.saveSuccess) {
+        setTimeout(() => {
+          this.saveSuccess = false;
+          this.cdr.detectChanges();
+        }, 2500);
+      }
     }
   }
 
   async deleteConductor(id: number) {
+    if (!id) return;
     if (confirm('¿Está seguro de eliminar este conductor?')) {
-      await this.conductoresService.deleteConductor(id);
-      this.loadConductores();
+      this.loading = true;
+      try {
+        const res = await this.conductoresService.deleteConductor(id);
+        if (res && res.success) {
+          await this.loadConductores();
+        } else {
+          console.error('Delete error:', res?.error);
+          alert('No se puede eliminar: El conductor está siendo usado en otras secciones.');
+        }
+      } catch (e: any) {
+        console.error('Critical Delete error:', e);
+      } finally {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     }
   }
 }

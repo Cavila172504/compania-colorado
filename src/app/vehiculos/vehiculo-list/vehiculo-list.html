@@ -119,7 +119,7 @@
         <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md fade-in" (click)="closeModal()"></div>
 
         <div (click)="$event.stopPropagation()"
-            class="relative z-10 w-full max-w-2xl glass-card border-white/10 overflow-hidden shadow-2xl flex flex-col max-h-[95vh] slide-up">
+            class="relative z-50 w-full max-w-2xl glass-card border-white/10 overflow-hidden shadow-2xl flex flex-col max-h-[95vh] slide-up">
             <div class="p-6 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
                 <div>
                     <h2 class="text-2xl font-black text-white leading-none">{{ editingVehiculo ? 'Editar Unidad' :
@@ -173,11 +173,16 @@
                 </div>
 
                 <div class="mt-12 pt-6 border-t border-white/5 flex flex-wrap gap-4 items-center">
-                    <!-- Success Message -->
+                    <!-- Feedback Messages -->
                     <div *ngIf="saveSuccess"
                         class="flex items-center gap-2 text-green-400 font-bold text-sm animate-pulse">
                         <span class="text-lg">✅</span>
-                        {{ editingVehiculo ? '¡Actualizado!' : '¡Guardado con éxito!' }}
+                        {{ editingVehiculo ? '¡Ficha Actualizada!' : '¡Unidad Registrada!' }}
+                    </div>
+
+                    <div *ngIf="errorMessage" class="flex items-center gap-2 text-red-500 font-bold text-sm">
+                        <span class="text-lg">⚠️</span>
+                        {{ errorMessage }}
                     </div>
 
                     <button type="button" (click)="closeModal()" [disabled]="saving"

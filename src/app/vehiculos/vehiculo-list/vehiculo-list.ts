@@ -20,6 +20,7 @@ export class VehiculoListComponent implements OnInit {
   filterTerm: string = '';
   saving: boolean = false;
   saveSuccess: boolean = false;
+  errorMessage: string = '';
 
   constructor(
     private vehiculosService: VehiculosService,
@@ -98,6 +99,8 @@ export class VehiculoListComponent implements OnInit {
   openModal(v?: Vehiculo) {
     this.saveSuccess = false;
     this.saving = false;
+    this.errorMessage = '';
+
     if (v) {
       this.editingVehiculo = v;
       this.newVehiculo = {
@@ -113,12 +116,19 @@ export class VehiculoListComponent implements OnInit {
     }
     this.showModal = true;
     this.cdr.detectChanges();
+
+    // Focus Nro Unidad
+    setTimeout(() => {
+      const input = document.querySelector('input[name="nro"]') as HTMLInputElement;
+      if (input) input.focus();
+    }, 300);
   }
 
   closeModal() {
     if (this.saving) return;
     this.showModal = false;
     this.saveSuccess = false;
+    this.errorMessage = '';
     this.cdr.detectChanges();
   }
 
@@ -127,6 +137,7 @@ export class VehiculoListComponent implements OnInit {
 
     this.saving = true;
     this.saveSuccess = false;
+    this.errorMessage = '';
     this.cdr.detectChanges();
 
     try {
@@ -142,41 +153,44 @@ export class VehiculoListComponent implements OnInit {
           this.newVehiculo = this.resetVehiculo();
           this.newVehiculo.anio = prevAnio;
           this.editingVehiculo = null;
+          // Return focus to Nro
+          setTimeout(() => {
+            const input = document.querySelector('input[name="nro"]') as HTMLInputElement;
+            if (input) input.focus();
+          }, 100);
         } else {
           setTimeout(() => this.closeModal(), 800);
         }
 
         await this.loadVehiculos();
       } else {
-        alert('Error: ' + (res?.error || 'No se pudo guardar'));
+        this.errorMessage = 'Error: ' + (res?.error || 'No se pudo guardar');
       }
     } catch (e: any) {
-      alert('Error de sistema: ' + e.message);
+      this.errorMessage = 'Sist.: ' + e.message;
     } finally {
       this.saving = false;
       this.cdr.detectChanges();
 
-      if (keepOpen) {
+      if (keepOpen && this.saveSuccess) {
         setTimeout(() => {
           this.saveSuccess = false;
           this.cdr.detectChanges();
-        }, 2000);
+        }, 2500);
       }
     }
   }
 
   async deleteVehiculo(id: number) {
-    if (!id) {
-      alert('Error: ID de vehículo no encontrado');
-      return;
-    }
-    if (confirm('¿Está seguro de eliminar este vehículo?')) {
+    if (!id) return;
+    if (confirm('¿Está seguro de eliminar esta unidad?')) {
+      this.loading = true;
       try {
         const res = await this.vehiculosService.deleteVehiculo(id);
         if (res && res.success) {
-          this.loadVehiculos();
+          await this.loadVehiculos();
         } else {
-          alert('Error al eliminar: ' + (res?.error || 'Error desconocido'));
+          alert('No se puede eliminar: La unidad tiene registros asociados (Rutas/Flujo Caja).');
         }
       } catch (e: any) {
         alert('Error de sistema al eliminar: ' + e.message);

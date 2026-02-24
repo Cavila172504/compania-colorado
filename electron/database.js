@@ -39,11 +39,7 @@ function initDatabase() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         doc_identidad TEXT UNIQUE,
         nombre TEXT NOT NULL,
-        nro_licencia TEXT,
-        direccion TEXT,
-        telefono TEXT,
-        calificacion INTEGER,
-        ruta_id INTEGER
+        telefono TEXT
       );
 
       CREATE TABLE IF NOT EXISTS rutas (
@@ -80,10 +76,7 @@ function initDatabase() {
 
     // Migrations / Safety checks for missing columns
     console.log('[DB-INIT] Checking migrations...');
-    try {
-      db.exec(`ALTER TABLE conductores ADD COLUMN ruta_id INTEGER;`);
-      console.log('[DB-INIT] Migration: Added ruta_id to conductores');
-    } catch (e) { }
+
 
 
 
