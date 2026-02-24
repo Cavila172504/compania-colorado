@@ -64,7 +64,14 @@ export class FlujoCajaListComponent implements OnInit {
             const columns = [
                 { header: 'CONDUCTOR', key: 'conductor_nombre', width: 35 },
                 { header: 'INGRESOS ($)', key: 'total_ingresos', width: 20 },
-                { header: 'EGRESOS ($)', key: 'total_egresos', width: 20 },
+                { header: 'CUOTA ADMIN ($)', key: 'cuota_administrativa', width: 15 },
+                { header: 'RENTA 1% ($)', key: 'renta_1pct', width: 15 },
+                { header: 'COM. CADE ($)', key: 'comision_cade', width: 15 },
+                { header: 'ANTICIPO ($)', key: 'anticipo_socio', width: 15 },
+                { header: 'PRÉSTAMO ($)', key: 'abono_prestamo', width: 15 },
+                { header: 'MI BUSETA ($)', key: 'aplicativo_buseta', width: 15 },
+                { header: 'COM. COMPAÑÍA ($)', key: 'comision_compania', width: 15 },
+                { header: 'TOTAL EGRESOS ($)', key: 'total_egresos', width: 20 },
                 { header: 'TOTAL RECIBIR ($)', key: 'total_recibir', width: 20 }
             ];
 

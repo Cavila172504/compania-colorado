@@ -83,23 +83,44 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-white/5 border-b border-white/5">
-                        <th class="p-8 text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em]">Conductor
-                        </th>
-                        <th class="p-8 text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em]">Ingresos
-                        </th>
-                        <th class="p-8 text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                            Deducciones</th>
                         <th
-                            class="p-8 text-[0.65rem] font-black text-blue-500 uppercase tracking-[0.2em] bg-blue-500/5">
+                            class="p-4 text-[0.6rem] font-black text-slate-500 uppercase tracking-[0.1em] whitespace-nowrap">
+                            Conductor</th>
+                        <th
+                            class="p-4 text-[0.6rem] font-black text-slate-500 uppercase tracking-[0.1em] whitespace-nowrap">
+                            Ingresos</th>
+
+                        <th class="p-4 text-[0.55rem] font-black text-red-500/70 uppercase tracking-[0.1em] text-center border-l border-white/5 whitespace-nowrap"
+                            title="Cuota Administrativa">C. Admin</th>
+                        <th
+                            class="p-4 text-[0.55rem] font-black text-red-500/70 uppercase tracking-[0.1em] text-center whitespace-nowrap">
+                            Renta 1%</th>
+                        <th class="p-4 text-[0.55rem] font-black text-red-500/70 uppercase tracking-[0.1em] text-center whitespace-nowrap"
+                            title="Comisión CADE">CADE</th>
+                        <th class="p-4 text-[0.55rem] font-black text-red-500/70 uppercase tracking-[0.1em] text-center whitespace-nowrap"
+                            title="Anticipo a Socio">Anticipo</th>
+                        <th class="p-4 text-[0.55rem] font-black text-red-500/70 uppercase tracking-[0.1em] text-center whitespace-nowrap"
+                            title="Abono de préstamo">Préstamo</th>
+                        <th class="p-4 text-[0.55rem] font-black text-red-500/70 uppercase tracking-[0.1em] text-center whitespace-nowrap"
+                            title="Aplicativo Mi buseta">Mi Buseta</th>
+                        <th class="p-4 text-[0.55rem] font-black text-red-500/70 uppercase tracking-[0.1em] text-center whitespace-nowrap"
+                            title="Comisión Compañía">Com. Cía</th>
+
+                        <th
+                            class="p-4 text-[0.6rem] font-black text-red-500 uppercase tracking-[0.1em] text-center border-l border-white/5 whitespace-nowrap">
+                            Tot. Egresos</th>
+                        <th
+                            class="p-4 text-[0.6rem] font-black text-blue-500 uppercase tracking-[0.1em] bg-blue-500/5 border-l border-white/5 whitespace-nowrap">
                             Neto a Recibir</th>
-                        <th class="p-8 text-center text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em]">
+                        <th
+                            class="p-4 text-center text-[0.6rem] font-black text-slate-500 uppercase tracking-[0.1em] whitespace-nowrap">
                             Rol</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-white/5">
                     <!-- Loading State -->
                     <tr *ngIf="loading">
-                        <td colspan="5" class="p-20 text-center">
+                        <td colspan="12" class="p-20 text-center">
                             <div class="flex flex-col items-center gap-4">
                                 <span class="text-4xl animate-spin">⌛</span>
                                 <p class="text-slate-500 font-black uppercase tracking-widest text-xs">Cargando
@@ -110,35 +131,50 @@
 
                     <!-- Data Rows -->
                     <tr *ngFor="let f of flujos" class="hover:bg-white/[0.02] transition-colors group">
-                        <td class="p-8">
+                        <td class="p-4">
                             <div
-                                class="font-black text-lg text-white group-hover:text-blue-400 transition-colors uppercase tracking-tight">
+                                class="font-black text-sm text-white group-hover:text-blue-400 transition-colors uppercase tracking-tight whitespace-nowrap">
                                 {{f.conductor_nombre}}</div>
-                            <div class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-widest mt-1">
-                                Conductor Registrado</div>
+                            <div class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-widest mt-1">Conductor
+                                Registrado</div>
                         </td>
-                        <td class="p-8 font-black text-emerald-400 text-lg tabular-nums">{{f.total_ingresos | currency}}
-                        </td>
-                        <td class="p-8">
-                            <div class="flex flex-col items-center gap-1">
-                                <span class="font-bold text-red-400 tabular-nums">{{f.total_egresos | currency}}</span>
-                                <span class="text-[10px] text-slate-600 font-bold uppercase tracking-widest">Tot.
-                                    Descuentos</span>
-                            </div>
-                        </td>
-                        <td class="p-8 font-black text-white text-xl bg-blue-500/5 tabular-nums">{{f.total_recibir |
+                        <td class="p-4 font-black text-emerald-400 text-sm tabular-nums whitespace-nowrap">
+                            {{f.total_ingresos | currency}}</td>
+
+                        <td class="p-4 text-center text-red-300/80 text-xs tabular-nums border-l border-white/5">
+                            {{(f.cuota_administrativa || 0) | currency}}</td>
+                        <td class="p-4 text-center text-red-300/80 text-xs tabular-nums">{{(f.renta_1pct || 0) |
                             currency}}</td>
-                        <td class="p-8 text-center">
-                            <button (click)="printRol(f)"
-                                class="w-12 h-12 rounded-2xl bg-slate-900 border border-white/5 text-blue-400 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all shadow-lg active:scale-90 mx-auto group/btn">
-                                <span class="text-xl group-hover/btn:scale-110 transition-transform">📄</span>
+                        <td class="p-4 text-center text-red-300/80 text-xs tabular-nums">{{(f.comision_cade || 0) |
+                            currency}}</td>
+                        <td class="p-4 text-center text-red-300/80 text-xs tabular-nums">{{(f.anticipo_socio || 0) |
+                            currency}}</td>
+                        <td class="p-4 text-center text-red-300/80 text-xs tabular-nums">{{(f.abono_prestamo || 0) |
+                            currency}}</td>
+                        <td class="p-4 text-center text-red-300/80 text-xs tabular-nums">{{(f.aplicativo_buseta || 0) |
+                            currency}}</td>
+                        <td class="p-4 text-center text-red-300/80 text-xs tabular-nums">{{(f.comision_compania || 0) |
+                            currency}}</td>
+
+                        <td
+                            class="p-4 text-center font-bold text-red-400 text-sm tabular-nums border-l border-white/5 whitespace-nowrap">
+                            {{f.total_egresos | currency}}</td>
+
+                        <td
+                            class="p-4 font-black text-white text-base bg-blue-500/5 tabular-nums border-l border-white/5 whitespace-nowrap">
+                            {{f.total_recibir | currency}}</td>
+
+                        <td class="p-4 text-center">
+                            <button (click)="printRol(f)" title="Imprimir Rol"
+                                class="w-8 h-8 rounded-lg bg-slate-900 border border-white/5 text-blue-400 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all shadow-lg active:scale-90 mx-auto group/btn">
+                                <span class="text-sm group-hover/btn:scale-110 transition-transform">📄</span>
                             </button>
                         </td>
                     </tr>
 
                     <!-- Empty State -->
                     <tr *ngIf="flujos.length === 0 && !loading">
-                        <td colspan="5" class="p-32 text-center">
+                        <td colspan="12" class="p-32 text-center">
                             <div class="opacity-20 flex flex-col items-center gap-6">
                                 <span class="text-8xl">📓</span>
                                 <div>
