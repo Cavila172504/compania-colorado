@@ -20,9 +20,11 @@ export class RutaListComponent implements OnInit {
   loading: boolean = true;
   showModal: boolean = false;
   editingRuta: Ruta | null = null;
-
   newRuta: Ruta = this.resetRuta();
   filterTerm: string = '';
+  saving: boolean = false;
+  saveSuccess: boolean = false;
+  errorMessage: string = '';
 
   constructor(
     private rutasService: RutasService,
@@ -49,6 +51,7 @@ export class RutaListComponent implements OnInit {
     } finally {
       this.loading = false;
       this.cdr.detectChanges();
+      setTimeout(() => this.cdr.detectChanges(), 100);
     }
   }
 
@@ -56,9 +59,9 @@ export class RutaListComponent implements OnInit {
     if (!this.filterTerm.trim()) return this.rutas;
     const term = this.filterTerm.toLowerCase();
     return this.rutas.filter(r =>
-      r.nombre.toLowerCase().includes(term) ||
-      r.sector.toLowerCase().includes(term) ||
-      r.institucion.toLowerCase().includes(term)
+      (r.nombre || '').toLowerCase().includes(term) ||
+      (r.sector || '').toLowerCase().includes(term) ||
+      (r.institucion || '').toLowerCase().includes(term)
     );
   }
 
@@ -80,7 +83,6 @@ export class RutaListComponent implements OnInit {
       );
     } catch (error) {
       console.error('Error exporting to excel:', error);
-      alert('Error al exportar a Excel');
     } finally {
       this.loading = false;
       this.cdr.detectChanges();
@@ -88,10 +90,14 @@ export class RutaListComponent implements OnInit {
   }
 
   async loadResources() {
-    [this.conductores, this.vehiculos] = await Promise.all([
-      this.conductoresService.getConductores(),
-      this.vehiculosService.getVehiculos()
-    ]);
+    try {
+      [this.conductores, this.vehiculos] = await Promise.all([
+        this.conductoresService.getConductores(),
+        this.vehiculosService.getVehiculos()
+      ]);
+    } catch (error) {
+      console.error('Error loading resources:', error);
+    }
   }
 
   resetRuta(): Ruta {
@@ -104,46 +110,112 @@ export class RutaListComponent implements OnInit {
   }
 
   openModal(r?: Ruta) {
+    this.saveSuccess = false;
+    this.saving = false;
+    this.errorMessage = '';
+
     if (r) {
       this.editingRuta = r;
-      this.newRuta = JSON.parse(JSON.stringify(r));
+      this.newRuta = {
+        id: r.id,
+        nombre: r.nombre || '',
+        sector: r.sector || '',
+        institucion: r.institucion || '',
+        num_estudiantes: r.num_estudiantes || 0,
+        conductor_id: r.conductor_id,
+        vehiculo_id: r.vehiculo_id
+      };
     } else {
       this.editingRuta = null;
       this.newRuta = this.resetRuta();
     }
     this.showModal = true;
+    this.cdr.detectChanges();
+
+    // Auto focus name
     setTimeout(() => {
-      this.cdr.detectChanges();
-    }, 0);
+      const input = document.querySelector('input[name="nombre"]') as HTMLInputElement;
+      if (input) input.focus();
+    }, 300);
   }
 
   closeModal() {
+    if (this.saving) return;
     this.showModal = false;
+    this.saveSuccess = false;
+    this.errorMessage = '';
     this.cdr.detectChanges();
   }
 
-  async saveRuta() {
+  get canSave(): boolean {
+    const nombre = (this.newRuta.nombre || '').trim();
+    const inst = (this.newRuta.institucion || '').trim();
+    return nombre.length >= 3 && inst.length >= 3 && !this.saving;
+  }
+
+  async saveRuta(keepOpen: boolean = false) {
+    if (!this.canSave || this.saving) return;
+
+    this.saving = true;
+    this.saveSuccess = false;
+    this.errorMessage = '';
+    this.cdr.detectChanges();
+
     try {
       const res = this.editingRuta
         ? await this.rutasService.updateRuta(this.newRuta)
         : await this.rutasService.addRuta(this.newRuta);
 
       if (res && res.success) {
-        alert('Ruta guardada correctamente');
-        this.closeModal();
-        this.loadRutas();
+        this.saveSuccess = true;
+
+        if (keepOpen) {
+          this.newRuta = this.resetRuta();
+          this.editingRuta = null;
+          setTimeout(() => {
+            const input = document.querySelector('input[name="nombre"]') as HTMLInputElement;
+            if (input) input.focus();
+          }, 100);
+        } else {
+          setTimeout(() => this.closeModal(), 800);
+        }
+
+        await this.loadRutas();
       } else {
-        alert('Error al guardar ruta: ' + (res?.error || 'Error desconocido'));
+        this.errorMessage = 'Error: ' + (res?.error || 'No se pudo guardar');
       }
     } catch (e: any) {
-      alert('Error de sistema: ' + e.message);
+      this.errorMessage = 'Sist.: ' + e.message;
+    } finally {
+      this.saving = false;
+      this.cdr.detectChanges();
+
+      if (keepOpen && this.saveSuccess) {
+        setTimeout(() => {
+          this.saveSuccess = false;
+          this.cdr.detectChanges();
+        }, 2500);
+      }
     }
   }
 
   async deleteRuta(id: number) {
+    if (!id) return;
     if (confirm('¿Está seguro de eliminar esta ruta?')) {
-      await this.rutasService.deleteRuta(id);
-      this.loadRutas();
+      this.loading = true;
+      try {
+        const res = await this.rutasService.deleteRuta(id);
+        if (res && res.success) {
+          await this.loadRutas();
+        } else {
+          alert('Error al eliminar: ' + (res?.error || 'No se pudo realizar la acción'));
+        }
+      } catch (e: any) {
+        console.error('Delete error:', e);
+      } finally {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     }
   }
 }

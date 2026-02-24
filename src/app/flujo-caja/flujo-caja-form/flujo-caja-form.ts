@@ -20,6 +20,10 @@ export class FlujoCajaFormComponent implements OnInit {
     selectedConductor: Conductor | null = null;
     flujo: FlujoCaja = this.resetFlujo();
 
+    saving: boolean = false;
+    saveSuccess: boolean = false;
+    errorMessage: string = '';
+
     constructor(
         private flujoCajaService: FlujoCajaService,
         private conductoresService: ConductoresService,
@@ -27,7 +31,11 @@ export class FlujoCajaFormComponent implements OnInit {
     ) { }
 
     async ngOnInit() {
-        this.conductores = await this.conductoresService.getConductores();
+        try {
+            this.conductores = await this.conductoresService.getConductores();
+        } catch (error) {
+            console.error('Error loading conductores:', error);
+        }
         this.cdr.detectChanges();
     }
 
@@ -50,6 +58,8 @@ export class FlujoCajaFormComponent implements OnInit {
     }
 
     async loadFlujo() {
+        this.saveSuccess = false;
+        this.errorMessage = '';
         if (!this.selectedConductorId) {
             this.selectedConductor = null;
             return;
@@ -57,38 +67,52 @@ export class FlujoCajaFormComponent implements OnInit {
 
         this.selectedConductor = this.conductores.find(c => c.id == this.selectedConductorId) || null;
 
-        const flujos = await this.flujoCajaService.getFlujosByDate(this.mes, this.anio);
-        const existing = flujos.find(f => f.conductor_id == this.selectedConductorId);
+        try {
+            const flujos = await this.flujoCajaService.getFlujosByDate(this.mes, this.anio);
+            const existing = flujos.find(f => f.conductor_id == this.selectedConductorId);
 
-        if (existing) {
-            this.flujo = JSON.parse(JSON.stringify(existing));
-        } else {
-            this.flujo = this.resetFlujo();
-            this.flujo.conductor_id = Number(this.selectedConductorId);
+            if (existing) {
+                this.flujo = JSON.parse(JSON.stringify(existing));
+            } else {
+                this.flujo = this.resetFlujo();
+                this.flujo.conductor_id = Number(this.selectedConductorId);
+            }
+        } catch (error) {
+            console.error('Error loading flujo:', error);
         }
 
         setTimeout(() => {
             this.calculate();
             this.cdr.detectChanges();
-        }, 0);
+            // Focus total ingresos
+            const input = document.querySelector('input[name="total_ingresos"]') as HTMLInputElement;
+            if (input) input.focus();
+        }, 100);
     }
 
     calculate() {
-        this.flujo.renta_1pct = this.flujo.total_ingresos * 0.01;
+        const ingresos = Number(this.flujo.total_ingresos || 0);
+        this.flujo.renta_1pct = ingresos * 0.01;
         this.flujo.total_egresos =
-            Number(this.flujo.cuota_administrativa) +
-            Number(this.flujo.renta_1pct) +
-            Number(this.flujo.comision_cade) +
-            Number(this.flujo.anticipo_socio) +
-            Number(this.flujo.abono_prestamo) +
-            Number(this.flujo.aplicativo_buseta) +
-            Number(this.flujo.comision_compania);
+            Number(this.flujo.cuota_administrativa || 0) +
+            Number(this.flujo.renta_1pct || 0) +
+            Number(this.flujo.comision_cade || 0) +
+            Number(this.flujo.anticipo_socio || 0) +
+            Number(this.flujo.abono_prestamo || 0) +
+            Number(this.flujo.aplicativo_buseta || 0) +
+            Number(this.flujo.comision_compania || 0);
 
-        this.flujo.total_recibir = this.flujo.total_ingresos - this.flujo.total_egresos;
+        this.flujo.total_recibir = ingresos - this.flujo.total_egresos;
         this.cdr.detectChanges();
     }
 
     async save() {
+        if (this.saving) return;
+        this.saving = true;
+        this.saveSuccess = false;
+        this.errorMessage = '';
+        this.cdr.detectChanges();
+
         try {
             this.calculate();
             this.flujo.mes = Number(this.mes);
@@ -96,13 +120,20 @@ export class FlujoCajaFormComponent implements OnInit {
             const res = await this.flujoCajaService.saveFlujo(this.flujo);
 
             if (res && res.success) {
-                alert('Datos guardados correctamente');
-                this.loadFlujo(); // Reload to get ID and ensure sync
+                this.saveSuccess = true;
+                await this.loadFlujo(); // Reload to get ID and ensure sync
+                setTimeout(() => {
+                    this.saveSuccess = false;
+                    this.cdr.detectChanges();
+                }, 3000);
             } else {
-                alert('Error al guardar datos: ' + (res?.error || 'Error desconocido'));
+                this.errorMessage = 'Error: ' + (res?.error || 'No se pudo guardar');
             }
         } catch (e: any) {
-            alert('Error de sistema: ' + e.message);
+            this.errorMessage = 'Sist.: ' + e.message;
+        } finally {
+            this.saving = false;
+            this.cdr.detectChanges();
         }
     }
 }
