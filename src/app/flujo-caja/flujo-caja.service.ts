@@ -24,7 +24,7 @@ export interface FlujoCaja {
   providedIn: 'root'
 })
 export class FlujoCajaService {
-  constructor(private electron: ElectronService) {}
+  constructor(private electron: ElectronService) { }
 
   async getFlujosByDate(mes: number, anio: number): Promise<FlujoCaja[]> {
     const res = await this.electron.invoke('db-query', {

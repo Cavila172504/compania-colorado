@@ -1,0 +1,229 @@
+<div class="p-8 space-y-8 fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+            <button (click)="goBack()"
+                class="text-blue-400 hover:text-white mb-2 flex items-center gap-2 group transition-all">
+                <span class="group-hover:-translate-x-1 transition-transform">←</span> Volver a Rutas
+            </button>
+            <h1 class="text-4xl font-black text-white tracking-tight uppercase" *ngIf="ruta; else loadingTpl">
+                {{ruta.nombre}}</h1>
+            <p class="text-slate-400 mt-1 font-medium italic" *ngIf="ruta">
+                Conductor: {{ruta.conductor_nombre || 'No asignado'}} • Unidad: {{ruta.vehiculo_placa || 'No asignada'}}
+                • Institución: {{ruta.institucion}}
+            </p>
+            <ng-template #loadingTpl>
+                <div class="h-10 bg-slate-800 rounded animate-pulse w-64 mb-2"></div>
+            </ng-template>
+        </div>
+        <div class="flex items-center gap-3">
+            <button (click)="exportToExcel()" class="btn-secondary group">
+                <span class="text-xl group-hover:scale-110 transition-transform">📊</span>
+                Exportar Estudiantes
+            </button>
+            <button (click)="openModal()" class="btn-primary" *ngIf="ruta">
+                <span class="text-xl">+</span> Añadir Estudiante
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <div class="relative w-full max-w-md group">
+            <span
+                class="absolute left-5 top-1/2 -translate-y-1/2 text-xl opacity-40 group-focus-within:opacity-100 transition-opacity">🔍</span>
+            <input type="text" [(ngModel)]="filterTerm" placeholder="Buscar por nombre, nro o representante..."
+                class="glass-input !pl-14">
+        </div>
+        <div class="flex-1"></div>
+        <div
+            class="px-4 py-2 rounded-xl bg-white/5 border border-white/5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
+            Total: {{filteredEstudiantes.length}} estudiantes
+        </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="glass-card overflow-hidden slide-up">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse table-fixed">
+                <thead>
+                    <tr class="bg-white/5 text-[0.7rem] uppercase tracking-[0.2em] font-black text-slate-500">
+                        <th class="px-8 py-6 w-[15%]">Nro Estudiante</th>
+                        <th class="px-8 py-6 w-[25%]">Nombre Estudiante</th>
+                        <th class="px-8 py-6 w-[25%]">Representante</th>
+                        <th class="px-8 py-6 w-[20%]">Contacto</th>
+                        <th class="px-8 py-6 w-[15%] text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    <!-- Loading State -->
+                    <ng-container *ngIf="loading">
+                        <tr *ngFor="let i of [1,2,3]">
+                            <td class="px-8 py-6">
+                                <div class="h-6 skeleton w-full"></div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <div class="h-6 skeleton w-full"></div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <div class="h-6 skeleton w-full"></div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <div class="h-6 skeleton w-full"></div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <div class="h-6 skeleton w-10 ml-auto"></div>
+                            </td>
+                        </tr>
+                    </ng-container>
+
+                    <!-- Data Rows -->
+                    <tr *ngFor="let e of filteredEstudiantes" class="hover:bg-white/[0.02] transition-colors group">
+                        <td class="px-8 py-6">
+                            <div class="text-blue-400 font-black text-sm uppercase">{{e.numero_estudiante}}</div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div
+                                class="text-lg font-black text-white group-hover:text-blue-400 transition-colors uppercase tracking-tight">
+                                {{e.nombre_estudiante}}
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="text-slate-200 font-bold text-sm">{{e.nombre_representante}}</div>
+                            <div class="text-slate-500 text-[0.7rem] font-bold uppercase tracking-widest mt-0.5"
+                                *ngIf="e.cedula_representante">
+                                CI: {{e.cedula_representante}}</div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="text-slate-300 font-medium text-sm" *ngIf="e.telefono_representante">📱
+                                {{e.telefono_representante}}</div>
+                            <div class="text-slate-400 text-xs mt-1 truncate" *ngIf="e.correo_representante">✉️
+                                {{e.correo_representante}}</div>
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            <div
+                                class="flex items-center justify-end gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button (click)="openModal(e)" title="Editar estudiante"
+                                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-95">✏️</button>
+                                <button (click)="deleteEstudiante(e.id!)" title="Eliminar estudiante"
+                                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-95">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Empty State -->
+                    <tr *ngIf="filteredEstudiantes.length === 0 && !loading">
+                        <td colspan="5" class="px-8 py-32 text-center">
+                            <div class="flex flex-col items-center gap-4">
+                                <div class="text-6xl opacity-20">👩‍🎓</div>
+                                <h3 class="text-xl font-black text-white">No hay estudiantes en esta ruta</h3>
+                                <p class="text-slate-500 font-medium">Añade estudiantes para llevar su registro.</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Form -->
+    <div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+        <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md fade-in" (click)="closeModal()"></div>
+
+        <div (click)="$event.stopPropagation()"
+            class="relative z-50 w-full max-w-3xl glass-card border-white/10 overflow-hidden shadow-2xl flex flex-col max-h-[85vh] slide-up">
+            <!-- Fixed Header -->
+            <div class="p-6 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+                <div>
+                    <h2 class="text-2xl font-black text-white leading-none">{{ editingEstudiante ? 'Editar Estudiante' :
+                        'Añadir Estudiante' }}</h2>
+                    <p class="text-slate-500 text-[0.65rem] font-bold uppercase mt-2 tracking-[0.2em]">{{
+                        editingEstudiante ? 'Actualización de datos' : 'Registro de pasajero escolar' }}</p>
+                </div>
+                <button (click)="closeModal()"
+                    class="text-slate-500 hover:text-white transition-colors text-2xl">&times;</button>
+            </div>
+
+            <!-- Scrollable Body -->
+            <div class="flex-1 overflow-y-auto p-8 lg:p-10">
+                <div class="max-w-3xl mx-auto space-y-8">
+                    <!-- Student details -->
+                    <h3 class="text-lg text-white font-bold border-b border-white/10 pb-2">Datos del Estudiante</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <label
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Número
+                                de Estudiante</label>
+                            <input type="text" [(ngModel)]="newEstudiante.numero_estudiante" name="numero"
+                                placeholder="Ej: 001" autocomplete="off" class="glass-input font-bold uppercase">
+                        </div>
+                        <div class="space-y-4">
+                            <label
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Nombres
+                                Completos</label>
+                            <input type="text" [(ngModel)]="newEstudiante.nombre_estudiante" name="nombre"
+                                placeholder="Nombre completo" autocomplete="off"
+                                class="glass-input font-bold uppercase">
+                        </div>
+                    </div>
+
+                    <!-- Rep details -->
+                    <h3 class="text-lg text-white font-bold border-b border-white/10 pb-2 pt-4">Datos del Representante
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <label
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Nombre
+                                Completo</label>
+                            <input type="text" [(ngModel)]="newEstudiante.nombre_representante" name="rep_nombre"
+                                placeholder="Nombre del representante" autocomplete="off"
+                                class="glass-input font-bold uppercase">
+                        </div>
+                        <div class="space-y-4">
+                            <label
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Cédula</label>
+                            <input type="text" [(ngModel)]="newEstudiante.cedula_representante" name="rep_cedula"
+                                placeholder="Nro de identificación" autocomplete="off" class="glass-input font-bold">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <label
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Número
+                                Telefónico</label>
+                            <input type="tel" [(ngModel)]="newEstudiante.telefono_representante" name="rep_telefono"
+                                placeholder="Ej: 0999999999" autocomplete="off" class="glass-input font-bold">
+                        </div>
+                        <div class="space-y-4">
+                            <label
+                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Correo
+                                Electrónico</label>
+                            <input type="email" [(ngModel)]="newEstudiante.correo_representante" name="rep_correo"
+                                placeholder="correo@ejemplo.com" autocomplete="off" class="glass-input font-bold">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fixed Footer -->
+            <div class="p-6 border-t border-white/5 flex flex-wrap gap-4 items-center bg-white/[0.01]">
+                <div *ngIf="saveSuccess" class="flex items-center gap-2 text-green-400 font-bold text-sm animate-pulse">
+                    <span class="text-lg">✅</span> ¡Estudiante {{ editingEstudiante ? 'Actualizado' : 'Añadido' }}!
+                </div>
+                <div *ngIf="errorMessage" class="flex items-center gap-2 text-red-500 font-bold text-sm">
+                    <span class="text-lg">⚠️</span> {{ errorMessage }}
+                </div>
+
+                <button type="button" (click)="closeModal()" [disabled]="saving"
+                    class="btn-secondary px-8">Cancelar</button>
+                <div class="flex-1"></div>
+                <button type="button" (click)="saveEstudiante()" [disabled]="!canSave || saving"
+                    [class.opacity-50]="!canSave || saving" class="btn-primary px-10 flex items-center gap-2">
+                    <span *ngIf="saving" class="animate-spin text-lg">⏳</span>
+                    {{ saving ? 'Guardando...' : (editingEstudiante ? 'Guardar Cambios' : 'Guardar Estudiante') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

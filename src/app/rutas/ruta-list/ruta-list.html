@@ -98,6 +98,8 @@
                         <td class="px-8 py-6 text-right">
                             <div
                                 class="flex items-center justify-end gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button (click)="goToRuta(r)" title="Ver Detalles"
+                                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 text-slate-400 hover:bg-green-600 hover:text-white transition-all shadow-sm active:scale-95">👁️</button>
                                 <button (click)="openModal(r)"
                                     class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-95">✏️</button>
                                 <button (click)="deleteRuta(r.id!)"

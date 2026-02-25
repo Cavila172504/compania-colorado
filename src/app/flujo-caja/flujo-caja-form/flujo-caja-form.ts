@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlujoCajaService, FlujoCaja } from '../flujo-caja.service';
 import { ConductoresService, Conductor } from '../../conductores/conductores.service';
+import { CreditosService, CreditoSocio } from '../../creditos-socio/creditos.service';
 
 @Component({
     selector: 'app-flujo-caja-form',
@@ -19,6 +20,7 @@ export class FlujoCajaFormComponent implements OnInit {
 
     selectedConductor: Conductor | null = null;
     flujo: FlujoCaja = this.resetFlujo();
+    activeCredito: CreditoSocio | null = null;
 
     saving: boolean = false;
     saveSuccess: boolean = false;
@@ -27,6 +29,7 @@ export class FlujoCajaFormComponent implements OnInit {
     constructor(
         private flujoCajaService: FlujoCajaService,
         private conductoresService: ConductoresService,
+        private creditosService: CreditosService,
         private cdr: ChangeDetectorRef
     ) { }
 
@@ -77,6 +80,13 @@ export class FlujoCajaFormComponent implements OnInit {
                 this.flujo = this.resetFlujo();
                 this.flujo.conductor_id = Number(this.selectedConductorId);
             }
+
+            // Load active credit
+            this.activeCredito = await this.creditosService.getCreditoActivoByConductor(this.flujo.conductor_id);
+
+            // Automatically suggest abono payment if empty but the driver has an active loan? 
+            // Better keep manual or leave as is.
+
         } catch (error) {
             console.error('Error loading flujo:', error);
         }
@@ -120,6 +130,11 @@ export class FlujoCajaFormComponent implements OnInit {
             const res = await this.flujoCajaService.saveFlujo(this.flujo);
 
             if (res && res.success) {
+                // If there is an abono prestamo and an active credit, deduct it.
+                if (this.flujo.abono_prestamo > 0 && this.activeCredito?.id) {
+                    await this.creditosService.setAbonoCredito(this.activeCredito.id, this.flujo.abono_prestamo);
+                }
+
                 this.saveSuccess = true;
                 await this.loadFlujo(); // Reload to get ID and ensure sync
                 setTimeout(() => {

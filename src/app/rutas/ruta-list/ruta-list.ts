@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RutasService, Ruta } from '../rutas.service';
@@ -31,8 +32,15 @@ export class RutaListComponent implements OnInit {
     private conductoresService: ConductoresService,
     private vehiculosService: VehiculosService,
     private excelService: ExcelService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) { }
+
+  goToRuta(r: Ruta) {
+    if (r.id) {
+      this.router.navigate(['/rutas', r.id]);
+    }
+  }
 
   async ngOnInit() {
     await Promise.all([

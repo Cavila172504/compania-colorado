@@ -54,6 +54,28 @@ function initDatabase() {
         FOREIGN KEY(vehiculo_id) REFERENCES vehiculos(id) ON DELETE SET NULL
       );
 
+      CREATE TABLE IF NOT EXISTS estudiantes_ruta (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        ruta_id INTEGER,
+        numero_estudiante TEXT,
+        nombre_estudiante TEXT,
+        nombre_representante TEXT,
+        cedula_representante TEXT,
+        correo_representante TEXT,
+        telefono_representante TEXT,
+        FOREIGN KEY(ruta_id) REFERENCES rutas(id) ON DELETE CASCADE
+      );
+
+      CREATE TABLE IF NOT EXISTS creditos_socio (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        conductor_id INTEGER,
+        valor_prestamo REAL NOT NULL,
+        saldo_pendiente REAL NOT NULL,
+        fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
+        estado TEXT DEFAULT 'ACTIVO',
+        FOREIGN KEY(conductor_id) REFERENCES conductores(id) ON DELETE CASCADE
+      );
+
       CREATE TABLE IF NOT EXISTS flujo_caja (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         conductor_id INTEGER,
