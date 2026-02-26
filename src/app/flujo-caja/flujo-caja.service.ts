@@ -16,6 +16,7 @@ export interface FlujoCaja {
   comision_compania: number;
   total_egresos: number;
   total_recibir: number;
+  nro_cheque?: string;
   // Join info
   conductor_nombre?: string;
 }
@@ -45,12 +46,12 @@ export class FlujoCajaService {
         query: `UPDATE flujo_caja SET 
                 total_ingresos=?, cuota_administrativa=?, renta_1pct=?, comision_cade=?, 
                 anticipo_socio=?, abono_prestamo=?, aplicativo_buseta=?, comision_compania=?, 
-                total_egresos=?, total_recibir=? 
+                total_egresos=?, total_recibir=?, nro_cheque=? 
                 WHERE id=?`,
         params: [
           f.total_ingresos, f.cuota_administrativa, f.renta_1pct, f.comision_cade,
           f.anticipo_socio, f.abono_prestamo, f.aplicativo_buseta, f.comision_compania,
-          f.total_egresos, f.total_recibir, f.id
+          f.total_egresos, f.total_recibir, f.nro_cheque || null, f.id
         ]
       });
     } else {
@@ -58,12 +59,12 @@ export class FlujoCajaService {
         query: `INSERT INTO flujo_caja (
                   conductor_id, mes, anio, total_ingresos, cuota_administrativa, 
                   renta_1pct, comision_cade, anticipo_socio, abono_prestamo, 
-                  aplicativo_buseta, comision_compania, total_egresos, total_recibir
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                  aplicativo_buseta, comision_compania, total_egresos, total_recibir, nro_cheque
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         params: [
           f.conductor_id, f.mes, f.anio, f.total_ingresos, f.cuota_administrativa,
           f.renta_1pct, f.comision_cade, f.anticipo_socio, f.abono_prestamo,
-          f.aplicativo_buseta, f.comision_compania, f.total_egresos, f.total_recibir
+          f.aplicativo_buseta, f.comision_compania, f.total_egresos, f.total_recibir, f.nro_cheque || null
         ]
       });
     }

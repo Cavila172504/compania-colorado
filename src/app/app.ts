@@ -12,8 +12,13 @@ import { AuthService } from './auth/auth.service';
 })
 export class AppComponent {
   title = 'colorado-express';
+  sidebarCollapsed = false;
 
   constructor(public authService: AuthService) { }
+
+  toggleSidebar() {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
 
   logout() {
     this.authService.logout();

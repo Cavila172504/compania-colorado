@@ -156,12 +156,15 @@
                                     <span class="text-2xl">🏦</span>
                                 </div>
 
-                                <div class="space-y-2">
-                                    <label
-                                        class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Comisión
-                                        CADE</label>
-                                    <input type="number" [(ngModel)]="flujo.comision_cade" (input)="calculate()"
-                                        class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white font-bold focus:border-blue-500 outline-none">
+                                <div
+                                    class="bg-white/[0.02] p-5 rounded-2xl border border-white/5 flex items-center justify-between">
+                                    <div class="space-y-1">
+                                        <span class="text-[0.6rem] font-black text-slate-500 uppercase">Comisión CADE
+                                            ($2 x {{numEstudiantes}} est.)</span>
+                                        <div class="text-lg font-black text-slate-300 italic">{{flujo.comision_cade |
+                                            currency}}</div>
+                                    </div>
+                                    <span class="text-2xl">🎓</span>
                                 </div>
                             </div>
 
@@ -201,12 +204,15 @@
                                         class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 font-bold focus:border-blue-500 outline-none transition-all">
                                 </div>
 
-                                <div class="space-y-2">
-                                    <label
-                                        class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Comisión
-                                        Compañía</label>
-                                    <input type="number" [(ngModel)]="flujo.comision_compania" (input)="calculate()"
-                                        class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 font-bold focus:border-blue-500 outline-none transition-all">
+                                <div
+                                    class="bg-white/[0.02] p-5 rounded-2xl border border-white/5 flex items-center justify-between">
+                                    <div class="space-y-1">
+                                        <span class="text-[0.6rem] font-black text-slate-500 uppercase">Comisión
+                                            Compañía (1%)</span>
+                                        <div class="text-lg font-black text-slate-300 italic">{{flujo.comision_compania
+                                            | currency}}</div>
+                                    </div>
+                                    <span class="text-2xl">🏛️</span>
                                 </div>
                             </div>
                         </div>

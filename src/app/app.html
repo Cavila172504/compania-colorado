@@ -1,81 +1,122 @@
 <div class="flex h-screen w-screen overflow-hidden bg-slate-950 text-slate-200 font-sans">
   <!-- Sidebar Navigation -->
   <aside *ngIf="authService.isLoggedIn()"
-    class="w-80 min-w-[20rem] bg-slate-900 border-r border-white/5 flex flex-col shadow-2xl z-20 overflow-hidden relative">
+    class="bg-slate-900 border-r border-white/5 flex flex-col shadow-2xl z-20 overflow-hidden relative transition-all duration-300"
+    [class.w-80]="!sidebarCollapsed" [class.min-w-[20rem]]="!sidebarCollapsed" [class.w-20]="sidebarCollapsed"
+    [class.min-w-[5rem]]="sidebarCollapsed">
 
     <!-- Decorative background glow -->
     <div class="absolute -top-24 -left-24 w-64 h-64 bg-blue-600/10 blur-[120px] rounded-full"></div>
 
-    <!-- Header -->
-    <div class="p-10 mb-4 flex items-center gap-5 relative">
-      <div
-        class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-blue-500/20">
-        🚌
+    <!-- Header / Logo -->
+    <div class="relative cursor-pointer" (click)="toggleSidebar()">
+      <!-- Expanded view -->
+      <div *ngIf="!sidebarCollapsed" class="p-6 pb-4">
+        <div class="flex items-center gap-4 mb-3">
+          <img src="img/logo.png" alt="Colorado Express" class="w-16 h-auto max-h-16 object-contain drop-shadow-md"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-green-600 to-red-600 rounded-2xl items-center justify-center text-3xl shadow-lg border-2 border-white/10 shrink-0 hidden">
+            🚌
+          </div>
+          <div class="flex-1 overflow-hidden">
+            <h2 class="text-xl font-black leading-tight tracking-tight text-white m-0">COLORADO</h2>
+            <p class="text-[0.65rem] font-black text-blue-500 uppercase tracking-[0.3em]">Express S.A.</p>
+            <p class="text-[0.5rem] font-bold text-slate-600 uppercase tracking-widest mt-0.5">Sto. Domingo</p>
+          </div>
+          <div class="text-slate-500 text-xs">
+            <span class="transition-transform inline-block">◀</span>
+          </div>
+        </div>
+        <div class="h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent"></div>
       </div>
-      <div>
-        <h2 class="text-xl font-black leading-tight tracking-tight text-white">COLORADO</h2>
-        <p class="text-[0.65rem] font-black text-blue-500 uppercase tracking-[0.3em]">Express S.A.</p>
+      <!-- Collapsed view -->
+      <div *ngIf="sidebarCollapsed" class="p-4 flex justify-center">
+        <img src="img/logo.png" alt="Logo" class="w-12 h-auto max-h-12 object-contain drop-shadow-md"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div
+          class="w-12 h-12 bg-gradient-to-br from-green-600 to-red-600 rounded-xl items-center justify-center text-2xl shadow-lg border border-white/10 shrink-0 hidden">
+          🚌
+        </div>
       </div>
     </div>
 
     <!-- Navigation -->
-    <nav class="flex-1 px-5 flex flex-col gap-1.5 overflow-y-auto relative custom-scrollbar">
-      <div class="px-5 mb-2 text-[0.6rem] font-black text-slate-600 tracking-[0.25em] uppercase">
+    <nav class="flex-1 px-3 flex flex-col gap-1.5 overflow-y-auto relative custom-scrollbar">
+      <div *ngIf="!sidebarCollapsed"
+        class="px-5 mb-2 text-[0.6rem] font-black text-slate-600 tracking-[0.25em] uppercase">
         Principal
       </div>
+      <div *ngIf="sidebarCollapsed" class="w-full h-px bg-white/5 my-2"></div>
 
-      <a routerLink="/dashboard" routerLinkActive="nav-active" class="nav-item group">
+      <a routerLink="/dashboard" routerLinkActive="nav-active" class="nav-item group"
+        [title]="sidebarCollapsed ? 'Dashboard General' : ''">
         <span class="nav-icon">🏠</span>
-        <span class="nav-text">Dashboard General</span>
+        <span class="nav-text" *ngIf="!sidebarCollapsed">Dashboard General</span>
         <div class="active-indicator"></div>
       </a>
 
-      <a routerLink="/vehiculos" routerLinkActive="nav-active" class="nav-item group">
+      <a routerLink="/vehiculos" routerLinkActive="nav-active" class="nav-item group"
+        [title]="sidebarCollapsed ? 'Flota de Vehículos' : ''">
         <span class="nav-icon">🚍</span>
-        <span class="nav-text">Flota de Vehículos</span>
+        <span class="nav-text" *ngIf="!sidebarCollapsed">Flota de Vehículos</span>
         <div class="active-indicator"></div>
       </a>
 
-      <a routerLink="/conductores" routerLinkActive="nav-active" class="nav-item group">
+      <a routerLink="/conductores" routerLinkActive="nav-active" class="nav-item group"
+        [title]="sidebarCollapsed ? 'Personal Conductores' : ''">
         <span class="nav-icon">👔</span>
-        <span class="nav-text">Personal Conductores</span>
+        <span class="nav-text" *ngIf="!sidebarCollapsed">Personal Conductores</span>
         <div class="active-indicator"></div>
       </a>
 
-      <a routerLink="/rutas" routerLinkActive="nav-active" class="nav-item group">
+      <a routerLink="/rutas" routerLinkActive="nav-active" class="nav-item group"
+        [title]="sidebarCollapsed ? 'Rutas y Servicios' : ''">
         <span class="nav-icon">📍</span>
-        <span class="nav-text">Rutas y Servicios</span>
+        <span class="nav-text" *ngIf="!sidebarCollapsed">Rutas y Servicios</span>
         <div class="active-indicator"></div>
       </a>
 
-      <a routerLink="/creditos-socio" routerLinkActive="nav-active" class="nav-item group">
+      <a routerLink="/creditos-socio" routerLinkActive="nav-active" class="nav-item group"
+        [title]="sidebarCollapsed ? 'Crédito Socio' : ''">
         <span class="nav-icon">💳</span>
-        <span class="nav-text">Crédito Socio</span>
+        <span class="nav-text" *ngIf="!sidebarCollapsed">Crédito Socio</span>
         <div class="active-indicator"></div>
       </a>
 
-      <div class="mt-8 mb-2 px-5 text-[0.6rem] font-black text-slate-600 tracking-[0.25em] uppercase">
+      <div *ngIf="!sidebarCollapsed"
+        class="mt-8 mb-2 px-5 text-[0.6rem] font-black text-slate-600 tracking-[0.25em] uppercase">
         Administración
       </div>
+      <div *ngIf="sidebarCollapsed" class="w-full h-px bg-white/5 my-2"></div>
 
-      <a routerLink="/flujo-caja" routerLinkActive="nav-active" class="nav-item group">
+      <a routerLink="/flujo-caja" routerLinkActive="nav-active" class="nav-item group"
+        [title]="sidebarCollapsed ? 'Flujo de Caja' : ''">
         <span class="nav-icon">📈</span>
-        <span class="nav-text">Flujo de Caja</span>
+        <span class="nav-text" *ngIf="!sidebarCollapsed">Flujo de Caja</span>
         <div class="active-indicator"></div>
       </a>
 
-      <a routerLink="/flujo-consolidado" routerLinkActive="nav-active" class="nav-item group">
+      <a routerLink="/flujo-consolidado" routerLinkActive="nav-active" class="nav-item group"
+        [title]="sidebarCollapsed ? 'Consolidado Total' : ''">
         <span class="nav-icon">📊</span>
-        <span class="nav-text">Consolidado Total</span>
+        <span class="nav-text" *ngIf="!sidebarCollapsed">Consolidado Total</span>
+        <div class="active-indicator"></div>
+      </a>
+
+      <a routerLink="/gastos-admin" routerLinkActive="nav-active" class="nav-item group"
+        [title]="sidebarCollapsed ? 'Gastos Administrativos' : ''">
+        <span class="nav-icon">🧾</span>
+        <span class="nav-text" *ngIf="!sidebarCollapsed">Gastos Administrativos</span>
         <div class="active-indicator"></div>
       </a>
     </nav>
 
     <!-- User Profile / Footer -->
-    <div class="p-6 border-t border-white/5 bg-slate-900/50 backdrop-blur-md relative">
-      <div class="flex items-center gap-4 mb-6 px-2">
+    <div class="p-4 border-t border-white/5 bg-slate-900/50 backdrop-blur-md relative">
+      <div *ngIf="!sidebarCollapsed" class="flex items-center gap-4 mb-4 px-2">
         <div
-          class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center font-black text-blue-400 border border-white/5">
+          class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center font-black text-blue-400 border border-white/5 shrink-0">
           AD
         </div>
         <div class="flex-1 overflow-hidden">
@@ -84,9 +125,9 @@
         </div>
       </div>
       <button (click)="logout()"
-        class="w-full p-4 bg-red-500/5 hover:bg-red-500/10 border border-red-500/10 text-red-500 rounded-2xl flex items-center justify-center gap-3 transition-all font-black text-xs uppercase tracking-widest hover:-translate-y-0.5 active:scale-95 shadow-lg shadow-red-500/5">
+        class="w-full p-3 bg-red-500/5 hover:bg-red-500/10 border border-red-500/10 text-red-500 rounded-2xl flex items-center justify-center gap-3 transition-all font-black text-xs uppercase tracking-widest hover:-translate-y-0.5 active:scale-95 shadow-lg shadow-red-500/5">
         <span>🚪</span>
-        <span>Cerrar Sesión</span>
+        <span *ngIf="!sidebarCollapsed">Cerrar Sesión</span>
       </button>
     </div>
   </aside>

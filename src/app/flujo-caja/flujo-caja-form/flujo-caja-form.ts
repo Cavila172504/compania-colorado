@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { FlujoCajaService, FlujoCaja } from '../flujo-caja.service';
 import { ConductoresService, Conductor } from '../../conductores/conductores.service';
 import { CreditosService, CreditoSocio } from '../../creditos-socio/creditos.service';
+import { RutasService } from '../../rutas/rutas.service';
 
 @Component({
     selector: 'app-flujo-caja-form',
@@ -21,6 +22,7 @@ export class FlujoCajaFormComponent implements OnInit {
     selectedConductor: Conductor | null = null;
     flujo: FlujoCaja = this.resetFlujo();
     activeCredito: CreditoSocio | null = null;
+    numEstudiantes: number = 0;
 
     saving: boolean = false;
     saveSuccess: boolean = false;
@@ -30,6 +32,7 @@ export class FlujoCajaFormComponent implements OnInit {
         private flujoCajaService: FlujoCajaService,
         private conductoresService: ConductoresService,
         private creditosService: CreditosService,
+        private rutasService: RutasService,
         private cdr: ChangeDetectorRef
     ) { }
 
@@ -48,7 +51,7 @@ export class FlujoCajaFormComponent implements OnInit {
             mes: this.mes,
             anio: this.anio,
             total_ingresos: 0,
-            cuota_administrativa: 25.00,
+            cuota_administrativa: 53.00,
             renta_1pct: 0,
             comision_cade: 0,
             anticipo_socio: 0,
@@ -84,8 +87,16 @@ export class FlujoCajaFormComponent implements OnInit {
             // Load active credit
             this.activeCredito = await this.creditosService.getCreditoActivoByConductor(this.flujo.conductor_id);
 
-            // Automatically suggest abono payment if empty but the driver has an active loan? 
-            // Better keep manual or leave as is.
+            // Auto-calculate Comisión CADE ($2 per student)
+            try {
+                const rutas = await this.rutasService.getRutas();
+                const rutasConductor = rutas.filter(r => r.conductor_id == this.selectedConductorId);
+                this.numEstudiantes = rutasConductor.reduce((sum, r) => sum + (r.num_estudiantes || 0), 0);
+                // Only set if no existing record or cade is 0
+                if (!existing) {
+                    this.flujo.comision_cade = this.numEstudiantes * 2;
+                }
+            } catch (e) { console.error('Error loading rutas for CADE:', e); }
 
         } catch (error) {
             console.error('Error loading flujo:', error);
@@ -103,6 +114,7 @@ export class FlujoCajaFormComponent implements OnInit {
     calculate() {
         const ingresos = Number(this.flujo.total_ingresos || 0);
         this.flujo.renta_1pct = ingresos * 0.01;
+        this.flujo.comision_compania = ingresos * 0.01;
         this.flujo.total_egresos =
             Number(this.flujo.cuota_administrativa || 0) +
             Number(this.flujo.renta_1pct || 0) +

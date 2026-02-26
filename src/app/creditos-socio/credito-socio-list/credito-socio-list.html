@@ -137,9 +137,11 @@
                         <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Conductor
                             Asignado</label>
                         <select [(ngModel)]="newCredito.conductor_id" class="glass-input font-bold"
-                            [disabled]="!!editingCredito">
-                            <option [value]="0">--- Seleccionar ---</option>
-                            <option *ngFor="let c of conductores" [value]="c.id">{{c.nombre}}</option>
+                            [disabled]="!!editingCredito" style="background: #0f172a; color: white;">
+                            <option [ngValue]="0" style="background: #0f172a; color: white;">--- Seleccionar ---
+                            </option>
+                            <option *ngFor="let c of conductores" [ngValue]="c.id"
+                                style="background: #0f172a; color: white;">{{c.nombre}}</option>
                         </select>
                     </div>
 

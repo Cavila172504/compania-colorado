@@ -93,13 +93,32 @@ function initDatabase() {
         total_recibir REAL,
         FOREIGN KEY(conductor_id) REFERENCES conductores(id) ON DELETE SET NULL
       );
+
+      CREATE TABLE IF NOT EXISTS gastos_administrativos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        mes INTEGER NOT NULL,
+        anio INTEGER NOT NULL,
+        total_cuota_admin REAL DEFAULT 0,
+        insumos_oficina REAL DEFAULT 0,
+        varios_valor REAL DEFAULT 0,
+        varios_descripcion TEXT,
+        nro_cheque TEXT,
+        fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
     `);
     console.log('[DB-INIT] Table creation script executed');
 
     // Migrations / Safety checks for missing columns
     console.log('[DB-INIT] Checking migrations...');
 
-
+    // Migration: Add nro_cheque column to flujo_caja
+    try {
+      const cols = db.pragma("table_info(flujo_caja)");
+      if (!cols.find(c => c.name === 'nro_cheque')) {
+        db.exec("ALTER TABLE flujo_caja ADD COLUMN nro_cheque TEXT");
+        console.log('[DB-INIT] Migration: added nro_cheque column');
+      }
+    } catch (e) { console.log('[DB-INIT] Migration nro_cheque skipped:', e.message); }
 
 
     // Seed default admin user

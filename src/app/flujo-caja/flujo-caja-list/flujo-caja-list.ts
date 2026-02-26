@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { FlujoCajaService, FlujoCaja } from '../flujo-caja.service';
 import { PdfReportService } from '../../reports/pdf-report.service';
 import { ExcelService } from '../../shared/excel.service';
+import { CreditosService, CreditoSocio } from '../../creditos-socio/creditos.service';
 
 @Component({
     selector: 'app-flujo-caja-list',
@@ -17,11 +18,16 @@ export class FlujoCajaListComponent implements OnInit {
     mes: number = new Date().getMonth() + 1;
     anio: number = new Date().getFullYear();
     loading: boolean = false;
+    showChequeModal: boolean = false;
+    selectedFlujo: FlujoCaja | null = null;
+    nroChequeInput: string = '';
+    creditosMap: Map<number, CreditoSocio | null> = new Map();
 
     constructor(
         private flujoService: FlujoCajaService,
         private pdfService: PdfReportService,
         private excelService: ExcelService,
+        private creditosService: CreditosService,
         private cdr: ChangeDetectorRef
     ) { }
 
@@ -34,6 +40,11 @@ export class FlujoCajaListComponent implements OnInit {
         this.cdr.detectChanges();
         try {
             this.flujos = await this.flujoService.getFlujosByDate(this.mes, this.anio);
+            // Load credits for each conductor
+            for (const f of this.flujos) {
+                const credito = await this.creditosService.getCreditoActivoByConductor(f.conductor_id);
+                this.creditosMap.set(f.conductor_id, credito);
+            }
         } catch (error) {
             console.error('Error loading consolidado:', error);
         } finally {
@@ -54,8 +65,34 @@ export class FlujoCajaListComponent implements OnInit {
         return this.flujos.reduce((sum, f) => sum + f.total_recibir, 0);
     }
 
-    printRol(f: FlujoCaja) {
-        this.pdfService.generateRolIndividual(f);
+    async printRol(f: FlujoCaja) {
+        const credito = this.creditosMap.get(f.conductor_id) || null;
+        this.pdfService.generateRolIndividual(f, credito);
+    }
+
+    openChequeModal(f: FlujoCaja) {
+        this.selectedFlujo = f;
+        this.nroChequeInput = f.nro_cheque || '';
+        this.showChequeModal = true;
+        this.cdr.detectChanges();
+    }
+
+    closeChequeModal() {
+        this.showChequeModal = false;
+        this.selectedFlujo = null;
+        this.cdr.detectChanges();
+    }
+
+    async saveCheque() {
+        if (!this.selectedFlujo) return;
+        this.selectedFlujo.nro_cheque = this.nroChequeInput;
+        try {
+            await this.flujoService.saveFlujo(this.selectedFlujo);
+            await this.loadConsolidado();
+            this.closeChequeModal();
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     async exportToExcel() {
