@@ -1,7 +1,13 @@
 <div class="login-container">
   <div class="login-card">
     <div class="logo">
-      <span class="icon">🚌</span>
+      <img src="img/logo.png" alt="Colorado Express" class="mx-auto block mb-6 drop-shadow-lg"
+        style="width: 180px; height: 180px; object-fit: contain;"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <div
+        class="hidden w-32 h-32 bg-blue-50 rounded-full mx-auto mb-6 items-center justify-center text-4xl font-bold text-blue-700 border-2 border-blue-100">
+        CE
+      </div>
       <h1>Colorado Express</h1>
       <p>Sistema Contable v1.0</p>
     </div>
@@ -9,24 +15,14 @@
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="username">Usuario</label>
-        <input 
-          type="text" 
-          id="username" 
-          formControlName="username" 
-          placeholder="Ingrese su usuario"
-          [class.error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
-        >
+        <input type="text" id="username" formControlName="username" placeholder="Ingrese su usuario"
+          [class.error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
       </div>
 
       <div class="form-group">
         <label for="password">Contraseña</label>
-        <input 
-          type="password" 
-          id="password" 
-          formControlName="password" 
-          placeholder="••••••••"
-          [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-        >
+        <input type="password" id="password" formControlName="password" placeholder="••••••••"
+          [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
       </div>
 
       <div *ngIf="error" class="error-message">
