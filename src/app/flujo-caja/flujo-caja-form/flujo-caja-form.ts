@@ -27,6 +27,7 @@ export class FlujoCajaFormComponent implements OnInit {
     saving: boolean = false;
     saveSuccess: boolean = false;
     errorMessage: string = '';
+    conductoresConFlujo: Set<number> = new Set();
 
     constructor(
         private flujoCajaService: FlujoCajaService,
@@ -39,10 +40,18 @@ export class FlujoCajaFormComponent implements OnInit {
     async ngOnInit() {
         try {
             this.conductores = await this.conductoresService.getConductores();
+            await this.checkCurrentMonthEntries();
         } catch (error) {
             console.error('Error loading conductores:', error);
         }
         this.cdr.detectChanges();
+    }
+
+    async checkCurrentMonthEntries() {
+        try {
+            const flujos = await this.flujoCajaService.getFlujosByDate(this.mes, this.anio);
+            this.conductoresConFlujo = new Set(flujos.map(f => f.conductor_id));
+        } catch (e) { console.error('Error checking entries:', e); }
     }
 
     resetFlujo(): FlujoCaja {
@@ -66,6 +75,10 @@ export class FlujoCajaFormComponent implements OnInit {
     async loadFlujo() {
         this.saveSuccess = false;
         this.errorMessage = '';
+
+        // Check if entries need refreshing (e.g. if we changed the date)
+        await this.checkCurrentMonthEntries();
+
         if (!this.selectedConductorId) {
             this.selectedConductor = null;
             return;
@@ -148,11 +161,13 @@ export class FlujoCajaFormComponent implements OnInit {
                 }
 
                 this.saveSuccess = true;
-                await this.loadFlujo(); // Reload to get ID and ensure sync
+                await this.checkCurrentMonthEntries(); // Refresh the dots
+                this.cdr.detectChanges();
+
+                // Automatically focus the driver selector again after a short delay
                 setTimeout(() => {
-                    this.saveSuccess = false;
-                    this.cdr.detectChanges();
-                }, 3000);
+                    this.manualReset();
+                }, 1500);
             } else {
                 this.errorMessage = 'Error: ' + (res?.error || 'No se pudo guardar');
             }
@@ -162,5 +177,17 @@ export class FlujoCajaFormComponent implements OnInit {
             this.saving = false;
             this.cdr.detectChanges();
         }
+    }
+
+    manualReset() {
+        this.saveSuccess = false;
+        this.selectedConductorId = undefined;
+        this.selectedConductor = null;
+        this.flujo = this.resetFlujo();
+        this.cdr.detectChanges();
+
+        // Focus the driver selector
+        const select = document.getElementById('conductorSelect') as HTMLSelectElement;
+        if (select) select.focus();
     }
 }

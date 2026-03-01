@@ -1,18 +1,27 @@
-<div class="p-8 space-y-8 fade-in">
+<div class="p-8 space-y-10 fade-in bg-slate-50/30 min-h-screen">
     <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-8 border-b border-slate-200 pb-10">
         <div>
-            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Consolidado Mensual</h1>
-            <p class="text-slate-500 mt-1 font-medium italic">Resumen de todas las rutas y conductores • Colorado
-                Express</p>
+            <div class="flex items-center gap-4 mb-2">
+                <div
+                    class="w-12 h-12 bg-blue-700 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
+                    <span class="text-2xl text-white">📊</span>
+                </div>
+                <h1 class="text-4xl font-black text-slate-900 tracking-tighter">Consolidado Mensual Total</h1>
+            </div>
+            <p
+                class="text-slate-500 font-black italic uppercase text-[0.65rem] tracking-[0.3em] flex items-center gap-2">
+                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                Auditoría de Flujos • Colorado Express S.A.
+            </p>
         </div>
 
-        <div class="flex flex-wrap items-center gap-3">
-            <div class="flex items-center gap-2 bg-white border border-slate-200 p-1.5 rounded-xl shadow-sm">
-                <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-100">
-                    <span class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest">Mes</span>
+        <div class="flex flex-wrap items-center gap-4">
+            <div class="flex items-center gap-3 bg-white border-2 border-slate-200 p-2 rounded-2xl shadow-xl">
+                <div class="flex items-center gap-3 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100">
+                    <span class="text-[0.65rem] font-black text-slate-400 uppercase tracking-widest">Periodo</span>
                     <select [(ngModel)]="mes" (change)="loadConsolidado()"
-                        class="bg-transparent text-slate-900 font-bold outline-none cursor-pointer text-sm">
+                        class="bg-transparent text-slate-900 font-black outline-none cursor-pointer text-sm">
                         <option [value]="1">Enero</option>
                         <option [value]="2">Febrero</option>
                         <option [value]="3">Marzo</option>
@@ -27,236 +36,210 @@
                         <option [value]="12">Diciembre</option>
                     </select>
                 </div>
-                <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-100">
-                    <span class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest">Año</span>
+                <div class="flex items-center gap-3 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100">
+                    <span class="text-[0.65rem] font-black text-slate-400 uppercase tracking-widest">Año</span>
                     <input type="number" [(ngModel)]="anio" (change)="loadConsolidado()"
-                        class="bg-transparent text-slate-900 font-bold w-16 outline-none text-sm">
+                        class="bg-transparent text-slate-900 font-black w-20 outline-none text-sm">
                 </div>
             </div>
 
-            <button (click)="exportToExcel()" class="btn-secondary group shadow-sm">
-                <span class="text-xl group-hover:scale-110 transition-transform">📊</span>
+            <button (click)="exportToExcel()"
+                class="h-14 px-8 bg-emerald-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition-all active:scale-95 flex items-center gap-3 group">
+                <span class="text-2xl group-hover:rotate-12 transition-transform">💾</span>
                 Exportar Excel
             </button>
         </div>
     </div>
 
     <!-- Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 slide-up">
-        <div class="bg-white border border-slate-200 p-8 rounded-2xl relative overflow-hidden group shadow-sm">
-            <span class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">Total Ingresos
-                Brutos</span>
-            <div class="flex items-baseline gap-2">
-                <span class="text-3xl font-bold text-emerald-600 tracking-tight">{{getTotalIngresos() |
-                    currency}}</span>
-                <span class="text-[10px] text-slate-400 font-bold uppercase">Facturación</span>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 slide-up">
+        <!-- Ingresos Card -->
+        <div
+            class="bg-white border-2 border-slate-200 p-10 rounded-3xl relative overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500">
+            <div class="relative z-10">
+                <span class="text-[0.65rem] font-black text-slate-400 uppercase tracking-[0.25em] block mb-4">Ingresos
+                    Brutos Totales</span>
+                <div class="flex items-baseline gap-3">
+                    <span class="text-4xl font-black text-emerald-600 tracking-tighter">{{getTotalIngresos() |
+                        currency}}</span>
+                    <span
+                        class="text-[0.6rem] text-slate-400 font-black uppercase tracking-widest bg-slate-50 px-2 py-1 rounded">Bruto</span>
+                </div>
             </div>
             <div
-                class="absolute -right-4 -bottom-4 text-6xl opacity-5 grayscale group-hover:scale-110 transition-transform">
+                class="absolute -right-6 -bottom-6 text-9xl opacity-[0.03] grayscale group-hover:scale-125 transition-transform duration-700">
                 💰</div>
+            <div class="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
         </div>
-        <div class="bg-white border border-slate-200 p-8 rounded-2xl relative overflow-hidden group shadow-sm">
-            <span class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">Total Egresos /
-                Retenciones</span>
-            <div class="flex items-baseline gap-2">
-                <span class="text-3xl font-bold text-red-600 tracking-tight">{{getTotalEgresos() | currency}}</span>
-                <span class="text-[10px] text-slate-400 font-bold uppercase">Deducciones</span>
+
+        <!-- Egresos Card -->
+        <div
+            class="bg-white border-2 border-slate-200 p-10 rounded-3xl relative overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500">
+            <div class="relative z-10">
+                <span class="text-[0.65rem] font-black text-slate-400 uppercase tracking-[0.25em] block mb-4">Total
+                    Egresos / Retenciones</span>
+                <div class="flex items-baseline gap-3">
+                    <span class="text-4xl font-black text-red-600 tracking-tighter">{{getTotalEgresos() |
+                        currency}}</span>
+                    <span
+                        class="text-[0.6rem] text-slate-400 font-black uppercase tracking-widest bg-slate-50 px-2 py-1 rounded">Deducciones</span>
+                </div>
             </div>
             <div
-                class="absolute -right-4 -bottom-4 text-6xl opacity-5 grayscale group-hover:scale-110 transition-transform">
+                class="absolute -right-6 -bottom-6 text-9xl opacity-[0.03] grayscale group-hover:scale-125 transition-transform duration-700">
                 📉</div>
+            <div class="absolute top-0 left-0 w-1.5 h-full bg-red-500"></div>
         </div>
-        <div class="bg-blue-700 p-8 rounded-2xl relative overflow-hidden group shadow-lg shadow-blue-900/10">
-            <span class="text-[0.65rem] font-bold text-blue-200 uppercase tracking-[0.2em] block mb-2">Neto Total a
-                Liquidar</span>
-            <div class="flex items-baseline gap-2">
-                <span class="text-3xl font-bold text-white tracking-tight">{{getTotalPagar() | currency}}</span>
-                <span class="text-[10px] text-blue-300 font-bold uppercase">Saldo Disponible</span>
+
+        <!-- Balance Card -->
+        <div
+            class="bg-blue-700 p-10 rounded-3xl relative overflow-hidden group shadow-2xl shadow-blue-800/20 hover:shadow-blue-800/40 transition-all duration-500">
+            <div class="relative z-10">
+                <span class="text-[0.65rem] font-black text-blue-200 uppercase tracking-[0.25em] block mb-4">Neto Total
+                    Disponible</span>
+                <div class="flex items-baseline gap-3">
+                    <span class="text-4xl font-black text-white tracking-tighter">{{getTotalPagar() | currency}}</span>
+                    <span
+                        class="text-[0.6rem] text-blue-300 font-black uppercase tracking-widest bg-white/10 px-2 py-1 rounded">Liquidativo</span>
+                </div>
             </div>
-            <div class="absolute -right-4 -bottom-4 text-6xl opacity-10 group-hover:scale-110 transition-transform">💎
-            </div>
+            <div
+                class="absolute -right-6 -bottom-6 text-9xl opacity-10 group-hover:scale-125 transition-transform duration-700">
+                💎</div>
+            <div class="absolute top-0 left-0 w-1.5 h-full bg-white/30"></div>
         </div>
     </div>
 
     <!-- Table Card -->
-    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden slide-up">
+    <div class="bg-white border-2 border-slate-200 rounded-3xl shadow-xl overflow-hidden slide-up"
+        style="animation-delay: 0.1s">
+        <div class="px-8 py-6 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
+            <h3 class="text-sm font-black text-slate-900 uppercase tracking-[0.2em]">Detalle Individual por Socio
+                Conductor</h3>
+            <span
+                class="bg-white px-4 py-1.5 border border-slate-200 rounded-full text-[0.6rem] font-black text-slate-500 uppercase tracking-widest shadow-sm">
+                {{flujos.length}} REGISTROS EN {{mes}}/{{anio}}
+            </span>
+        </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-50 border-b border-slate-200">
+                    <tr class="bg-slate-100/50">
                         <th
-                            class="p-4 text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap pl-8">
-                            Conductor</th>
+                            class="p-6 text-[0.65rem] font-black text-slate-500 uppercase tracking-wider whitespace-nowrap pl-10">
+                            Socio / Conductor</th>
                         <th
-                            class="p-4 text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap text-right">
-                            Ingresos</th>
+                            class="p-6 text-[0.65rem] font-black text-slate-500 uppercase tracking-wider whitespace-nowrap text-right bg-emerald-50/30">
+                            Ingresos Totales</th>
 
-                        <th class="p-4 text-[0.6rem] font-bold text-red-500/80 uppercase tracking-wider text-center border-l border-slate-100 whitespace-nowrap"
-                            title="Cuota Administrativa">C. Admin</th>
+                        <!-- Egresos Headers -->
                         <th
-                            class="p-4 text-[0.6rem] font-bold text-red-500/80 uppercase tracking-wider text-center whitespace-nowrap">
+                            class="p-4 text-[0.55rem] font-black text-red-500/80 uppercase tracking-tighter text-center border-l border-slate-200/50 whitespace-nowrap">
+                            C. Admin</th>
+                        <th
+                            class="p-4 text-[0.55rem] font-black text-red-500/80 uppercase tracking-tighter text-center whitespace-nowrap">
                             Renta 1%</th>
-                        <th class="p-4 text-[0.6rem] font-bold text-red-500/80 uppercase tracking-wider text-center whitespace-nowrap"
-                            title="Comisión CADE">CADE</th>
-                        <th class="p-4 text-[0.6rem] font-bold text-red-500/80 uppercase tracking-wider text-center whitespace-nowrap"
-                            title="Anticipo a Socio">Anticipo</th>
-                        <th class="p-4 text-[0.6rem] font-bold text-red-500/80 uppercase tracking-wider text-center whitespace-nowrap"
-                            title="Abono de préstamo">Préstamo</th>
-                        <th class="p-4 text-[0.6rem] font-bold text-red-500/80 uppercase tracking-wider text-center whitespace-nowrap"
-                            title="Aplicativo Mi buseta">Mi Buseta</th>
-                        <th class="p-4 text-[0.6rem] font-bold text-red-500/80 uppercase tracking-wider text-center whitespace-nowrap"
-                            title="Comisión Compañía">Com. Cía</th>
+                        <th
+                            class="p-4 text-[0.55rem] font-black text-red-500/80 uppercase tracking-tighter text-center whitespace-nowrap">
+                            CADE</th>
+                        <th
+                            class="p-4 text-[0.55rem] font-black text-red-500/80 uppercase tracking-tighter text-center whitespace-nowrap">
+                            Anticipo</th>
+                        <th
+                            class="p-4 text-[0.55rem] font-black text-red-500/80 uppercase tracking-tighter text-center whitespace-nowrap">
+                            Préstamo</th>
+                        <th
+                            class="p-4 text-[0.55rem] font-black text-red-500/80 uppercase tracking-tighter text-center whitespace-nowrap">
+                            Buseta</th>
+                        <th
+                            class="p-4 text-[0.55rem] font-black text-red-500/80 uppercase tracking-tighter text-center whitespace-nowrap">
+                            Com. Cía</th>
 
                         <th
-                            class="p-4 text-[0.65rem] font-bold text-red-700 uppercase tracking-wider text-right border-l border-slate-100 whitespace-nowrap">
+                            class="p-6 text-[0.65rem] font-black text-red-700 uppercase tracking-wider text-right border-l border-slate-200/50 whitespace-nowrap bg-red-50/20">
                             Tot. Egresos</th>
                         <th
-                            class="p-4 text-[0.65rem] font-bold text-blue-800 uppercase tracking-wider bg-blue-50/50 border-l border-slate-100 whitespace-nowrap text-right pr-4">
-                            Neto a Recibir</th>
+                            class="p-6 text-[0.65rem] font-black text-blue-800 uppercase tracking-wider bg-blue-50 border-l border-slate-200/50 whitespace-nowrap text-right pr-6">
+                            Neto Recibir</th>
                         <th
-                            class="p-4 text-center text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap pr-8">
-                            Acciones</th>
+                            class="p-6 text-center text-[0.65rem] font-black text-slate-500 uppercase tracking-wider whitespace-nowrap pr-10">
+                            Estado / Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
-                    <!-- Loading State -->
-                    <tr *ngIf="loading">
-                        <td colspan="12" class="p-20 text-center">
-                            <div class="flex flex-col items-center gap-3">
-                                <span class="text-3xl animate-spin text-blue-600">⏳</span>
-                                <p class="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Actualizando
-                                    contabilidad...</p>
-                            </div>
-                        </td>
-                    </tr>
-
                     <!-- Data Rows -->
-                    <tr *ngFor="let f of flujos" class="hover:bg-blue-50/20 transition-colors group">
-                        <td class="p-4 pl-8">
+                    <tr *ngFor="let f of flujos" class="hover:bg-blue-50/40 transition-all group cursor-default">
+                        <td class="p-6 pl-10">
                             <div
-                                class="font-bold text-sm text-slate-900 group-hover:text-blue-700 transition-colors uppercase tracking-tight whitespace-nowrap">
+                                class="font-black text-base text-slate-900 group-hover:text-blue-700 transition-colors uppercase tracking-tight whitespace-nowrap leading-none mb-1">
                                 {{f.conductor_nombre}}
                             </div>
-                            <div class="text-[0.6rem] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Socio
-                                Activo</div>
+                            <div
+                                class="text-[0.6rem] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                                Socio Activo #{{f.conductor_id}}
+                            </div>
                         </td>
-                        <td class="p-4 font-bold text-emerald-600 text-sm tabular-nums whitespace-nowrap text-right">
+                        <td
+                            class="p-6 font-black text-emerald-600 text-lg tabular-nums whitespace-nowrap text-right bg-emerald-50/10">
                             {{f.total_ingresos | currency}}
                         </td>
 
-                        <td class="p-4 text-center text-slate-600 text-xs tabular-nums border-l border-slate-50 italic">
+                        <!-- Egresos Values -->
+                        <td
+                            class="p-4 text-center text-slate-600 text-[0.65rem] font-bold tabular-nums border-l border-slate-100/50 italic">
                             {{(f.cuota_administrativa || 0) | currency}}
                         </td>
-                        <td class="p-4 text-center text-slate-600 text-xs tabular-nums italic">
+                        <td class="p-4 text-center text-slate-600 text-[0.65rem] font-bold tabular-nums italic">
                             {{(f.renta_1pct || 0) | currency}}
                         </td>
-                        <td class="p-4 text-center text-slate-600 text-xs tabular-nums italic">
+                        <td class="p-4 text-center text-slate-600 text-[0.65rem] font-bold tabular-nums italic">
                             {{(f.comision_cade || 0) | currency}}
                         </td>
-                        <td class="p-4 text-center text-slate-600 text-xs tabular-nums italic">
+                        <td class="p-4 text-center text-slate-600 text-[0.65rem] font-bold tabular-nums italic">
                             {{(f.anticipo_socio || 0) | currency}}
                         </td>
-                        <td class="p-4 text-center text-slate-600 text-xs tabular-nums italic">
+                        <td class="p-4 text-center text-slate-600 text-[0.65rem] font-bold tabular-nums italic">
                             {{(f.abono_prestamo || 0) | currency}}
                         </td>
-                        <td class="p-4 text-center text-slate-600 text-xs tabular-nums italic">
+                        <td class="p-4 text-center text-slate-600 text-[0.65rem] font-bold tabular-nums italic">
                             {{(f.aplicativo_buseta || 0) | currency}}
                         </td>
-                        <td class="p-4 text-center text-slate-600 text-xs tabular-nums italic">
+                        <td class="p-4 text-center text-slate-600 text-[0.65rem] font-bold tabular-nums italic">
                             {{(f.comision_compania || 0) | currency}}
                         </td>
 
                         <td
-                            class="p-4 text-right font-bold text-red-600 text-sm tabular-nums border-l border-slate-50 whitespace-nowrap">
+                            class="p-6 text-right font-black text-red-600 text-base tabular-nums border-l border-slate-100/50 whitespace-nowrap bg-red-50/10">
                             {{f.total_egresos | currency}}
                         </td>
 
                         <td
-                            class="p-4 font-bold text-blue-800 text-sm bg-blue-50/30 tabular-nums border-l border-slate-50 whitespace-nowrap text-right pr-4">
+                            class="p-6 font-black text-blue-900 font-black text-xl bg-blue-50/80 tabular-nums border-l border-slate-100/50 whitespace-nowrap text-right pr-6">
                             {{f.total_recibir | currency}}
                         </td>
 
-                        <td class="p-4 text-center pr-8">
-                            <div class="flex items-center justify-center gap-2">
+                        <td class="p-6 text-center pr-10">
+                            <div class="flex items-center justify-center gap-3">
                                 <button (click)="openChequeModal(f)"
                                     [title]="f.nro_cheque ? 'Cheque: ' + f.nro_cheque : 'Registrar Cheque'"
-                                    class="w-8 h-8 rounded-lg border flex items-center justify-center transition-all shadow-sm active:scale-90"
-                                    [ngClass]="f.nro_cheque ? 'bg-emerald-600 border-emerald-700 text-white' : 'bg-white border-slate-200 text-slate-400 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-200'">
-                                    <span class="text-sm">🧾</span>
+                                    class="w-12 h-12 rounded-2xl border-2 flex items-center justify-center transition-all shadow-sm active:scale-90 group/btn"
+                                    [ngClass]="f.nro_cheque ? 'bg-emerald-600 border-emerald-700 text-white shadow-emerald-200' : 'bg-white border-slate-200 text-slate-400 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-200'">
+                                    <span class="text-xl group-hover/btn:scale-110 transition-transform">🧾</span>
                                 </button>
                                 <button (click)="printRol(f)" title="Imprimir Comprobante"
-                                    class="w-8 h-8 rounded-lg bg-white border border-slate-200 text-slate-400 flex items-center justify-center hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-all shadow-sm active:scale-90">
-                                    <span class="text-sm">📄</span>
+                                    class="w-12 h-12 rounded-2xl bg-white border-2 border-slate-200 text-slate-400 flex items-center justify-center hover:bg-blue-600 hover:text-white hover:border-blue-700 transition-all shadow-md active:scale-90 group/btn">
+                                    <span class="text-xl group-hover/btn:scale-110 transition-transform">📄</span>
                                 </button>
                             </div>
                             <div *ngIf="f.nro_cheque"
-                                class="text-[0.55rem] font-bold text-emerald-600 mt-1 uppercase tracking-tighter">CH
-                                #{{f.nro_cheque}}</div>
-                        </td>
-                    </tr>
-
-                    <!-- Empty State -->
-                    <tr *ngIf="flujos.length === 0 && !loading">
-                        <td colspan="12" class="p-32 text-center">
-                            <div class="opacity-30 filter grayscale flex flex-col items-center gap-4">
-                                <span class="text-7xl">📓</span>
-                                <div>
-                                    <h3 class="text-xl font-bold text-slate-900 uppercase tracking-widest leading-none">
-                                        Sin registros contables</h3>
-                                    <p class="text-slate-500 font-medium mt-2">No hay cierres de mes para el periodo
-                                        {{mes}}/{{anio}}</p>
-                                </div>
+                                class="text-[0.55rem] font-black text-emerald-600 mt-2 uppercase tracking-[0.1em] bg-emerald-50 px-2 py-0.5 rounded-full inline-block">
+                                CH #{{f.nro_cheque}}
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <!-- Cheque Modal -->
-    <div *ngIf="showChequeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm fade-in" (click)="closeChequeModal()"></div>
-        <div (click)="$event.stopPropagation()"
-            class="relative z-50 w-full max-w-md bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xl slide-up">
-            <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                <div>
-                    <h2 class="text-lg font-bold text-slate-900">Registrar Pago con Cheque</h2>
-                    <p class="text-slate-500 text-[0.6rem] font-bold uppercase mt-0.5 tracking-wider">
-                        Beneficiario: {{selectedFlujo?.conductor_nombre}}
-                    </p>
-                </div>
-                <button (click)="closeChequeModal()"
-                    class="text-slate-400 hover:text-slate-900 transition-colors text-3xl font-light">&times;</button>
-            </div>
-            <div class="p-8 space-y-6">
-                <div class="space-y-2">
-                    <label class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-widest px-0.5">Número de
-                        Documento / Cheque</label>
-                    <input type="text" [(ngModel)]="nroChequeInput" placeholder="Ej: 001234"
-                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 text-slate-900 text-2xl font-bold focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 outline-none transition-all shadow-inner"
-                        autocomplete="off">
-                </div>
-                <div class="bg-blue-50 border border-blue-100 rounded-xl p-5 flex items-center gap-4 shadow-sm"
-                    *ngIf="selectedFlujo">
-                    <div
-                        class="w-12 h-12 bg-white rounded-lg border border-blue-100 flex items-center justify-center text-2xl shadow-sm">
-                        💰</div>
-                    <div>
-                        <div class="text-[0.6rem] font-bold text-blue-600 uppercase tracking-widest">Monto Neto
-                            Certificado</div>
-                        <div class="text-2xl font-bold text-slate-900">{{selectedFlujo.total_recibir | currency:'USD'}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="px-6 py-5 border-t border-slate-100 flex justify-end gap-3 bg-slate-50/50">
-                <button (click)="closeChequeModal()" class="btn-secondary !px-6">Cancelar</button>
-                <button (click)="saveCheque()"
-                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center gap-2 shadow-lg shadow-emerald-500/20">
-                    <span>🧾</span> {{ nroChequeInput ? 'Guardar Referencia' : 'Eliminar Registro' }}
-                </button>
-            </div>
         </div>
     </div>
 </div>
