@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConductorList } from './conductor-list';
+import { ConductorListComponent } from './conductor-list';
 
-describe('ConductorList', () => {
-  let component: ConductorList;
-  let fixture: ComponentFixture<ConductorList>;
+describe('ConductorListComponent', () => {
+  let component: ConductorListComponent;
+  let fixture: ComponentFixture<ConductorListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ConductorList]
+      imports: [ConductorListComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(ConductorList);
+    fixture = TestBed.createComponent(ConductorListComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

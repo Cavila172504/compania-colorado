@@ -2,8 +2,8 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-            <h1 class="text-4xl font-black text-white tracking-tight">Personal: Conductores</h1>
-            <p class="text-slate-400 mt-1 font-medium italic">Gestión de conductores y transportistas • Colorado Express
+            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Personal: Conductores</h1>
+            <p class="text-slate-500 mt-1 font-medium italic">Gestión de conductores y transportistas • Colorado Express
             </p>
         </div>
         <div class="flex items-center gap-3">
@@ -12,7 +12,7 @@
                 Exportar Excel
             </button>
             <button (click)="openModal()" class="btn-primary">
-                <span class="text-xl">+</span> Nuevo Conductor
+                <span class="text-xl font-bold">+</span> Nuevo Conductor
             </button>
         </div>
     </div>
@@ -21,87 +21,85 @@
     <div class="flex flex-col md:flex-row gap-4 items-center">
         <div class="relative w-full max-w-md group">
             <span
-                class="absolute left-5 top-1/2 -translate-y-1/2 text-xl opacity-40 group-focus-within:opacity-100 transition-opacity">🔍</span>
+                class="absolute left-4 top-1/2 -translate-y-1/2 text-lg opacity-40 group-focus-within:opacity-100 transition-opacity">🔍</span>
             <input type="text" [(ngModel)]="filterTerm" placeholder="Buscar por nombre, cédula o celular..."
-                class="glass-input !pl-14">
+                class="glass-input !pl-12 !py-3">
         </div>
         <div class="flex-1"></div>
         <div
-            class="px-4 py-2 rounded-xl bg-white/5 border border-white/5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
-            Total: {{filteredConductores.length}} conductores
+            class="px-4 py-2 rounded-lg bg-white border border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500 shadow-sm">
+            Total: <span class="text-blue-700">{{filteredConductores.length}}</span> conductores
         </div>
     </div>
 
     <!-- Table Card -->
-    <div class="glass-card overflow-hidden slide-up">
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden slide-up">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse table-fixed">
                 <thead>
-                    <tr class="bg-white/5 text-[0.7rem] uppercase tracking-[0.2em] font-black text-slate-500">
-                        <th class="px-8 py-6 w-[40%]">Nombre Completo</th>
-                        <th class="px-8 py-6 w-[20%] text-center">Cédula</th>
-                        <th class="px-8 py-6 w-[20%] text-center">Celular</th>
-                        <th class="px-8 py-6 w-[20%] text-right">Acciones</th>
+                    <tr
+                        class="bg-slate-50 text-[0.7rem] uppercase tracking-wider font-bold text-slate-500 border-b border-slate-200">
+                        <th class="px-8 py-5 w-[40%]">Nombre Completo</th>
+                        <th class="px-8 py-5 w-[20%] text-center">Cédula</th>
+                        <th class="px-8 py-5 w-[20%] text-center">Celular</th>
+                        <th class="px-8 py-5 w-[20%] text-right">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-white/5">
+                <tbody class="divide-y divide-slate-100">
                     <!-- Loading State -->
                     <ng-container *ngIf="loading">
                         <tr *ngFor="let i of [1,2,3,4,5]">
-                            <td class="px-8 py-6">
-                                <div class="h-8 skeleton w-24"></div>
+                            <td class="px-8 py-5">
+                                <div class="h-6 skeleton w-32"></div>
                             </td>
-                            <td class="px-8 py-6">
-                                <div class="space-y-2">
-                                    <div class="h-5 skeleton w-48"></div>
-                                    <div class="h-3 skeleton w-32"></div>
-                                </div>
+                            <td class="px-8 py-5 text-center">
+                                <div class="h-8 skeleton w-24 mx-auto rounded"></div>
                             </td>
-                            <td class="px-8 py-6">
+                            <td class="px-8 py-5 text-center">
                                 <div class="h-5 skeleton w-20 mx-auto"></div>
                             </td>
-                            <td class="px-8 py-6 flex justify-end gap-2">
-                                <div class="h-10 w-10 skeleton rounded-xl"></div>
-                                <div class="h-10 w-10 skeleton rounded-xl"></div>
+                            <td class="px-8 py-5 flex justify-end gap-2">
+                                <div class="h-9 w-9 skeleton rounded-lg"></div>
+                                <div class="h-9 w-9 skeleton rounded-lg"></div>
                             </td>
                         </tr>
                     </ng-container>
 
                     <!-- Data Rows -->
-                    <tr *ngFor="let c of filteredConductores" class="hover:bg-white/[0.02] transition-colors group">
-                        <td class="px-8 py-6">
+                    <tr *ngFor="let c of filteredConductores" class="hover:bg-blue-50/30 transition-colors group">
+                        <td class="px-8 py-5">
                             <div
-                                class="text-lg font-black text-white group-hover:text-blue-400 transition-colors uppercase tracking-tight">
-                                {{c.nombre}}</div>
+                                class="text-base font-bold text-slate-900 group-hover:text-blue-700 transition-colors uppercase tracking-tight">
+                                {{c.nombre}}
+                            </div>
                         </td>
-                        <td class="px-8 py-6 text-center">
+                        <td class="px-8 py-5 text-center">
                             <span
-                                class="px-3 py-1.5 bg-slate-950 border border-white/10 rounded-lg text-sm font-bold text-slate-300">
+                                class="px-3 py-1 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700">
                                 {{c.doc_identidad}}
                             </span>
                         </td>
-                        <td class="px-8 py-6 text-center text-slate-400 font-medium italic">{{c.telefono}}</td>
-                        <td class="px-8 py-6 text-right">
-                            <div
-                                class="flex items-center justify-end gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <td class="px-8 py-5 text-center text-slate-500 font-medium italic">{{c.telefono}}</td>
+                        <td class="px-8 py-5 text-right">
+                            <div class="flex items-center justify-end gap-2">
                                 <button (click)="openModal(c)"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-95">✏️</button>
+                                    class="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-all text-lg shadow-sm">✏️</button>
                                 <button (click)="deleteConductor(c.id!)"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-95">🗑️</button>
+                                    class="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all text-lg shadow-sm">🗑️</button>
                             </div>
                         </td>
                     </tr>
 
                     <!-- Empty State -->
                     <tr *ngIf="filteredConductores.length === 0 && !loading">
-                        <td colspan="4" class="px-8 py-32 text-center">
+                        <td colspan="4" class="px-8 py-24 text-center">
                             <div class="flex flex-col items-center gap-4">
-                                <div class="text-6xl opacity-20">🍃</div>
-                                <h3 class="text-xl font-black text-white">No se encontraron resultados</h3>
+                                <div class="text-5xl opacity-20 filter grayscale">📋</div>
+                                <h3 class="text-lg font-bold text-slate-800">No se encontraron resultados</h3>
                                 <p class="text-slate-500 font-medium">Intenta buscando con otros términos o registra un
                                     nuevo conductor.</p>
                                 <button *ngIf="filterTerm" (click)="filterTerm = ''"
-                                    class="mt-4 text-blue-500 font-bold hover:underline">Limpiar búsqueda</button>
+                                    class="mt-2 text-blue-700 font-bold hover:underline">Limpiar búsqueda</button>
                             </div>
                         </td>
                     </tr>
@@ -111,44 +109,44 @@
     </div>
 
     <!-- Modal -->
-    <div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-        <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md fade-in" (click)="closeModal()"></div>
+    <div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm fade-in" (click)="closeModal()"></div>
 
         <div (click)="$event.stopPropagation()"
-            class="relative z-50 w-full max-w-2xl glass-card border-white/10 overflow-hidden shadow-2xl flex flex-col max-h-[85vh] slide-up">
-            <!-- Fixed Header -->
-            <div class="p-6 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+            class="relative z-50 w-full max-w-xl bg-white rounded-2xl shadow-2xl flex flex-col max-h-[90vh] slide-up border border-slate-200 overflow-hidden">
+            <!-- Header -->
+            <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <div>
-                    <h2 class="text-2xl font-black text-white leading-none">{{ editingConductor ? 'Editar Registro' :
-                        'Nuevo Registro' }}</h2>
-                    <p class="text-slate-500 text-[0.65rem] font-bold uppercase mt-2 tracking-[0.2em]">Información de
-                        Personal Administrativo</p>
+                    <h2 class="text-xl font-bold text-slate-900">{{ editingConductor ? 'Editar Registro' : 'Nuevo
+                        Registro' }}</h2>
+                    <p class="text-slate-500 text-[0.65rem] font-bold uppercase mt-1 tracking-widest">Colorado Express
+                        S.A.</p>
                 </div>
                 <button (click)="closeModal()"
-                    class="text-slate-500 hover:text-white transition-colors text-2xl">&times;</button>
+                    class="text-slate-400 hover:text-slate-900 transition-colors text-3xl font-light">&times;</button>
             </div>
 
-            <!-- Scrollable Body -->
-            <div class="flex-1 overflow-y-auto p-8 lg:p-10">
-                <div class="max-w-xl mx-auto space-y-6">
-                    <div class="space-y-4">
-                        <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Nombre
+            <!-- Body -->
+            <div class="flex-1 overflow-y-auto p-8 lg:px-10">
+                <div class="space-y-6">
+                    <div class="space-y-2">
+                        <label class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Nombre
                             Completo</label>
                         <input type="text" [(ngModel)]="newConductor.nombre" name="nombre" placeholder="Ej: JUAN PÉREZ"
-                            autocomplete="off" class="glass-input text-lg font-black uppercase">
+                            autocomplete="off" class="glass-input text-lg font-bold uppercase">
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-2">
                             <label
-                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Cédula</label>
+                                class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Cédula</label>
                             <input type="text" [(ngModel)]="newConductor.doc_identidad" name="doc_identidad"
                                 placeholder="0000000000" maxlength="10" (keypress)="onlyNumbers($event)"
                                 autocomplete="off" class="glass-input font-bold">
                         </div>
-                        <div class="space-y-4">
+                        <div class="space-y-2">
                             <label
-                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Celular</label>
+                                class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Celular</label>
                             <input type="text" [(ngModel)]="newConductor.telefono" name="telefono"
                                 placeholder="0999999999" maxlength="10" (keypress)="onlyNumbers($event)"
                                 autocomplete="off" class="glass-input font-bold">
@@ -157,34 +155,29 @@
                 </div>
             </div>
 
-            <!-- Fixed Footer -->
-            <div class="p-6 border-t border-white/5 flex flex-wrap gap-4 items-center bg-white/[0.01]">
-                <!-- Feedback Messages -->
-                <div *ngIf="saveSuccess" class="flex items-center gap-2 text-green-400 font-bold text-sm animate-pulse">
-                    <span class="text-lg">✅</span>
-                    {{ editingConductor ? '¡Ficha Actualizada!' : '¡Conductor Registrado!' }}
+            <!-- Footer -->
+            <div class="px-8 py-6 border-t border-slate-100 flex flex-wrap gap-4 items-center bg-slate-50/50">
+                <div *ngIf="saveSuccess"
+                    class="flex items-center gap-2 text-green-600 font-bold text-xs uppercase tracking-tight">
+                    <span>✅</span> ¡Datos Guardados!
                 </div>
-
-                <div *ngIf="errorMessage" class="flex items-center gap-2 text-red-500 font-bold text-sm">
-                    <span class="text-lg">⚠️</span>
-                    {{ errorMessage }}
+                <div *ngIf="errorMessage" class="flex items-center gap-2 text-red-600 font-bold text-xs">
+                    <span>⚠️</span> {{ errorMessage }}
                 </div>
-
-                <button type="button" (click)="closeModal()" [disabled]="saving"
-                    class="btn-secondary px-8">Cancelar</button>
                 <div class="flex-1"></div>
 
+                <button type="button" (click)="closeModal()" [disabled]="saving"
+                    class="btn-secondary !px-6">Cerrar</button>
+
                 <button *ngIf="!editingConductor" type="button" (click)="saveConductor(true)"
-                    [disabled]="!canSave || saving" [class.opacity-50]="!canSave || saving"
-                    class="px-6 py-3 rounded-xl bg-blue-500/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all font-bold text-sm flex items-center gap-2">
-                    <span *ngIf="saving" class="animate-spin text-lg">⏳</span>
-                    {{ saving ? 'Guardando...' : 'Registrar y Añadir Otro' }}
+                    [disabled]="!canSave || saving"
+                    class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-5 py-2.5 rounded-lg font-bold text-sm transition-all flex items-center gap-2 shadow-sm disabled:opacity-50">
+                    {{ saving ? 'Guardando...' : 'Añadir Otro' }}
                 </button>
 
                 <button type="button" (click)="saveConductor(false)" [disabled]="!canSave || saving"
-                    [class.opacity-50]="!canSave || saving" class="btn-primary px-10 flex items-center gap-2">
-                    <span *ngIf="saving" class="animate-spin text-lg">⏳</span>
-                    {{ saving ? 'Procesando...' : (editingConductor ? 'Actualizar Ficha' : 'Finalizar Registro') }}
+                    class="btn-primary !px-8 shadow-md">
+                    {{ saving ? 'Procesando...' : (editingConductor ? 'Actualizar Ficha' : 'Guardar Conductor') }}
                 </button>
             </div>
         </div>

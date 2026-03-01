@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RutaList } from './ruta-list';
+import { RutaListComponent } from './ruta-list';
 
-describe('RutaList', () => {
-  let component: RutaList;
-  let fixture: ComponentFixture<RutaList>;
+describe('RutaListComponent', () => {
+  let component: RutaListComponent;
+  let fixture: ComponentFixture<RutaListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RutaList]
+      imports: [RutaListComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(RutaList);
+    fixture = TestBed.createComponent(RutaListComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

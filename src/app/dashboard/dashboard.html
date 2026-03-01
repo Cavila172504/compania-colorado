@@ -2,28 +2,53 @@
     <!-- Hero / Welcome Section -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div
-            class="lg:col-span-8 relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-600 to-indigo-900 p-8 text-white shadow-xl">
-            <div class="relative z-10 space-y-2">
-                <span class="text-blue-200 text-xs font-black uppercase tracking-[0.3em]">Sistema de Gestión</span>
-                <h1 class="text-3xl md:text-4xl font-black tracking-tight leading-tight">Panel de Control General</h1>
-                <p class="text-blue-100/80 text-sm font-medium max-w-lg">Bienvenido a Colorado Express. Monitorea tu
-                    flota, personal y rutas desde un solo lugar.</p>
+            class="lg:col-span-8 relative overflow-hidden rounded-2xl bg-white border border-slate-200 p-8 shadow-sm group">
+            <div class="relative z-10 space-y-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                    <span class="text-blue-700 text-[0.7rem] font-bold uppercase tracking-widest">Sistema Administrativo
+                        Operativo</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight leading-tight">Panel de Control
+                    General</h1>
+                <p class="text-slate-600 text-sm font-medium max-w-lg leading-relaxed">
+                    Bienvenido a Colorado Express. Monitorea tu flota vehicular, personal operativo y rutas escolares
+                    desde un solo centro de gestión integrado.
+                </p>
+                <div class="pt-4 flex gap-4">
+                    <button routerLink="/flujo-caja"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow-md transition-all">Consolidado
+                        Mensual</button>
+                    <button routerLink="/rutas"
+                        class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 rounded-lg font-bold text-sm transition-all border border-slate-200">Ver
+                        Rutas Activas</button>
+                </div>
             </div>
-            <!-- Decorative circle -->
-            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 blur-3xl rounded-full"></div>
+            <!-- Decorative accent -->
+            <div
+                class="absolute -right-20 -top-20 w-80 h-80 bg-blue-50/50 rounded-full blur-3xl pointer-events-none group-hover:bg-blue-100/50 transition-all duration-700">
+            </div>
         </div>
 
-        <div class="lg:col-span-4 glass-card p-8 flex flex-col justify-center bg-slate-900/40 border-white/5">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-2xl">📅</div>
+        <div
+            class="lg:col-span-4 bg-white border border-slate-200 rounded-2xl p-8 flex flex-col justify-center shadow-sm relative overflow-hidden">
+            <div class="flex items-center gap-4 relative z-10">
+                <div
+                    class="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center text-3xl shadow-inner border border-slate-100">
+                    📅</div>
                 <div>
-                    <div class="text-[0.6rem] font-black text-slate-500 uppercase tracking-widest">Estado del Sistema
-                    </div>
-                    <div class="text-emerald-400 font-bold flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <div class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Estado del
+                        Sistema</div>
+                    <div class="text-emerald-600 font-bold flex items-center gap-2 text-lg">
                         Operativo
                     </div>
+                    <div class="text-[0.65rem] text-slate-500 font-medium">Sincronizado hace un momento</div>
                 </div>
+            </div>
+            <div
+                class="mt-6 pt-6 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-widest">
+                <span>Versión 2.0.1</span>
+                <span>ID: CE-2024</span>
             </div>
         </div>
     </div>
@@ -32,112 +57,119 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Vehículos Card -->
         <div routerLink="/vehiculos"
-            class="glass-card p-6 group cursor-pointer hover:border-blue-500/30 transition-all active:scale-[0.98] relative overflow-hidden">
+            class="bg-white border border-slate-200 p-6 rounded-xl group cursor-pointer hover:border-blue-400 hover:shadow-lg transition-all active:scale-[0.98] relative overflow-hidden">
             <div class="flex items-center gap-5">
                 <div
-                    class="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                    class="w-16 h-16 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-sm border border-blue-100">
                     🚐</div>
-                <div class="space-y-0.5">
-                    <h3 class="text-slate-400 font-bold uppercase tracking-widest text-[0.6rem]">Flota Vehicular</h3>
+                <div class="space-y-1">
+                    <h3 class="text-slate-500 font-bold uppercase tracking-widest text-[0.65rem]">Flota Vehicular</h3>
                     <div class="flex items-baseline gap-2">
-                        <span class="text-3xl font-black text-white tracking-tighter">{{ stats.vehiculos }}</span>
-                        <span class="text-[0.65rem] font-bold text-slate-500 uppercase">Unidades</span>
+                        <span class="text-3xl font-bold text-slate-900 tracking-tight">{{ stats.vehiculos }}</span>
+                        <span class="text-[0.65rem] font-bold text-blue-600 uppercase">Unidades</span>
                     </div>
                 </div>
             </div>
-            <div *ngIf="loading" class="absolute top-4 right-4 animate-spin text-blue-500 text-xs text-opacity-40">⌛
-            </div>
+            <div *ngIf="loading" class="absolute top-4 right-4 animate-spin text-blue-500/40">⌛</div>
         </div>
 
         <!-- Conductores Card -->
         <div routerLink="/conductores"
-            class="glass-card p-6 group cursor-pointer hover:border-emerald-500/30 transition-all active:scale-[0.98] relative overflow-hidden">
+            class="bg-white border border-slate-200 p-6 rounded-xl group cursor-pointer hover:border-emerald-400 hover:shadow-lg transition-all active:scale-[0.98] relative overflow-hidden">
             <div class="flex items-center gap-5">
                 <div
-                    class="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                    class="w-16 h-16 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-sm border border-emerald-100">
                     👨‍✈️</div>
-                <div class="space-y-0.5">
-                    <h3 class="text-slate-400 font-bold uppercase tracking-widest text-[0.6rem]">Personal Operativo</h3>
+                <div class="space-y-1">
+                    <h3 class="text-slate-500 font-bold uppercase tracking-widest text-[0.65rem]">Personal Operativo
+                    </h3>
                     <div class="flex items-baseline gap-2">
-                        <span class="text-3xl font-black text-white tracking-tighter">{{ stats.conductores }}</span>
-                        <span class="text-[0.65rem] font-bold text-slate-500 uppercase">Conductores</span>
+                        <span class="text-3xl font-bold text-slate-900 tracking-tight">{{ stats.conductores }}</span>
+                        <span class="text-[0.65rem] font-bold text-emerald-600 uppercase">Socios</span>
                     </div>
                 </div>
             </div>
-            <div *ngIf="loading" class="absolute top-4 right-4 animate-spin text-emerald-500 text-xs text-opacity-40">⌛
-            </div>
+            <div *ngIf="loading" class="absolute top-4 right-4 animate-spin text-emerald-500/40">⌛</div>
         </div>
 
         <!-- Rutas Card -->
         <div routerLink="/rutas"
-            class="glass-card p-6 group cursor-pointer hover:border-amber-500/30 transition-all active:scale-[0.98] relative overflow-hidden">
+            class="bg-white border border-slate-200 p-6 rounded-xl group cursor-pointer hover:border-amber-400 hover:shadow-lg transition-all active:scale-[0.98] relative overflow-hidden">
             <div class="flex items-center gap-5">
                 <div
-                    class="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                    class="w-16 h-16 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-sm border border-amber-100">
                     📍</div>
-                <div class="space-y-0.5">
-                    <h3 class="text-slate-400 font-bold uppercase tracking-widest text-[0.6rem]">Rutas Escolares</h3>
+                <div class="space-y-1">
+                    <h3 class="text-slate-500 font-bold uppercase tracking-widest text-[0.65rem]">Cobertura de Rutas
+                    </h3>
                     <div class="flex items-baseline gap-2">
-                        <span class="text-3xl font-black text-white tracking-tighter">{{ stats.rutas }}</span>
-                        <span class="text-[0.65rem] font-bold text-slate-500 uppercase">Rutas</span>
+                        <span class="text-3xl font-bold text-slate-900 tracking-tight">{{ stats.rutas }}</span>
+                        <span class="text-[0.65rem] font-bold text-amber-600 uppercase">Activas</span>
                     </div>
                 </div>
             </div>
-            <div *ngIf="loading" class="absolute top-4 right-4 animate-spin text-amber-500 text-xs text-opacity-40">⌛
-            </div>
+            <div *ngIf="loading" class="absolute top-4 right-4 animate-spin text-amber-500/40">⌛</div>
         </div>
     </div>
 
     <!-- Actions & Quick Access -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div class="lg:col-span-8 glass-card p-8">
-            <div class="flex items-center justify-between mb-8">
-                <h2 class="text-lg font-black text-white flex items-center gap-3">
-                    <span class="w-1.5 h-6 bg-blue-500 rounded-full"></span>
-                    Acciones Rápidas
+        <div class="lg:col-span-8 bg-white border border-slate-200 p-8 rounded-2xl shadow-sm">
+            <div class="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
+                <h2 class="text-lg font-bold text-slate-800 flex items-center gap-3">
+                    <span class="w-1 h-6 bg-blue-600 rounded-full"></span>
+                    Gestión Directa
                 </h2>
+                <span class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest">Accesos Rápidos</span>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <button routerLink="/flujo-caja"
-                    class="p-6 rounded-[1.5rem] bg-white/[0.03] hover:bg-blue-600/10 border border-white/5 hover:border-blue-500/30 transition-all group">
-                    <span class="block text-3xl mb-3 group-hover:scale-110 transition-transform">💰</span>
+                    class="p-6 rounded-xl bg-slate-50 hover:bg-white hover:border-blue-400 border border-slate-100 transition-all group shadow-sm flex flex-col items-center text-center">
+                    <span class="text-3xl mb-3 group-hover:scale-110 transition-transform">💰</span>
                     <span
-                        class="block text-[0.6rem] font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-400">Ingreso
+                        class="text-[0.7rem] font-bold uppercase tracking-wide text-slate-600 group-hover:text-blue-700">Flujo
                         Caja</span>
                 </button>
                 <button routerLink="/vehiculos"
-                    class="p-6 rounded-[1.5rem] bg-white/[0.03] hover:bg-blue-600/10 border border-white/5 hover:border-blue-500/30 transition-all group">
-                    <span class="block text-3xl mb-3 group-hover:scale-110 transition-transform">🚐</span>
+                    class="p-6 rounded-xl bg-slate-50 hover:bg-white hover:border-blue-400 border border-slate-100 transition-all group shadow-sm flex flex-col items-center text-center">
+                    <span class="text-3xl mb-3 group-hover:scale-110 transition-transform">🚍</span>
                     <span
-                        class="block text-[0.6rem] font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-400">Nueva
+                        class="text-[0.7rem] font-bold uppercase tracking-wide text-slate-600 group-hover:text-blue-700">Nueva
                         Unidad</span>
                 </button>
                 <button routerLink="/conductores"
-                    class="p-6 rounded-[1.5rem] bg-white/[0.03] hover:bg-blue-600/10 border border-white/5 hover:border-blue-500/30 transition-all group">
-                    <span class="block text-3xl mb-3 group-hover:scale-110 transition-transform">👨‍✈️</span>
+                    class="p-6 rounded-xl bg-slate-50 hover:bg-white hover:border-blue-400 border border-slate-100 transition-all group shadow-sm flex flex-col items-center text-center">
+                    <span class="text-3xl mb-3 group-hover:scale-110 transition-transform">📋</span>
                     <span
-                        class="block text-[0.6rem] font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-400">Personal</span>
+                        class="text-[0.7rem] font-bold uppercase tracking-wide text-slate-600 group-hover:text-blue-700">Personal</span>
                 </button>
                 <button routerLink="/flujo-consolidado"
-                    class="p-10 rounded-[1.5rem] bg-white/[0.03] hover:bg-blue-600/10 border border-white/5 hover:border-blue-500/30 transition-all group">
-                    <span class="block text-3xl mb-3 group-hover:scale-110 transition-transform">📊</span>
+                    class="p-6 rounded-xl bg-slate-50 hover:bg-white hover:border-blue-400 border border-slate-100 transition-all group shadow-sm flex flex-col items-center text-center">
+                    <span class="text-3xl mb-3 group-hover:scale-110 transition-transform">📈</span>
                     <span
-                        class="block text-[0.6rem] font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-400">Informes</span>
+                        class="text-[0.7rem] font-bold uppercase tracking-wide text-slate-600 group-hover:text-blue-700">Reportes</span>
                 </button>
             </div>
         </div>
 
-        <div class="lg:col-span-4 space-y-4">
-            <div class="glass-card p-6 bg-blue-600/5 border-blue-500/10">
-                <h3 class="text-[0.6rem] font-black text-blue-500 uppercase tracking-widest mb-4">Ayuda Rápida</h3>
-                <p class="text-xs text-slate-400 leading-relaxed mb-4">
-                    Para registrar el ingreso mensual, asegúrate de tener seleccionada la ruta y el conductor
-                    correspondiente.
+        <div
+            class="lg:col-span-4 bg-blue-700 rounded-2xl p-8 text-white shadow-lg shadow-blue-900/10 relative overflow-hidden group">
+            <div class="relative z-10 space-y-4">
+                <h3 class="text-[0.7rem] font-bold text-blue-200 uppercase tracking-widest">Asistencia Administrativa
+                </h3>
+                <h4 class="text-xl font-bold leading-tight">¿Necesitas generar el reporte mensual?</h4>
+                <p class="text-blue-100/80 text-xs leading-relaxed">
+                    Recuerda que para el consolidado total es necesario registrar todos los ingresos diarios de cada
+                    ruta escolar.
                 </p>
                 <button routerLink="/rutas"
-                    class="text-xs font-black text-white hover:text-blue-400 transition-colors uppercase tracking-widest">
-                    Ver Guía →
+                    class="mt-4 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all inline-block">
+                    Ir a Rutas Escalares →
                 </button>
+            </div>
+            <!-- Decorative circle -->
+            <div
+                class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700">
             </div>
         </div>
     </div>

@@ -4,34 +4,34 @@
 
 @layer base {
     body {
-        @apply bg-slate-950 text-slate-200 antialiased selection:bg-blue-500/30 selection:text-blue-200;
+        @apply bg-slate-50 text-slate-800 antialiased selection:bg-blue-200 selection:text-blue-900;
     }
 }
 
-/* Custom premium styles */
+/* Custom premium styles - Accounting/Enterprise focus */
 @layer components {
     .glass-card {
-        @apply bg-slate-900/40 border border-white/10 backdrop-blur-xl rounded-3xl shadow-2xl;
+        @apply bg-white border border-slate-200 rounded-xl shadow-sm;
     }
 
     .glass-input {
-        @apply w-full bg-slate-950/50 border border-white/5 rounded-2xl px-5 py-4 text-white focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all placeholder:text-slate-600 font-medium;
+        @apply w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 outline-none transition-all placeholder:text-slate-400 font-medium text-sm;
     }
 
     .btn-primary {
-        @apply bg-blue-600 hover:bg-blue-500 text-white px-6 py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-500/20 active:scale-95 disabled:opacity-30 disabled:pointer-events-none;
+        @apply bg-[#1e40af] hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95 disabled:opacity-50 disabled:pointer-events-none text-sm;
     }
 
     .btn-secondary {
-        @apply bg-white/5 hover:bg-white/10 text-slate-300 px-6 py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95;
+        @apply bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 px-5 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all active:scale-95 text-sm;
     }
 
     .fade-in {
-        animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: fadeIn 0.3s ease-in-out forwards;
     }
 
     .slide-up {
-        animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: slideUp 0.4s ease-in-out forwards;
     }
 
     @keyframes fadeIn {
@@ -47,7 +47,7 @@
     @keyframes slideUp {
         from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(10px);
         }
 
         to {
@@ -58,12 +58,12 @@
 
     /* Skeleton Loading Animation */
     .skeleton {
-        @apply relative overflow-hidden bg-white/5 rounded-lg;
+        @apply relative overflow-hidden bg-slate-200 rounded-lg;
     }
 
     .skeleton::after {
         @apply absolute inset-0 content-[''];
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
         animation: shimmer 1.5s infinite linear;
     }
 
@@ -77,29 +77,29 @@
         }
     }
 
-    /* Premium Navigation Styles */
+    /* Enterprise Navigation Styles */
     .nav-item {
-        @apply flex items-center gap-4 px-5 py-4 rounded-2xl text-slate-400 font-bold text-sm transition-all relative overflow-hidden active:scale-[0.98] hover:bg-white/[0.03] hover:text-white;
+        @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-600 font-medium text-sm transition-all relative overflow-hidden active:scale-[0.98] hover:bg-slate-100 hover:text-slate-900;
     }
 
     .nav-active {
-        @apply bg-blue-600/10 text-blue-400 hover:bg-blue-600/15 hover:text-blue-400 shadow-inner shadow-blue-500/5 font-black;
+        @apply bg-blue-50 text-blue-800 hover:bg-blue-100/70 shadow-sm font-semibold;
     }
 
     .nav-icon {
-        @apply text-xl transition-transform duration-300 group-hover:scale-110 group-[.nav-active]:scale-110;
+        @apply text-lg text-slate-400 transition-colors duration-200 group-hover:text-blue-600 group-[.nav-active]:text-blue-700;
     }
 
     .nav-text {
-        @apply relative z-10 tracking-tight;
+        @apply relative z-10;
     }
 
     .active-indicator {
-        @apply absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-blue-500 rounded-r-full opacity-0 transition-all duration-300 scale-y-50;
+        @apply absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-blue-600 rounded-r-full opacity-0 transition-all duration-300;
     }
 
     .nav-active .active-indicator {
-        @apply opacity-100 scale-y-100;
+        @apply opacity-100;
     }
 }
 
@@ -114,5 +114,5 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+    @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
 }
