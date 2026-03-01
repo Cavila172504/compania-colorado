@@ -91,6 +91,18 @@ export class RutaDetailComponent implements OnInit {
         } else {
             this.editingEstudiante = null;
             this.newEstudiante = this.resetEstudiante();
+
+            // Auto-calculate next student number
+            if (this.estudiantes && this.estudiantes.length > 0) {
+                // Find the maximum number used so far
+                const maxNum = Math.max(...this.estudiantes.map(est => {
+                    const num = parseInt(est.numero_estudiante);
+                    return isNaN(num) ? 0 : num;
+                }));
+                this.newEstudiante.numero_estudiante = (maxNum + 1).toString();
+            } else {
+                this.newEstudiante.numero_estudiante = '1';
+            }
         }
         this.showModal = true;
         this.saveSuccess = false;

@@ -82,7 +82,7 @@ export class RutasService {
 
     async getEstudiantesByRutaId(rutaId: number): Promise<EstudianteRuta[]> {
         const res = await this.electron.invoke('db-query', {
-            query: 'SELECT * FROM estudiantes_ruta WHERE ruta_id = ? ORDER BY nombre_estudiante ASC',
+            query: 'SELECT * FROM estudiantes_ruta WHERE ruta_id = ? ORDER BY CAST(numero_estudiante AS INTEGER) ASC',
             params: [rutaId]
         });
         return res.success ? res.data : [];

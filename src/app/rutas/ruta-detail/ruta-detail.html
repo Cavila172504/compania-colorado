@@ -132,87 +132,100 @@
 
     <!-- Modal Form -->
     <div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm fade-in" (click)="closeModal()"></div>
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md fade-in" (click)="closeModal()"></div>
 
         <div (click)="$event.stopPropagation()"
-            class="relative z-50 w-full max-w-2xl bg-white rounded-2xl shadow-2xl flex flex-col max-h-[90vh] slide-up border border-slate-200 overflow-hidden">
+            class="relative z-50 w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] slide-up border border-slate-200 overflow-hidden">
             <!-- Header -->
-            <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                <div>
-                    <h2 class="text-xl font-bold text-slate-900">{{ editingEstudiante ? 'Editar Estudiante' : 'Añadir
-                        Estudiante' }}</h2>
-                    <p class="text-slate-500 text-[0.65rem] font-bold uppercase mt-1 tracking-widest">Colorado Express
-                        S.A.</p>
+            <div class="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+                <div class="flex items-center gap-5">
+                    <div
+                        class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
+                        <span class="text-3xl text-white">👩‍🎓</span>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">{{ editingEstudiante ? 'Editar
+                            Información de Estudiante' : 'Añadir Nuevo Estudiante' }}</h2>
+                        <p class="text-slate-500 text-[0.65rem] font-black uppercase mt-1 tracking-[0.2em]">Colorado
+                            Express S.A. • Registro Institucional</p>
+                    </div>
                 </div>
                 <button (click)="closeModal()"
-                    class="text-slate-400 hover:text-slate-900 transition-colors text-3xl font-light">&times;</button>
+                    class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-200 text-slate-400 hover:text-slate-900 transition-all text-3xl font-light">&times;</button>
             </div>
 
             <!-- Body -->
-            <div class="flex-1 overflow-y-auto p-8 lg:px-10">
-                <div class="space-y-8">
+            <div class="flex-1 overflow-y-auto p-10 lg:px-12 bg-white">
+                <div class="space-y-10">
                     <!-- Student details -->
-                    <div>
+                    <div class="space-y-6">
                         <h3
-                            class="text-sm font-bold text-blue-700 uppercase tracking-widest border-b border-slate-100 pb-2 mb-6">
-                            Datos del Estudiante</h3>
-                        <div class="grid grid-cols-2 gap-6">
-                            <div class="space-y-2">
-                                <label
-                                    class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Número
-                                    de Estudiante</label>
-                                <input type="text" [(ngModel)]="newEstudiante.numero_estudiante" name="numero"
-                                    placeholder="Ej: 001" autocomplete="off"
-                                    class="glass-input font-bold uppercase text-lg">
+                            class="text-[0.7rem] font-black text-blue-700 uppercase tracking-[0.2em] flex items-center gap-2 border-b border-blue-50 pb-3">
+                            <span class="w-1.5 h-4 bg-blue-600 rounded-full"></span> Datos del Alumno
+                        </h3>
+                        <div class="grid grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.1em]">N°
+                                    Orden (Secuencia)</label>
+                                <div class="relative group">
+                                    <input type="text" [(ngModel)]="newEstudiante.numero_estudiante" name="numero"
+                                        placeholder="001" autocomplete="off"
+                                        class="w-full bg-blue-50 border-2 border-blue-100 rounded-2xl px-6 py-4 text-blue-800 font-black text-xl outline-none transition-all cursor-default"
+                                        readonly>
+                                    <span
+                                        class="absolute right-5 top-1/2 -translate-y-1/2 text-[10px] font-black text-blue-400 uppercase tracking-tighter">Automático</span>
+                                </div>
                             </div>
-                            <div class="space-y-2">
+                            <div class="space-y-4">
                                 <label
-                                    class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Nombres
+                                    class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.1em]">Nombres
                                     Completos</label>
                                 <input type="text" [(ngModel)]="newEstudiante.nombre_estudiante" name="nombre"
-                                    placeholder="Nombre completo" autocomplete="off"
-                                    class="glass-input font-bold uppercase">
+                                    placeholder="Nombre del estudiante..." autocomplete="off"
+                                    class="w-full bg-slate-50 border-2 border-slate-200 rounded-2xl px-6 py-4 text-slate-900 font-bold text-lg outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner uppercase">
                             </div>
                         </div>
                     </div>
 
                     <!-- Rep details -->
-                    <div>
+                    <div class="space-y-6">
                         <h3
-                            class="text-sm font-bold text-blue-700 uppercase tracking-widest border-b border-slate-100 pb-2 mb-6">
-                            Datos del Representante</h3>
-                        <div class="grid grid-cols-2 gap-6">
-                            <div class="space-y-2">
+                            class="text-[0.7rem] font-black text-slate-700 uppercase tracking-[0.2em] flex items-center gap-2 border-b border-slate-50 pb-3">
+                            <span class="w-1.5 h-4 bg-slate-400 rounded-full"></span> Información del Representante
+                        </h3>
+                        <div class="grid grid-cols-2 gap-8">
+                            <div class="space-y-4">
                                 <label
-                                    class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Nombre
-                                    Completo</label>
+                                    class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.1em]">Nombre
+                                    del Padre/Tutor</label>
                                 <input type="text" [(ngModel)]="newEstudiante.nombre_representante" name="rep_nombre"
-                                    placeholder="Nombre del representante" autocomplete="off"
-                                    class="glass-input font-semibold uppercase">
+                                    placeholder="Nombre completo" autocomplete="off"
+                                    class="w-full bg-slate-50 border-2 border-slate-200 rounded-2xl px-6 py-4 text-slate-900 font-bold text-lg outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner uppercase">
                             </div>
-                            <div class="space-y-2">
-                                <label
-                                    class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Cédula</label>
+                            <div class="space-y-4">
+                                <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.1em]">N° de
+                                    Cédula</label>
                                 <input type="text" [(ngModel)]="newEstudiante.cedula_representante" name="rep_cedula"
-                                    placeholder="Nro de identificación" autocomplete="off"
-                                    class="glass-input font-semibold">
+                                    placeholder="Identificación" autocomplete="off"
+                                    class="w-full bg-slate-50 border-2 border-slate-200 rounded-2xl px-6 py-4 text-slate-900 font-bold text-lg outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner">
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-6 mt-6">
-                            <div class="space-y-2">
+                        <div class="grid grid-cols-2 gap-8 mt-6">
+                            <div class="space-y-4">
                                 <label
-                                    class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Número
-                                    Telefónico</label>
+                                    class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.1em]">Teléfono
+                                    de Contacto</label>
                                 <input type="tel" [(ngModel)]="newEstudiante.telefono_representante" name="rep_telefono"
-                                    placeholder="Ej: 0999999999" autocomplete="off" class="glass-input font-semibold">
+                                    placeholder="Ej: 0999999999" autocomplete="off"
+                                    class="w-full bg-slate-50 border-2 border-slate-200 rounded-2xl px-6 py-4 text-slate-900 font-bold text-lg outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner">
                             </div>
-                            <div class="space-y-2">
+                            <div class="space-y-4">
                                 <label
-                                    class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Correo
+                                    class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.1em]">Correo
                                     Electrónico</label>
                                 <input type="email" [(ngModel)]="newEstudiante.correo_representante" name="rep_correo"
-                                    placeholder="correo@ejemplo.com" autocomplete="off"
-                                    class="glass-input font-semibold">
+                                    placeholder="ejemplo@correo.com" autocomplete="off"
+                                    class="w-full bg-slate-50 border-2 border-slate-200 rounded-2xl px-6 py-4 text-slate-900 font-bold text-lg outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner">
                             </div>
                         </div>
                     </div>
@@ -220,22 +233,25 @@
             </div>
 
             <!-- Footer -->
-            <div class="px-8 py-6 border-t border-slate-100 flex flex-wrap gap-4 items-center bg-slate-50/50">
+            <div class="px-10 py-8 border-t border-slate-100 flex flex-wrap gap-4 items-center bg-slate-50/80">
                 <div *ngIf="saveSuccess"
-                    class="flex items-center gap-2 text-green-600 font-bold text-xs uppercase tracking-tight">
-                    <span>✅</span> Estudiante {{ editingEstudiante ? 'Actualizado' : 'Añadido' }}
+                    class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-tight flex items-center gap-2">
+                    <span>✅</span> ¡Registro Guardado con Éxito!
                 </div>
-                <div *ngIf="errorMessage" class="flex items-center gap-2 text-red-600 font-bold text-xs">
+                <div *ngIf="errorMessage"
+                    class="bg-red-100 text-red-700 px-4 py-2 rounded-full font-bold text-xs flex items-center gap-2">
                     <span>⚠️</span> {{ errorMessage }}
                 </div>
                 <div class="flex-1"></div>
 
                 <button type="button" (click)="closeModal()" [disabled]="saving"
-                    class="btn-secondary !px-6">Cerrar</button>
+                    class="h-14 px-8 bg-white border-2 border-slate-200 text-slate-600 rounded-2xl font-bold hover:bg-slate-50 hover:border-slate-300 transition-all active:scale-95 disabled:opacity-50">Cancelar</button>
 
                 <button type="button" (click)="saveEstudiante()" [disabled]="!canSave || saving"
-                    class="btn-primary !px-10 shadow-md">
-                    {{ saving ? 'Guardando...' : (editingEstudiante ? 'Guardar Cambios' : 'Registrar Estudiante') }}
+                    class="h-14 px-12 bg-blue-700 text-white rounded-2xl font-black text-lg shadow-lg shadow-blue-800/20 hover:bg-blue-800 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3">
+                    <span *ngIf="saving" class="animate-spin text-xl">⏳</span>
+                    {{ saving ? 'Guardando...' : (editingEstudiante ? 'Actualizar Información' : 'Registrar Estudiante
+                    💾') }}
                 </button>
             </div>
         </div>
