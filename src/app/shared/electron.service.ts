@@ -39,6 +39,6 @@ export class ElectronService {
                 return { success: false, error: 'IPC Error: ' + error };
             }
         }
-        return Promise.resolve(null);
+        return { success: false, error: 'Electron not available' };
     }
 }

@@ -1,7 +1,8 @@
 <div class="flex h-screen w-screen overflow-hidden bg-slate-50 text-slate-800 font-sans">
-  <!-- Sidebar Navigation - Siempre visible y estático -->
-  <aside *ngIf="authService.isLoggedIn()"
-    class="bg-white border-r border-slate-200 flex flex-col shadow-sm z-20 overflow-hidden relative w-72 min-w-[18rem]">
+  <!-- Sidebar Navigation - Con Toggle para no estar fijo -->
+  <aside *ngIf="authService.isLoggedIn()" [class.w-0]="sidebarCollapsed" [class.w-72]="!sidebarCollapsed"
+    [class.min-w-[18rem]]="!sidebarCollapsed"
+    class="bg-white border-r border-slate-200 flex flex-col shadow-sm z-20 overflow-hidden relative transition-all duration-300 ease-in-out">
 
     <!-- Header / Logo -->
     <div class="relative p-6 bg-white border-b border-slate-100 flex items-center gap-4">
@@ -12,7 +13,7 @@
         CE
       </div>
       <div class="flex-1 overflow-hidden">
-        <h2 class="text-base font-bold leading-tight tracking-tight text-slate-900 m-0">COLORADO</h2>
+        <h1 class="text-base font-bold leading-tight tracking-tight text-slate-900 m-0">COLORADO</h1>
         <p class="text-[0.65rem] font-bold text-blue-600 uppercase tracking-[0.1em]">Express S.A.</p>
         <p class="text-[0.55rem] font-medium text-slate-500 uppercase tracking-widest mt-0.5">Sto. Domingo</p>
       </div>
@@ -79,7 +80,7 @@
 
     <!-- User Profile / Footer -->
     <div class="p-5 border-t border-slate-200 bg-white">
-      <div class="flex items-center gap-3 mb-5 px-1">
+      <div class="flex items-center gap-3 mb-5 px-1 whitespace-nowrap overflow-hidden">
         <div
           class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-700 border border-blue-200 shrink-0 shadow-sm text-sm">
           AD
@@ -90,7 +91,7 @@
         </div>
       </div>
       <button (click)="logout()"
-        class="w-full p-2.5 bg-slate-50 hover:bg-red-50 border border-slate-200 hover:border-red-200 text-slate-600 hover:text-red-600 rounded-lg flex items-center justify-center gap-2 transition-all font-semibold text-sm tracking-wide shadow-sm group">
+        class="w-full p-2.5 bg-slate-50 hover:bg-red-50 border border-slate-200 hover:border-red-200 text-slate-600 hover:text-red-600 rounded-lg flex items-center justify-center gap-2 transition-all font-semibold text-sm tracking-wide shadow-sm group whitespace-nowrap overflow-hidden">
         <span class="group-hover:scale-110 transition-transform">🚪</span>
         <span>Cerrar Sesión</span>
       </button>
@@ -98,7 +99,24 @@
   </aside>
 
   <!-- Content Area -->
-  <main class="flex-1 h-screen overflow-y-auto bg-slate-50 relative p-8">
-    <router-outlet></router-outlet>
-  </main>
+  <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+    <!-- Top Bar with Sidebar Toggle -->
+    <header class="h-16 bg-white border-b border-slate-200 flex items-center px-6 gap-4 z-10 shadow-sm shrink-0">
+      <button (click)="toggleSidebar()"
+        class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500 transition-colors">
+        <span class="text-2xl">{{ sidebarCollapsed ? '➡️' : '⬅️' }}</span>
+      </button>
+
+      <div class="flex-1"></div>
+
+      <div class="flex items-center gap-3">
+        <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Sistema Activo</span>
+        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-8 bg-slate-50 relative">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
 </div>

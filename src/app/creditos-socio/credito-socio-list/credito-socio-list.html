@@ -2,109 +2,114 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-            <h1 class="text-4xl font-black text-white tracking-tight uppercase">Créditos de Socio</h1>
-            <p class="text-slate-400 mt-1 font-medium italic">Gestión de préstamos y abonos de conductores • Colorado
+            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Créditos de Socio</h1>
+            <p class="text-slate-500 mt-1 font-medium italic">Gestión de préstamos y abonos de conductores • Colorado
                 Express</p>
         </div>
         <div class="flex items-center gap-3">
-            <button (click)="exportToExcel()" class="btn-secondary group">
-                <span class="text-xl group-hover:scale-110 transition-transform">📊</span>
-                Exportar Reporte
+            <button (click)="exportToExcel()"
+                class="flex items-center gap-2 px-4 py-2.5 bg-blue-50 hover:bg-blue-100/70 border border-blue-200 text-blue-700 rounded-lg font-bold text-sm transition-all shadow-sm active:scale-95 group">
+                <span class="text-xl group-hover:rotate-12 transition-transform">📊</span>
+                <span class="text-slate-700">Exportar Excel</span>
             </button>
             <button (click)="openModal()" class="btn-primary">
-                <span class="text-xl">+</span> Asignar Crédito
+                <span class="text-xl font-bold">+</span> Asignar Crédito
             </button>
         </div>
     </div>
 
     <!-- Filters & Search -->
     <div class="flex flex-col md:flex-row gap-4 items-center">
-        <div class="relative w-full max-w-md group">
+        <div class="relative w-full max-md:max-w-full md:w-96 group">
             <span
-                class="absolute left-5 top-1/2 -translate-y-1/2 text-xl opacity-40 group-focus-within:opacity-100 transition-opacity">🔍</span>
+                class="absolute left-4 top-1/2 -translate-y-1/2 text-lg opacity-40 group-focus-within:opacity-100 transition-opacity">🔍</span>
             <input type="text" [(ngModel)]="filterTerm" placeholder="Buscar conductor o estado..."
-                class="glass-input !pl-14">
+                class="glass-input !pl-12 !py-3">
         </div>
         <div class="flex-1"></div>
         <div
-            class="px-4 py-2 rounded-xl bg-white/5 border border-white/5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
-            Total: {{filteredCreditos.length}} créditos
+            class="px-4 py-2 rounded-lg bg-white border border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500 shadow-sm">
+            Total: <span class="text-blue-700">{{filteredCreditos.length}}</span> créditos
         </div>
     </div>
 
     <!-- Table Card -->
-    <div class="glass-card overflow-hidden slide-up">
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden slide-up">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse table-fixed">
                 <thead>
-                    <tr class="bg-white/5 text-[0.7rem] uppercase tracking-[0.2em] font-black text-slate-500">
-                        <th class="px-8 py-6 w-[25%]">Conductor Asignado</th>
-                        <th class="px-8 py-6 w-[20%] text-right">Préstamo Inicial</th>
-                        <th class="px-8 py-6 w-[20%] text-right">Saldo Pendiente</th>
-                        <th class="px-8 py-6 w-[15%] text-center">Estado</th>
-                        <th class="px-8 py-6 w-[20%] text-right">Acciones</th>
+                    <tr
+                        class="bg-slate-50 text-[0.7rem] uppercase tracking-wider font-bold text-slate-500 border-b border-slate-200">
+                        <th class="px-8 py-5 w-[25%]">Conductor Asignado</th>
+                        <th class="px-8 py-5 w-[20%] text-right">Préstamo Inicial</th>
+                        <th class="px-8 py-5 w-[20%] text-right">Saldo Pendiente</th>
+                        <th class="px-8 py-5 w-[15%] text-center">Estado</th>
+                        <th class="px-8 py-5 w-[20%] text-right">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-white/5">
+                <tbody class="divide-y divide-slate-100">
                     <ng-container *ngIf="loading">
                         <tr *ngFor="let i of [1,2,3,4]">
-                            <td class="px-8 py-6">
+                            <td class="px-8 py-5">
                                 <div class="h-6 skeleton w-48"></div>
                             </td>
-                            <td class="px-8 py-6">
+                            <td class="px-8 py-5 text-right">
                                 <div class="h-6 skeleton w-24 ml-auto"></div>
                             </td>
-                            <td class="px-8 py-6">
+                            <td class="px-8 py-5 text-right">
                                 <div class="h-6 skeleton w-24 ml-auto"></div>
                             </td>
-                            <td class="px-8 py-6">
-                                <div class="h-8 skeleton w-20 mx-auto rounded-full"></div>
+                            <td class="px-8 py-5 text-center">
+                                <div class="h-7 skeleton w-20 mx-auto rounded-full"></div>
                             </td>
-                            <td class="px-8 py-6 text-right">
-                                <div class="h-10 w-24 skeleton ml-auto rounded-xl"></div>
+                            <td class="px-8 py-5 text-right">
+                                <div class="h-9 w-24 skeleton ml-auto rounded-lg"></div>
                             </td>
                         </tr>
                     </ng-container>
 
-                    <tr *ngFor="let c of filteredCreditos" class="hover:bg-white/[0.02] transition-colors group">
-                        <td class="px-8 py-6">
-                            <div class="text-lg font-black text-white uppercase tracking-tight">{{c.conductor_nombre}}
+                    <tr *ngFor="let c of filteredCreditos" class="hover:bg-blue-50/30 transition-colors group">
+                        <td class="px-8 py-5">
+                            <div
+                                class="text-base font-bold text-slate-900 group-hover:text-blue-700 transition-colors uppercase tracking-tight">
+                                {{c.conductor_nombre}}
                             </div>
-                            <div class="text-slate-500 text-[0.7rem] font-bold uppercase tracking-widest mt-0.5"
+                            <div class="text-slate-500 text-[0.65rem] font-bold uppercase tracking-widest mt-0.5"
                                 *ngIf="c.fecha_registro">
-                                {{c.fecha_registro | date: 'dd/MM/yyyy'}}</div>
-                        </td>
-                        <td class="px-8 py-6 text-right">
-                            <div class="text-blue-400 font-bold text-lg">${{c.valor_prestamo | number:'1.2-2'}}</div>
-                        </td>
-                        <td class="px-8 py-6 text-right">
-                            <div class="text-slate-200 font-bold text-lg"
-                                [class.text-green-400]="c.saldo_pendiente === 0">${{c.saldo_pendiente | number:'1.2-2'}}
+                                {{c.fecha_registro | date: 'dd/MM/yyyy'}}
                             </div>
                         </td>
-                        <td class="px-8 py-6 text-center">
+                        <td class="px-8 py-5 text-right">
+                            <div class="text-blue-700 font-bold text-lg">${{c.valor_prestamo | number:'1.2-2'}}</div>
+                        </td>
+                        <td class="px-8 py-5 text-right">
+                            <div class="text-slate-800 font-bold text-lg"
+                                [class.text-emerald-600]="c.saldo_pendiente === 0">
+                                ${{c.saldo_pendiente | number:'1.2-2'}}
+                            </div>
+                        </td>
+                        <td class="px-8 py-5 text-center">
                             <span
-                                class="inline-block px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider"
-                                [ngClass]="c.estado === 'ACTIVO' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' : 'bg-green-500/10 text-green-500 border border-green-500/20'">
+                                class="inline-block px-3 py-1 rounded-lg text-[0.65rem] font-bold uppercase tracking-wider shadow-sm border"
+                                [ngClass]="c.estado === 'ACTIVO' ? 'bg-amber-50 text-amber-700 border-amber-100' : 'bg-emerald-50 text-emerald-700 border-emerald-100'">
                                 {{c.estado}}
                             </span>
                         </td>
-                        <td class="px-8 py-6 text-right">
-                            <div
-                                class="flex items-center justify-end gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <td class="px-8 py-5 text-right">
+                            <div class="flex items-center justify-end gap-2 shrink-0">
                                 <button (click)="openModal(c)" title="Editar crédito"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-95">✏️</button>
+                                    class="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-all text-lg shadow-sm">✏️</button>
                                 <button (click)="deleteCredito(c.id!)" title="Eliminar crédito"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-95">🗑️</button>
+                                    class="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all text-lg shadow-sm">🗑️</button>
                             </div>
                         </td>
                     </tr>
 
                     <tr *ngIf="filteredCreditos.length === 0 && !loading">
-                        <td colspan="5" class="px-8 py-32 text-center">
+                        <td colspan="5" class="px-8 py-24 text-center">
                             <div class="flex flex-col items-center gap-4">
-                                <div class="text-6xl opacity-20">💳</div>
-                                <h3 class="text-xl font-black text-white">No hay créditos registrados</h3>
+                                <div class="text-5xl opacity-20 filter grayscale">💳</div>
+                                <h3 class="text-lg font-bold text-slate-800">No hay créditos registrados</h3>
                                 <p class="text-slate-500 font-medium">Asigna un crédito a algún conductor para
                                     visualizarlo.</p>
                             </div>
@@ -116,54 +121,54 @@
     </div>
 
     <!-- Modal Form -->
-    <div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-        <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md fade-in" (click)="closeModal()"></div>
+    <div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm fade-in" (click)="closeModal()"></div>
         <div (click)="$event.stopPropagation()"
-            class="relative z-50 w-full max-w-2xl glass-card border-white/10 overflow-hidden shadow-2xl flex flex-col max-h-[85vh] slide-up">
-            <div class="p-6 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+            class="relative z-50 w-full max-w-xl bg-white rounded-2xl shadow-2xl flex flex-col max-h-[90vh] slide-up border border-slate-200 overflow-hidden">
+            <!-- Header -->
+            <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <div>
-                    <h2 class="text-2xl font-black text-white leading-none">{{ editingCredito ? 'Editar Préstamo' :
-                        'Nuevo Préstamo a Conductor' }}</h2>
-                    <p class="text-slate-500 text-[0.65rem] font-bold uppercase mt-2 tracking-[0.2em]">Asignación de
-                        crédito socio</p>
+                    <h2 class="text-xl font-bold text-slate-900">{{ editingCredito ? 'Editar Préstamo' : 'Nuevo Préstamo
+                        a Conductor' }}</h2>
+                    <p class="text-slate-500 text-[0.65rem] font-bold uppercase mt-1 tracking-widest">Colorado Express
+                        S.A.</p>
                 </div>
                 <button (click)="closeModal()"
-                    class="text-slate-500 hover:text-white transition-colors text-2xl">&times;</button>
+                    class="text-slate-400 hover:text-slate-900 transition-colors text-3xl font-light">&times;</button>
             </div>
 
-            <div class="flex-1 overflow-y-auto p-8 lg:p-10">
+            <!-- Body -->
+            <div class="flex-1 overflow-y-auto p-8 lg:px-10">
                 <div class="space-y-6">
-                    <div class="space-y-4">
-                        <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Conductor
+                    <div class="space-y-2">
+                        <label class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Conductor
                             Asignado</label>
                         <select [(ngModel)]="newCredito.conductor_id" class="glass-input font-bold"
-                            [disabled]="!!editingCredito" style="background: #0f172a; color: white;">
-                            <option [ngValue]="0" style="background: #0f172a; color: white;">--- Seleccionar ---
-                            </option>
-                            <option *ngFor="let c of conductores" [ngValue]="c.id"
-                                style="background: #0f172a; color: white;">{{c.nombre}}</option>
+                            [disabled]="!!editingCredito">
+                            <option [ngValue]="0">--- Seleccionar ---</option>
+                            <option *ngFor="let c of conductores" [ngValue]="c.id">{{c.nombre}}</option>
                         </select>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="space-y-4">
-                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Valor
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Valor
                                 de Préstamo ($)</label>
                             <input type="number" [(ngModel)]="newCredito.valor_prestamo"
                                 (ngModelChange)="updateSaldoNuevo($event)" placeholder="Ej: 500" autocomplete="off"
-                                class="glass-input font-black text-blue-400 text-xl" min="0">
+                                class="glass-input font-bold text-blue-700 text-xl" min="0">
                         </div>
-                        <div class="space-y-4">
-                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Saldo
+                        <div class="space-y-2">
+                            <label class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Saldo
                                 Pendiente ($)</label>
                             <input type="number" [(ngModel)]="newCredito.saldo_pendiente" placeholder="Ej: 500"
-                                autocomplete="off" class="glass-input font-black text-white text-xl" min="0"
+                                autocomplete="off" class="glass-input font-bold text-slate-900 text-xl" min="0"
                                 [disabled]="!editingCredito">
                         </div>
                     </div>
 
-                    <div class="space-y-4" *ngIf="editingCredito">
-                        <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Estado de
+                    <div class="space-y-2" *ngIf="editingCredito">
+                        <label class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Estado de
                             la Deuda</label>
                         <select [(ngModel)]="newCredito.estado" class="glass-input font-bold uppercase">
                             <option value="ACTIVO">ACTIVO</option>
@@ -173,20 +178,22 @@
                 </div>
             </div>
 
-            <div class="p-6 border-t border-white/5 flex flex-wrap gap-4 items-center bg-white/[0.01]">
-                <div *ngIf="saveSuccess" class="flex items-center gap-2 text-green-400 font-bold text-sm animate-pulse">
-                    <span class="text-lg">✅</span> ¡Crédito {{ editingCredito ? 'Actualizado' : 'Añadido' }}!
+            <!-- Footer -->
+            <div class="px-8 py-6 border-t border-slate-100 flex flex-wrap gap-4 items-center bg-slate-50/50">
+                <div *ngIf="saveSuccess"
+                    class="flex items-center gap-2 text-green-600 font-bold text-xs uppercase tracking-tight">
+                    <span>✅</span> Préstamo {{ editingCredito ? 'Actualizado' : 'Añadido' }}
                 </div>
-                <div *ngIf="errorMessage" class="flex items-center gap-2 text-red-500 font-bold text-sm">
-                    <span class="text-lg">⚠️</span> {{ errorMessage }}
+                <div *ngIf="errorMessage" class="flex items-center gap-2 text-red-600 font-bold text-xs">
+                    <span>⚠️</span> {{ errorMessage }}
                 </div>
+                <div class="flex-1"></div>
 
                 <button type="button" (click)="closeModal()" [disabled]="saving"
-                    class="btn-secondary px-8">Cancelar</button>
-                <div class="flex-1"></div>
+                    class="btn-secondary !px-6">Cerrar</button>
+
                 <button type="button" (click)="saveCredito()" [disabled]="!canSave || saving"
-                    [class.opacity-50]="!canSave || saving" class="btn-primary px-10 flex items-center gap-2">
-                    <span *ngIf="saving" class="animate-spin text-lg">⏳</span>
+                    class="btn-primary !px-10 shadow-md">
                     {{ saving ? 'Guardando...' : (editingCredito ? 'Guardar Cambios' : 'Asignar Crédito') }}
                 </button>
             </div>

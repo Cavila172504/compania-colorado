@@ -1,15 +1,15 @@
 <div class="p-8 space-y-8 fade-in">
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-            <h1 class="text-3xl font-black text-white tracking-tight">Ingreso Mensual</h1>
-            <p class="text-slate-400 mt-1 font-medium italic">Gestión de flujo de caja individual • Colorado Express</p>
+            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Ingreso Mensual</h1>
+            <p class="text-slate-500 mt-1 font-medium italic">Gestión de flujo de caja individual • Colorado Express</p>
         </div>
-        <div class="flex items-center gap-4 bg-slate-900/50 p-2 rounded-2xl border border-white/5 shadow-inner">
-            <div class="flex items-center gap-2 px-4 py-2 bg-slate-950 rounded-xl border border-white/5">
-                <span class="text-[0.6rem] font-black text-slate-500 uppercase tracking-widest">Mes</span>
+        <div class="flex items-center gap-3 bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-100">
+                <span class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest">Mes</span>
                 <select [(ngModel)]="mes" (change)="loadFlujo()"
-                    class="bg-transparent text-white font-black outline-none cursor-pointer">
+                    class="bg-transparent text-slate-900 font-bold outline-none cursor-pointer text-sm">
                     <option [value]="1">Enero</option>
                     <option [value]="2">Febrero</option>
                     <option [value]="3">Marzo</option>
@@ -24,10 +24,10 @@
                     <option [value]="12">Diciembre</option>
                 </select>
             </div>
-            <div class="flex items-center gap-2 px-4 py-2 bg-slate-950 rounded-xl border border-white/5">
-                <span class="text-[0.6rem] font-black text-slate-500 uppercase tracking-widest">Año</span>
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-100">
+                <span class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest">Año</span>
                 <input type="number" [(ngModel)]="anio" (change)="loadFlujo()"
-                    class="bg-transparent text-white font-black w-16 outline-none">
+                    class="bg-transparent text-slate-900 font-bold w-16 outline-none text-sm">
             </div>
         </div>
     </div>
@@ -35,56 +35,53 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <!-- Selection & Info Column -->
         <div class="lg:col-span-4 space-y-6">
-            <div class="glass-card p-6 space-y-6 flex flex-col min-h-full">
-                <div class="space-y-3">
-                    <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Seleccionar
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-6 flex flex-col shadow-sm min-h-full">
+                <div class="space-y-2">
+                    <label class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-widest px-0.5">Seleccionar
                         Conductor</label>
                     <select [(ngModel)]="selectedConductorId" (change)="loadFlujo()"
-                        class="w-full bg-slate-950 border border-white/10 rounded-2xl px-5 py-4 text-white font-bold focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 cursor-pointer outline-none shadow-sm transition-all">
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 font-bold focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 cursor-pointer outline-none transition-all shadow-inner">
                         <option [ngValue]="undefined">--- Seleccionar ---</option>
                         <option *ngFor="let c of conductores" [value]="c.id">{{c.nombre}}</option>
                     </select>
                 </div>
 
-                <!-- Conductor Details (Improvement requested) -->
+                <!-- Conductor Details -->
                 <div *ngIf="selectedConductor"
-                    class="bg-blue-600/5 border border-blue-500/10 rounded-2xl p-6 space-y-5 fade-in">
+                    class="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 space-y-5 fade-in shadow-sm">
                     <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-3xl">
+                        <div
+                            class="w-14 h-14 bg-white rounded-xl border border-blue-100 flex items-center justify-center text-3xl shadow-sm">
                             👨‍✈️</div>
                         <div>
-                            <div class="text-[0.6rem] font-black text-blue-500 uppercase tracking-widest">Ficha Técnica
+                            <div class="text-[0.6rem] font-bold text-blue-600 uppercase tracking-widest">Ficha de Socio
                             </div>
-                            <h3 class="text-lg font-black text-white leading-tight uppercase tracking-tight">
+                            <h3 class="text-lg font-bold text-slate-900 leading-tight uppercase tracking-tight">
                                 {{ selectedConductor.nombre }}
                             </h3>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4 pt-2">
+                    <div class="grid grid-cols-2 gap-4 pt-2 border-t border-blue-100/50">
                         <div class="space-y-1">
                             <span
-                                class="text-[0.55rem] font-black text-slate-500 uppercase tracking-widest">Cédula</span>
-                            <p class="text-xs font-bold text-slate-300">
-                                {{ selectedConductor.doc_identidad }}
-                            </p>
+                                class="text-[0.55rem] font-bold text-slate-400 uppercase tracking-widest">Cédula</span>
+                            <p class="text-xs font-bold text-slate-700">{{ selectedConductor.doc_identidad }}</p>
                         </div>
                         <div class="space-y-1">
                             <span
-                                class="text-[0.55rem] font-black text-slate-500 uppercase tracking-widest">Teléfono</span>
-                            <p class="text-xs font-bold text-slate-300">
-                                {{ selectedConductor.telefono }}
-                            </p>
+                                class="text-[0.55rem] font-bold text-slate-400 uppercase tracking-widest">Teléfono</span>
+                            <p class="text-xs font-bold text-slate-700">{{ selectedConductor.telefono }}</p>
                         </div>
                     </div>
 
                     <!-- Monthly Summary -->
-                    <div class="pt-4 border-t border-white/5">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-black text-slate-400 uppercase tracking-widest">Saldo
-                                Mensual</span>
-                            <span class="text-xl font-black"
-                                [class]="flujo.total_recibir >= 0 ? 'text-emerald-400' : 'text-red-400'">
+                    <div class="pt-4 border-t border-blue-100/50">
+                        <div
+                            class="flex items-center justify-between bg-white px-4 py-3 rounded-xl border border-blue-100/50 shadow-sm">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Saldo Neto</span>
+                            <span class="text-xl font-bold"
+                                [class]="flujo.total_recibir >= 0 ? 'text-emerald-600' : 'text-red-600'">
                                 {{ flujo.total_recibir | currency:'USD' }}
                             </span>
                         </div>
@@ -92,9 +89,9 @@
                 </div>
 
                 <div *ngIf="!selectedConductorId"
-                    class="flex-1 flex flex-col items-center justify-center p-12 text-center space-y-4 opacity-30 italic">
-                    <span class="text-6xl text-slate-700">🔍</span>
-                    <p class="text-sm font-bold text-slate-500">Seleccione un conductor para iniciar el ingreso de datos
+                    class="flex-1 flex flex-col items-center justify-center p-12 text-center space-y-4 opacity-50 italic">
+                    <span class="text-6xl text-slate-300">🔎</span>
+                    <p class="text-sm font-bold text-slate-400">Seleccione un conductor para iniciar el ingreso de datos
                     </p>
                 </div>
             </div>
@@ -102,144 +99,153 @@
 
         <!-- Entry Form Column -->
         <div class="lg:col-span-8">
-            <div class="glass-card p-8 min-h-full" *ngIf="selectedConductor">
+            <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm min-h-full"
+                *ngIf="selectedConductor">
                 <div class="space-y-10">
-                    <!-- Ingresos Section (Full Width Top) -->
-                    <div class="bg-blue-600/5 p-8 rounded-3xl border border-blue-500/10">
+                    <!-- Ingresos Section -->
+                    <div class="bg-blue-50/30 p-8 rounded-2xl border border-blue-100">
                         <h3
-                            class="text-xs font-black text-blue-500 uppercase tracking-[0.2em] flex items-center gap-2 mb-6">
-                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                            Ingresos Mensuales
+                            class="text-xs font-bold text-blue-700 uppercase tracking-widest flex items-center gap-2 mb-6">
+                            <span class="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+                            Ingresos Mensuales Certificados
                         </h3>
                         <div class="max-w-md">
-                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Total
+                            <label
+                                class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-widest px-0.5">Total
                                 Ingresos Brutos</label>
                             <div class="relative group mt-2">
                                 <span
-                                    class="absolute left-6 top-1/2 -translate-y-1/2 text-2xl text-slate-500 font-bold group-focus-within:text-blue-500 transition-colors">$</span>
+                                    class="absolute left-6 top-1/2 -translate-y-1/2 text-2xl text-slate-400 font-bold group-focus-within:text-blue-600 transition-colors">$</span>
                                 <input type="number" [(ngModel)]="flujo.total_ingresos" name="total_ingresos"
                                     (input)="calculate()"
-                                    class="w-full bg-slate-950 border border-white/10 rounded-2xl pl-12 pr-6 py-5 text-white text-3xl font-black focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all shadow-inner">
+                                    class="w-full bg-white border border-slate-200 rounded-xl pl-12 pr-6 py-5 text-slate-900 text-4xl font-bold focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 outline-none transition-all shadow-inner">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Egresos Section (2-Column Grid) -->
+                    <!-- Egresos Section -->
                     <div class="space-y-6">
-                        <h3 class="text-xs font-black text-red-500 uppercase tracking-[0.2em] flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-red-500"></span>
-                            Egresos y Retenciones
+                        <h3
+                            class="text-xs font-bold text-red-600 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-4">
+                            <span class="w-1.5 h-6 bg-red-500 rounded-full"></span>
+                            Egresos, Retenciones y Descuentos
                         </h3>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <!-- Fixed / Calculated Items -->
                             <div class="space-y-4">
                                 <div
-                                    class="bg-white/[0.02] p-5 rounded-2xl border border-white/5 flex items-center justify-between">
+                                    class="bg-slate-50 p-5 rounded-xl border border-slate-200 flex items-center justify-between shadow-sm">
                                     <div class="space-y-1">
-                                        <span class="text-[0.6rem] font-black text-slate-500 uppercase">Cuota Adm
-                                            (Fijo)</span>
-                                        <div class="text-lg font-black text-white">{{flujo.cuota_administrativa |
+                                        <span
+                                            class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider">Cuota
+                                            Adm (Fijo)</span>
+                                        <div class="text-xl font-bold text-slate-900">{{flujo.cuota_administrativa |
                                             currency}}</div>
                                     </div>
-                                    <span class="text-2xl">🏢</span>
+                                    <span class="text-3xl filter grayscale opacity-50">🏢</span>
                                 </div>
 
                                 <div
-                                    class="bg-white/[0.02] p-5 rounded-2xl border border-white/5 flex items-center justify-between">
+                                    class="bg-slate-50 p-5 rounded-xl border border-slate-200 flex items-center justify-between shadow-sm">
                                     <div class="space-y-1">
-                                        <span class="text-[0.6rem] font-black text-slate-500 uppercase">Renta
+                                        <span
+                                            class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider">Renta
                                             (1%)</span>
-                                        <div class="text-lg font-black text-slate-300 italic">{{flujo.renta_1pct |
-                                            currency}}</div>
+                                        <div class="text-xl font-bold text-slate-800">{{flujo.renta_1pct | currency}}
+                                        </div>
                                     </div>
-                                    <span class="text-2xl">🏦</span>
+                                    <span class="text-3xl filter grayscale opacity-50">🏦</span>
                                 </div>
 
                                 <div
-                                    class="bg-white/[0.02] p-5 rounded-2xl border border-white/5 flex items-center justify-between">
+                                    class="bg-slate-50 p-5 rounded-xl border border-slate-200 flex items-center justify-between shadow-sm">
                                     <div class="space-y-1">
-                                        <span class="text-[0.6rem] font-black text-slate-500 uppercase">Comisión CADE
-                                            ($2 x {{numEstudiantes}} est.)</span>
-                                        <div class="text-lg font-black text-slate-300 italic">{{flujo.comision_cade |
+                                        <span
+                                            class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider">Comisión
+                                            CADE ($2 x {{numEstudiantes}})</span>
+                                        <div class="text-xl font-bold text-slate-800">{{flujo.comision_cade | currency}}
+                                        </div>
+                                    </div>
+                                    <span class="text-3xl filter grayscale opacity-50">🎓</span>
+                                </div>
+
+                                <div
+                                    class="bg-slate-50 p-5 rounded-xl border border-slate-200 flex items-center justify-between shadow-sm">
+                                    <div class="space-y-1">
+                                        <span
+                                            class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider">Comisión
+                                            Compañía (1%)</span>
+                                        <div class="text-xl font-bold text-slate-800">{{flujo.comision_compania |
                                             currency}}</div>
                                     </div>
-                                    <span class="text-2xl">🎓</span>
+                                    <span class="text-3xl filter grayscale opacity-50">🏛️</span>
                                 </div>
                             </div>
 
                             <!-- Manual Items -->
-                            <div class="space-y-4">
+                            <div class="space-y-5">
                                 <div class="space-y-2">
                                     <label
-                                        class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Anticipo
+                                        class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-widest px-0.5">Anticipo
                                         Socio</label>
                                     <input type="number" [(ngModel)]="flujo.anticipo_socio" (input)="calculate()"
-                                        class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 font-bold focus:border-blue-500 outline-none">
+                                        class="glass-input font-bold !py-3">
                                 </div>
 
                                 <div class="space-y-2 relative">
-                                    <div class="flex items-center justify-between px-1">
+                                    <div class="flex items-center justify-between px-0.5">
                                         <label
-                                            class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest">Abono
+                                            class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-widest">Abono
                                             Préstamo</label>
                                         <span *ngIf="activeCredito"
-                                            class="text-[0.55rem] font-black text-yellow-500 uppercase bg-yellow-500/10 px-1.5 py-0.5 rounded border border-yellow-500/20">Deuda:
-                                            {{activeCredito.saldo_pendiente | currency:'USD'}}</span>
+                                            class="text-[0.6rem] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-100">
+                                            Deuda: {{activeCredito.saldo_pendiente | currency:'USD'}}
+                                        </span>
                                     </div>
                                     <input type="number" [(ngModel)]="flujo.abono_prestamo" (input)="calculate()"
-                                        class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 font-bold focus:border-blue-500 outline-none transition-all">
+                                        class="glass-input font-bold !py-3 !border-amber-200 focus:!border-amber-400">
                                     <p *ngIf="activeCredito && (flujo.abono_prestamo || 0) > 0"
-                                        class="text-[0.6rem] font-bold text-slate-500 pl-1">
-                                        Saldo final: {{ (activeCredito.saldo_pendiente - (flujo.abono_prestamo || 0)) |
-                                        currency:'USD' }}
+                                        class="text-[0.65rem] font-bold text-slate-400 mt-1 pl-1">
+                                        Saldo restante: <span class="text-blue-700">{{ (activeCredito.saldo_pendiente -
+                                            (flujo.abono_prestamo || 0)) | currency:'USD' }}</span>
                                     </p>
                                 </div>
 
                                 <div class="space-y-2">
                                     <label
-                                        class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest px-1">Aplicativo
+                                        class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-widest px-0.5">Aplicativo
                                         "Mi buseta"</label>
                                     <input type="number" [(ngModel)]="flujo.aplicativo_buseta" (input)="calculate()"
-                                        class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 font-bold focus:border-blue-500 outline-none transition-all">
-                                </div>
-
-                                <div
-                                    class="bg-white/[0.02] p-5 rounded-2xl border border-white/5 flex items-center justify-between">
-                                    <div class="space-y-1">
-                                        <span class="text-[0.6rem] font-black text-slate-500 uppercase">Comisión
-                                            Compañía (1%)</span>
-                                        <div class="text-lg font-black text-slate-300 italic">{{flujo.comision_compania
-                                            | currency}}</div>
-                                    </div>
-                                    <span class="text-2xl">🏛️</span>
+                                        class="glass-input font-bold !py-3">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-12 pt-8 border-t border-white/10 flex items-center justify-between">
+                <div
+                    class="mt-12 pt-8 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div class="space-y-1">
-                        <div class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest">Total a Liquidar
-                        </div>
-                        <div class="text-4xl font-black text-white tracking-tighter">{{flujo.total_recibir |
+                        <div class="text-[0.7rem] font-bold text-slate-400 uppercase tracking-widest">Saldo Final a
+                            Liquidar</div>
+                        <div class="text-5xl font-bold text-slate-900 tracking-tight">{{flujo.total_recibir |
                             currency:'USD'}}</div>
                     </div>
 
                     <div class="flex items-center gap-6">
                         <div *ngIf="saveSuccess"
-                            class="text-green-400 font-black animate-pulse flex items-center gap-2">
-                            <span class="text-2xl">✅</span> ¡Guardado!
+                            class="text-emerald-600 font-bold uppercase text-xs tracking-widest flex items-center gap-2">
+                            <span>✅</span> ¡Datos Guardados!
                         </div>
-                        <div *ngIf="errorMessage" class="text-red-500 font-bold flex items-center gap-2">
-                            <span class="text-xl">⚠️</span> {{errorMessage}}
+                        <div *ngIf="errorMessage" class="text-red-600 font-bold text-xs flex items-center gap-2">
+                            <span>⚠️</span> {{errorMessage}}
                         </div>
 
                         <button (click)="save()" [disabled]="saving"
-                            class="bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-black text-lg transition-all shadow-xl shadow-blue-500/20 active:scale-95 group flex items-center gap-3 disabled:opacity-50">
+                            class="bg-blue-700 hover:bg-blue-800 text-white px-10 py-5 rounded-2xl font-bold text-lg transition-all shadow-lg shadow-blue-800/20 active:scale-95 group flex items-center gap-3 disabled:opacity-50">
                             <span *ngIf="saving" class="animate-spin text-2xl">⏳</span>
-                            <span>{{ saving ? 'Guardando...' : 'Guardar Mes 💾' }}</span>
+                            <span>{{ saving ? 'Procesando...' : 'Cerrar Mes 💾' }}</span>
                         </button>
                     </div>
                 </div>
