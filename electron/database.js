@@ -120,6 +120,15 @@ function initDatabase() {
       }
     } catch (e) { console.log('[DB-INIT] Migration nro_cheque skipped:', e.message); }
 
+    // Migration: Add numero_cheque column to creditos_socio
+    try {
+      const cols2 = db.pragma("table_info(creditos_socio)");
+      if (!cols2.find(c => c.name === 'numero_cheque')) {
+        db.exec("ALTER TABLE creditos_socio ADD COLUMN numero_cheque TEXT");
+        console.log('[DB-INIT] Migration: added numero_cheque to creditos_socio');
+      }
+    } catch (e) { console.log('[DB-INIT] Migration numero_cheque skipped:', e.message); }
+
 
     // Seed default admin user
     try {

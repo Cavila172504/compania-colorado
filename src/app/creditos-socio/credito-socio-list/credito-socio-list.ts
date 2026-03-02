@@ -64,8 +64,19 @@ export class CreditoSocioListComponent implements OnInit {
             conductor_id: 0,
             valor_prestamo: 0,
             saldo_pendiente: 0,
-            estado: 'ACTIVO'
+            estado: 'ACTIVO',
+            numero_cheque: '',
+            fecha_registro: this.getTodayDateString()
         };
+    }
+
+    /** Devuelve la fecha de hoy en formato YYYY-MM-DD para el input date */
+    getTodayDateString(): string {
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
     }
 
     get filteredCreditos(): CreditoSocio[] {
@@ -73,7 +84,8 @@ export class CreditoSocioListComponent implements OnInit {
         const term = this.filterTerm.toLowerCase();
         return this.creditos.filter(c =>
             (c.conductor_nombre || '').toLowerCase().includes(term) ||
-            (c.estado || '').toLowerCase().includes(term)
+            (c.estado || '').toLowerCase().includes(term) ||
+            (c.numero_cheque || '').toLowerCase().includes(term)
         );
     }
 
@@ -99,7 +111,8 @@ export class CreditoSocioListComponent implements OnInit {
 
     updateSaldoNuevo(val: number) {
         if (!this.editingCredito) {
-            // If totally new, saldo pendiente is equal to valor_prestamo
+            // Solo para créditos NUEVOS: saldo pendiente se puede ingresar manualmente
+            // pero se inicializa igual al valor del préstamo
             this.newCredito.saldo_pendiente = val;
         }
     }
@@ -157,6 +170,7 @@ export class CreditoSocioListComponent implements OnInit {
         try {
             const map = [
                 { header: 'CONDUCTOR', key: 'conductor_nombre', width: 35 },
+                { header: 'Nº CHEQUE', key: 'numero_cheque', width: 20 },
                 { header: 'PRÉSTAMO INICIAL', key: 'valor_prestamo', width: 25 },
                 { header: 'SALDO PENDIENTE', key: 'saldo_pendiente', width: 25 },
                 { header: 'FECHA REGISTRO', key: 'fecha_registro', width: 25 },

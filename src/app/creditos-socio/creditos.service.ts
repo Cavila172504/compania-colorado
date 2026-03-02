@@ -8,6 +8,7 @@ export interface CreditoSocio {
     saldo_pendiente: number;
     fecha_registro?: string;
     estado?: string;
+    numero_cheque?: string;
     // Joins
     conductor_nombre?: string;
 }
@@ -63,16 +64,21 @@ export class CreditosService {
     }
 
     async addCredito(c: CreditoSocio) {
+        // Al crear, se puede especificar fecha_registro y saldo_pendiente manualmente
+        const fechaParam = c.fecha_registro ? c.fecha_registro : null;
         return await this.electron.invoke('db-run', {
-            query: `INSERT INTO creditos_socio (conductor_id, valor_prestamo, saldo_pendiente) VALUES (?, ?, ?)`,
-            params: [c.conductor_id, c.valor_prestamo, c.saldo_pendiente]
+            query: `INSERT INTO creditos_socio 
+                (conductor_id, valor_prestamo, saldo_pendiente, numero_cheque, fecha_registro) 
+                VALUES (?, ?, ?, ?, COALESCE(?, CURRENT_TIMESTAMP))`,
+            params: [c.conductor_id, c.valor_prestamo, c.saldo_pendiente, c.numero_cheque || null, fechaParam]
         });
     }
 
     async updateCredito(c: CreditoSocio) {
+        // Al editar, NO se permite cambiar saldo_pendiente (se calcula automáticamente via abonos)
         return await this.electron.invoke('db-run', {
-            query: `UPDATE creditos_socio SET conductor_id=?, valor_prestamo=?, saldo_pendiente=?, estado=? WHERE id=?`,
-            params: [c.conductor_id, c.valor_prestamo, c.saldo_pendiente, c.estado, c.id]
+            query: `UPDATE creditos_socio SET conductor_id=?, valor_prestamo=?, estado=?, numero_cheque=? WHERE id=?`,
+            params: [c.conductor_id, c.valor_prestamo, c.estado, c.numero_cheque || null, c.id]
         });
     }
 
