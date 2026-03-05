@@ -144,8 +144,10 @@
                         <span class="text-3xl text-white">💳</span>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">{{ editingCredito ? 'Editar
-                            Registro de Préstamo' : 'Asignar Nuevo Crédito' }}</h2>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">
+                            {{ editingCredito ? 'Editar Registro de Préstamo' : (isRefinancing ? 'Ampliación de Crédito'
+                            : 'Asignar Nuevo Crédito') }}
+                        </h2>
                         <p class="text-slate-500 text-[0.65rem] font-black uppercase mt-1 tracking-[0.2em]">Colorado
                             Express S.A. • Gestión Contable</p>
                     </div>
@@ -164,7 +166,7 @@
                             👤 Conductor Beneficiario
                         </label>
                         <div class="relative group">
-                            <select [(ngModel)]="newCredito.conductor_id"
+                            <select [(ngModel)]="newCredito.conductor_id" (ngModelChange)="onConductorChange()"
                                 class="w-full bg-slate-50 border-2 border-slate-200 rounded-2xl px-6 py-4 text-slate-900 font-bold text-lg outline-none focus:border-blue-600 focus:bg-white transition-all appearance-none cursor-pointer disabled:opacity-75 disabled:bg-slate-100"
                                 [disabled]="!!editingCredito">
                                 <option [ngValue]="0">--- Seleccione el beneficiario ---</option>
@@ -193,8 +195,48 @@
                             que se entregó el préstamo</p>
                     </div>
 
-                    <!-- Values Grid -->
-                    <div class="grid grid-cols-2 gap-8">
+                    <!-- Refinancing Alert & Input -->
+                    <div *ngIf="isRefinancing"
+                        class="p-6 bg-amber-50 border-2 border-amber-200 rounded-3xl space-y-4 slide-up">
+                        <div class="flex items-center gap-3 text-amber-700">
+                            <span class="text-2xl">⚡</span>
+                            <div class="font-bold uppercase tracking-tight text-sm">Crédito Vigente Detectado</div>
+                        </div>
+                        <p class="text-xs text-amber-600 font-medium">Este socio ya posee una deuda activa. Se procederá
+                            a aumentar el valor del crédito actual y recalcular el saldo pendiente.</p>
+
+                        <div class="grid grid-cols-2 gap-4 pt-2">
+                            <div class="bg-white/60 p-3 rounded-xl border border-amber-100">
+                                <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Saldo
+                                    Actual</span>
+                                <span class="text-lg font-black text-slate-700">${{activeCreditFound?.saldo_pendiente |
+                                    number:'1.2-2'}}</span>
+                            </div>
+                            <div class="bg-white/60 p-3 rounded-xl border border-amber-100">
+                                <span
+                                    class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Préstamo
+                                    Inicial</span>
+                                <span class="text-lg font-black text-slate-700">${{activeCreditFound?.valor_prestamo |
+                                    number:'1.2-2'}}</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 pt-4 border-t border-amber-100">
+                            <label class="text-[0.65rem] font-black text-amber-700 uppercase tracking-[0.1em]">
+                                ➕ Monto a aumentar ($)
+                            </label>
+                            <div class="relative">
+                                <span
+                                    class="absolute left-6 top-1/2 -translate-y-1/2 text-2xl font-bold text-amber-600 pointer-events-none">$</span>
+                                <input type="number" [(ngModel)]="montoAumentar"
+                                    (ngModelChange)="updateRefinanciacion()" placeholder="0.00"
+                                    class="w-full bg-white border-2 border-amber-300 rounded-2xl pl-12 pr-6 py-4 text-amber-900 font-black text-3xl outline-none focus:border-amber-500 transition-all shadow-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Values Grid (Only show if not refinancing OR show readonly results) -->
+                    <div class="grid grid-cols-2 gap-8" *ngIf="!isRefinancing">
                         <div class="space-y-4">
                             <label
                                 class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.1em] flex items-center gap-2">
@@ -232,6 +274,28 @@
                                 {{ editingCredito ? 'Se recalcula automáticamente con cada abono' : 'Editable solo al
                                 crear — para ingresar créditos anteriores' }}
                             </p>
+                        </div>
+                    </div>
+
+                    <!-- New Summary Grid for Refinancing -->
+                    <div class="grid grid-cols-2 gap-8" *ngIf="isRefinancing">
+                        <div class="space-y-4">
+                            <label class="text-[0.65rem] font-black text-slate-400 uppercase tracking-[0.1em]">Nuevo
+                                Total
+                                Préstamo ($)</label>
+                            <div class="p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl">
+                                <span class="text-2xl font-black text-slate-400 block">${{newCredito.valor_prestamo |
+                                    number:'1.2-2'}}</span>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <label class="text-[0.65rem] font-black text-slate-400 uppercase tracking-[0.1em]">Nuevo
+                                Saldo
+                                Pendiente ($)</label>
+                            <div class="p-4 bg-blue-50 border-2 border-blue-100 rounded-2xl">
+                                <span class="text-2xl font-black text-blue-700 block">${{newCredito.saldo_pendiente |
+                                    number:'1.2-2'}}</span>
+                            </div>
                         </div>
                     </div>
 
@@ -289,7 +353,8 @@
                 <button type="button" (click)="saveCredito()" [disabled]="!canSave || saving"
                     class="h-14 px-12 bg-blue-700 text-white rounded-2xl font-black text-lg shadow-lg shadow-blue-800/20 hover:bg-blue-800 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3">
                     <span *ngIf="saving" class="animate-spin text-xl">⏳</span>
-                    {{ saving ? 'Guardando...' : (editingCredito ? 'Actualizar Registro' : 'Asignar Crédito 💾') }}
+                    {{ saving ? 'Guardando...' : (editingCredito ? 'Actualizar Registro' : (isRefinancing ? 'Efectuar
+                    Ampliación 🚀' : 'Asignar Crédito 💾')) }}
                 </button>
             </div>
         </div>

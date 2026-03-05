@@ -2,3 +2,23 @@
 .page-container {
     @apply min-h-screen bg-slate-950;
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-slate-50;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
+}
+
+/* Ensure sticky headers has a solid background to prevent overlap transparency */
+th.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}

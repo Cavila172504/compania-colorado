@@ -13,7 +13,7 @@
                     Cierre Contable • Colorado Express S.A.
                 </p>
                 <div class="text-[0.6rem] font-black text-slate-400 uppercase tracking-widest mt-1 opacity-50">Auditoría
-                    Individual de Socios y Conductores</div>
+                    Individual de Socios</div>
             </div>
         </div>
 
@@ -52,7 +52,7 @@
                 <div class="space-y-3">
                     <label
                         class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.15em] px-1 text-xs">Seleccionar
-                        Conductor</label>
+                        Socio</label>
                     <select id="conductorSelect" [(ngModel)]="selectedConductorId" (change)="loadFlujo()"
                         class="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 text-slate-900 font-black focus:border-blue-600 focus:bg-white cursor-pointer outline-none transition-all shadow-inner text-base">
                         <option [ngValue]="undefined">--- BUSCAR SOCIO ---</option>
@@ -78,10 +78,10 @@
                     <div class="flex items-center gap-3">
                         <div
                             class="w-12 h-12 bg-white rounded-xl border-2 border-blue-200 flex items-center justify-center text-2xl shadow-md">
-                            👨‍✈️</div>
+                            👤</div>
                         <div class="flex-1 min-w-0">
                             <div class="text-[0.55rem] font-black text-blue-600 uppercase tracking-[0.15em] mb-0.5">
-                                Socio Conductor</div>
+                                Socio Activo</div>
                             <h3
                                 class="text-base font-black text-slate-900 leading-tight uppercase tracking-tight truncate">
                                 {{ selectedConductor.nombre }}
@@ -122,7 +122,7 @@
                         class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-4xl grayscale opacity-20 border-2 border-slate-100">
                         🔎</div>
                     <p class="text-[0.6rem] font-black text-slate-400 uppercase tracking-[0.2em] leading-relaxed">
-                        Seleccione un conductor<br>para continuar</p>
+                        Seleccione un socio<br>para continuar</p>
                 </div>
 
                 <div *ngIf="selectedConductorId" class="pt-4 border-t border-slate-100">
@@ -148,16 +148,26 @@
                             <span class="w-1.5 h-6 bg-blue-600 rounded-full"></span>
                             Ingresos Mensuales Certificados
                         </h3>
-                        <div class="max-w-md">
-                            <label
-                                class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.1em] px-1">Total
-                                Ingresos Brutos (Ventas)</label>
-                            <div class="relative group mt-2">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
+                            <div class="relative group">
+                                <label
+                                    class="text-[0.8rem] font-black text-slate-500 uppercase tracking-[0.1em] px-1 block mb-2">Total
+                                    Ingresos Brutos (Ventas)</label>
                                 <span
-                                    class="absolute left-6 top-1/2 -translate-y-1/2 text-2xl text-slate-400 font-black group-focus-within:text-blue-600 transition-colors">$</span>
+                                    class="absolute left-6 top-[3rem] -translate-y-1/2 text-2xl text-slate-400 font-black group-focus-within:text-blue-600 transition-colors">$</span>
                                 <input type="number" [(ngModel)]="flujo.total_ingresos" name="total_ingresos"
                                     (input)="calculate()"
                                     class="w-full bg-white border-2 border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-slate-900 text-3xl font-black focus:border-blue-600 focus:ring-8 focus:ring-blue-600/5 outline-none transition-all shadow-md">
+                            </div>
+                            <div class="relative group">
+                                <label
+                                    class="text-[0.8rem] font-black text-slate-500 uppercase tracking-[0.1em] px-1 block mb-2">Nº
+                                    Factura de Pago (Opcional)</label>
+                                <span
+                                    class="absolute left-6 top-[3rem] -translate-y-1/2 text-2xl text-slate-400 font-black group-focus-within:text-blue-600 transition-colors">📄</span>
+                                <input type="text" [(ngModel)]="flujo.nro_factura" name="nro_factura"
+                                    placeholder="Ej: 001-001-123456"
+                                    class="w-full bg-white border-2 border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-slate-900 text-xl font-black focus:border-blue-600 focus:ring-8 focus:ring-blue-600/5 outline-none transition-all shadow-md placeholder:text-slate-300">
                             </div>
                         </div>
                     </div>
@@ -217,27 +227,37 @@
                             <div class="space-y-4">
                                 <div class="space-y-1.5">
                                     <label
-                                        class="text-[0.6rem] font-black text-slate-500 uppercase tracking-[0.1em] px-1">Anticipo
+                                        class="text-[0.75rem] font-black text-slate-500 uppercase tracking-[0.1em] px-1">Anticipo
                                         Socio</label>
                                     <input type="number" [(ngModel)]="flujo.anticipo_socio" (input)="calculate()"
                                         class="w-full bg-white border-2 border-slate-200 rounded-xl px-5 py-3 text-slate-900 font-black text-lg outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all shadow-inner">
                                 </div>
 
+                                <div class="space-y-1.5 fade-in" *ngIf="(flujo.anticipo_socio || 0) > 0">
+                                    <label
+                                        class="text-[0.65rem] font-black text-blue-600 uppercase tracking-widest px-1 flex items-center gap-2">
+                                        <span class="animate-pulse text-sm">🧾</span> Nº Cheque Adelanto
+                                    </label>
+                                    <input type="text" [(ngModel)]="flujo.nro_cheque_anticipo"
+                                        placeholder="Nro de cheque del adelanto"
+                                        class="w-full bg-blue-50/50 border-2 border-blue-400 rounded-xl px-5 py-3 text-blue-900 font-black text-lg outline-none focus:bg-white transition-all shadow-sm">
+                                </div>
+
                                 <div class="space-y-1.5 relative fade-in" *ngIf="activeCredito">
                                     <div class="flex items-center justify-between px-1">
                                         <label
-                                            class="text-[0.6rem] font-black text-slate-500 uppercase tracking-[0.1em]">Abono
+                                            class="text-[0.75rem] font-black text-slate-500 uppercase tracking-[0.1em]">Abono
                                             Préstamo</label>
                                         <span
-                                            class="text-[0.5rem] font-black text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200 shadow-sm uppercase tracking-widest animate-pulse">
+                                            class="text-[0.75rem] font-black text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 shadow-sm uppercase tracking-widest animate-pulse">
                                             DEUDA: {{activeCredito.saldo_pendiente | currency:'USD'}}
                                         </span>
                                     </div>
                                     <input type="number" [(ngModel)]="flujo.abono_prestamo" (input)="calculate()"
                                         class="w-full bg-white border-2 border-amber-100 rounded-xl px-5 py-3 text-slate-900 font-black text-lg outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/5 transition-all shadow-inner">
                                     <p *ngIf="(flujo.abono_prestamo || 0) > 0"
-                                        class="text-[0.55rem] font-black text-slate-400 mt-1 pl-1 uppercase tracking-tight">
-                                        NUEVO SALDO: <span class="text-blue-700 font-black">{{
+                                        class="text-[0.8rem] font-black text-slate-500 mt-1.5 pl-1 uppercase tracking-tight">
+                                        NUEVO SALDO: <span class="text-blue-700 font-black ml-1">{{
                                             (activeCredito.saldo_pendiente - (flujo.abono_prestamo || 0)) |
                                             currency:'USD' }}</span>
                                     </p>
@@ -245,7 +265,7 @@
 
                                 <div class="space-y-1.5">
                                     <label
-                                        class="text-[0.6rem] font-black text-slate-500 uppercase tracking-[0.1em] px-1">Aplicativo
+                                        class="text-[0.75rem] font-black text-slate-500 uppercase tracking-[0.1em] px-1">Aplicativo
                                         "Mi buseta"</label>
                                     <input type="number" [(ngModel)]="flujo.aplicativo_buseta" (input)="calculate()"
                                         class="w-full bg-white border-2 border-slate-200 rounded-xl px-5 py-3 text-slate-900 font-black text-lg outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all shadow-inner">

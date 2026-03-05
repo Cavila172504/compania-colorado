@@ -75,10 +75,10 @@ export class CreditosService {
     }
 
     async updateCredito(c: CreditoSocio) {
-        // Al editar, NO se permite cambiar saldo_pendiente (se calcula automáticamente via abonos)
+        // Al editar, permitimos actualizar valor_prestamo, saldo_pendiente (para refinanciación), estado y cheque
         return await this.electron.invoke('db-run', {
-            query: `UPDATE creditos_socio SET conductor_id=?, valor_prestamo=?, estado=?, numero_cheque=? WHERE id=?`,
-            params: [c.conductor_id, c.valor_prestamo, c.estado, c.numero_cheque || null, c.id]
+            query: `UPDATE creditos_socio SET conductor_id=?, valor_prestamo=?, saldo_pendiente=?, estado=?, numero_cheque=? WHERE id=?`,
+            params: [c.conductor_id, c.valor_prestamo, c.saldo_pendiente, c.estado, c.numero_cheque || null, c.id]
         });
     }
 

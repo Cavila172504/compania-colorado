@@ -118,7 +118,19 @@ function initDatabase() {
         db.exec("ALTER TABLE flujo_caja ADD COLUMN nro_cheque TEXT");
         console.log('[DB-INIT] Migration: added nro_cheque column');
       }
-    } catch (e) { console.log('[DB-INIT] Migration nro_cheque skipped:', e.message); }
+      if (!cols.find(c => c.name === 'nro_cheque_anticipo')) {
+        db.exec("ALTER TABLE flujo_caja ADD COLUMN nro_cheque_anticipo TEXT");
+        console.log('[DB-INIT] Migration: added nro_cheque_anticipo column');
+      }
+      if (!cols.find(c => c.name === 'nro_factura')) {
+        db.exec("ALTER TABLE flujo_caja ADD COLUMN nro_factura TEXT");
+        console.log('[DB-INIT] Migration: added nro_factura column');
+      }
+      if (!cols.find(c => c.name === 'num_estudiantes')) {
+        db.exec("ALTER TABLE flujo_caja ADD COLUMN num_estudiantes INTEGER DEFAULT 0");
+        console.log('[DB-INIT] Migration: added num_estudiantes column');
+      }
+    } catch (e) { console.log('[DB-INIT] Migration nro_cheque/nro_factura skipped:', e.message); }
 
     // Migration: Add numero_cheque column to creditos_socio
     try {
@@ -128,6 +140,30 @@ function initDatabase() {
         console.log('[DB-INIT] Migration: added numero_cheque to creditos_socio');
       }
     } catch (e) { console.log('[DB-INIT] Migration numero_cheque skipped:', e.message); }
+
+    // Migration: Add new expense columns to gastos_administrativos
+    try {
+      const gcols = db.pragma("table_info(gastos_administrativos)");
+      const newCols = [
+        'arriendo REAL DEFAULT 0', 'arriendo_cheque TEXT', 'arriendo_factura TEXT',
+        'papeleria REAL DEFAULT 0', 'papeleria_cheque TEXT', 'papeleria_factura TEXT',
+        'sueldo_gerente REAL DEFAULT 0', 'sueldo_gerente_cheque TEXT', 'sueldo_gerente_factura TEXT',
+        'patente REAL DEFAULT 0', 'patente_cheque TEXT', 'patente_factura TEXT',
+        'honorarios REAL DEFAULT 0', 'honorarios_cheque TEXT', 'honorarios_factura TEXT',
+        'pago_iess REAL DEFAULT 0', 'pago_iess_cheque TEXT', 'pago_iess_factura TEXT',
+        'convocatorias REAL DEFAULT 0', 'convocatorias_cheque TEXT', 'convocatorias_factura TEXT',
+        'capacitaciones REAL DEFAULT 0', 'capacitaciones_cheque TEXT', 'capacitaciones_factura TEXT',
+        'insumos_cheque TEXT', 'insumos_factura TEXT',
+        'varios_cheque TEXT', 'varios_factura TEXT',
+      ];
+      for (const colDef of newCols) {
+        const colName = colDef.split(' ')[0];
+        if (!gcols.find(c => c.name === colName)) {
+          db.exec(`ALTER TABLE gastos_administrativos ADD COLUMN ${colDef}`);
+          console.log(`[DB-INIT] Migration: added ${colName} to gastos_administrativos`);
+        }
+      }
+    } catch (e) { console.log('[DB-INIT] Migration gastos_admin_cols skipped:', e.message); }
 
 
     // Seed default admin user

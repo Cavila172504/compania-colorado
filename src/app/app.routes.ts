@@ -13,6 +13,7 @@ export const routes: Routes = [
     { path: 'flujo-caja', loadComponent: () => import('./flujo-caja/flujo-caja-form/flujo-caja-form').then(m => m.FlujoCajaFormComponent), canActivate: [authGuard] },
     { path: 'flujo-consolidado', loadComponent: () => import('./flujo-caja/flujo-caja-list/flujo-caja-list').then(m => m.FlujoCajaListComponent), canActivate: [authGuard] },
     { path: 'gastos-admin', loadComponent: () => import('./gastos-admin/gastos-admin-form/gastos-admin-form').then(m => m.GastosAdminFormComponent), canActivate: [authGuard] },
+    { path: 'resumen-consolidado', loadComponent: () => import('./gastos-admin/resumen-consolidado/resumen-consolidado').then(m => m.ResumenConsolidadoComponent), canActivate: [authGuard] },
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
     { path: '**', redirectTo: '/dashboard' }
 

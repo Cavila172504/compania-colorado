@@ -1,0 +1,210 @@
+<div class="p-8 space-y-10 fade-in bg-slate-50/30 min-h-screen">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-8 border-b border-slate-200 pb-10">
+        <div>
+            <div class="flex items-center gap-4 mb-2">
+                <div
+                    class="w-12 h-12 bg-indigo-700 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-200">
+                    <span class="text-2xl text-white">📋</span>
+                </div>
+                <h1 class="text-4xl font-black text-slate-900 tracking-tighter">Resumen Consolidado</h1>
+            </div>
+            <p
+                class="text-slate-500 font-black italic uppercase text-[0.65rem] tracking-[0.3em] flex items-center gap-2">
+                <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
+                Auditoría de Flujos · Colorado Express S.A.
+            </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+            <!-- Vista toggle -->
+            <div class="flex bg-white border-2 border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                <button (click)="vista='mensual'; load()"
+                    class="px-5 py-3 font-black text-sm uppercase tracking-wider transition-all"
+                    [class.bg-indigo-600]="vista==='mensual'" [class.text-white]="vista==='mensual'"
+                    [class.text-slate-500]="vista!=='mensual'">
+                    📅 Mensual
+                </button>
+                <button (click)="vista='anual'; load()"
+                    class="px-5 py-3 font-black text-sm uppercase tracking-wider transition-all"
+                    [class.bg-indigo-600]="vista==='anual'" [class.text-white]="vista==='anual'"
+                    [class.text-slate-500]="vista!=='anual'">
+                    📆 Anual
+                </button>
+            </div>
+
+            <!-- Mes selector (mensual only) -->
+            <div *ngIf="vista==='mensual'"
+                class="flex items-center gap-2 bg-white border-2 border-slate-200 px-4 py-2 rounded-2xl">
+                <span class="text-[0.65rem] font-black text-slate-400 uppercase tracking-widest">Periodo</span>
+                <select [(ngModel)]="mes" (change)="load()"
+                    class="bg-transparent text-slate-900 font-black outline-none cursor-pointer text-sm">
+                    <option [value]="1">Enero</option>
+                    <option [value]="2">Febrero</option>
+                    <option [value]="3">Marzo</option>
+                    <option [value]="4">Abril</option>
+                    <option [value]="5">Mayo</option>
+                    <option [value]="6">Junio</option>
+                    <option [value]="7">Julio</option>
+                    <option [value]="8">Agosto</option>
+                    <option [value]="9">Septiembre</option>
+                    <option [value]="10">Octubre</option>
+                    <option [value]="11">Noviembre</option>
+                    <option [value]="12">Diciembre</option>
+                </select>
+            </div>
+
+            <!-- Año selector -->
+            <div class="flex items-center gap-2 bg-white border-2 border-slate-200 px-4 py-2 rounded-2xl">
+                <span class="text-[0.65rem] font-black text-slate-400 uppercase tracking-widest">Año</span>
+                <input type="number" [(ngModel)]="anio" (change)="load()"
+                    class="bg-transparent text-slate-900 font-black w-20 outline-none text-sm">
+            </div>
+
+            <!-- Export buttons -->
+            <button (click)="exportToExcel()"
+                class="h-12 px-6 bg-emerald-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition-all active:scale-95 flex items-center gap-2">
+                <span>💾</span> Excel
+            </button>
+            <button (click)="exportToPdf()"
+                class="h-12 px-6 bg-red-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-lg shadow-red-200 hover:bg-red-700 transition-all active:scale-95 flex items-center gap-2">
+                <span>📄</span> PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="flex items-center justify-center py-24">
+        <div class="flex flex-col items-center gap-4">
+            <span class="text-5xl animate-spin">⏳</span>
+            <p class="text-slate-400 font-black uppercase text-xs tracking-widest">Cargando datos...</p>
+        </div>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!loading && resumen.length === 0"
+        class="flex flex-col items-center justify-center py-24 gap-6 text-center">
+        <span class="text-7xl opacity-20">📊</span>
+        <p class="text-slate-400 font-black uppercase text-sm tracking-widest">No hay registros para el periodo
+            seleccionado</p>
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="!loading && resumen.length > 0"
+        class="bg-white border-2 border-slate-200 rounded-2xl shadow-lg overflow-hidden slide-up">
+        <div class="px-6 py-4 bg-indigo-50/80 border-b border-indigo-100 flex items-center justify-between">
+            <h3 class="text-sm font-black text-indigo-900 uppercase tracking-[0.15em]">{{tableTitle}}</h3>
+            <span
+                class="bg-white px-3 py-1 border border-indigo-200 rounded-full text-xs font-black text-indigo-600 uppercase tracking-widest shadow-sm">
+                {{resumen.length}} {{vista==='mensual' ? 'MES' : 'MESES'}}
+            </span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse" id="resumen-table">
+                <thead>
+                    <tr class="bg-slate-100/70">
+                        <th
+                            class="p-4 text-xs font-black text-slate-600 uppercase tracking-wider whitespace-nowrap pl-8">
+                            {{firstColLabel}}</th>
+                        <th
+                            class="p-3 text-xs font-black text-slate-600 uppercase tracking-wider whitespace-nowrap text-center">
+                            Socios</th>
+                        <th
+                            class="p-4 text-xs font-black text-emerald-700 uppercase tracking-wider whitespace-nowrap text-right bg-emerald-50/50">
+                            Ingresos Totales</th>
+                        <th
+                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center border-l border-slate-200/50 whitespace-nowrap">
+                            C. Admin</th>
+                        <th
+                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap">
+                            Renta 1%</th>
+                        <th
+                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap">
+                            CADE</th>
+                        <th
+                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap">
+                            Anticipo</th>
+                        <th
+                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap">
+                            Préstamo</th>
+                        <th
+                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap">
+                            Buseta</th>
+                        <th
+                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap">
+                            Com. Cía</th>
+                        <th
+                            class="p-4 text-xs font-black text-red-700 uppercase tracking-wider text-right border-l border-slate-200/50 whitespace-nowrap bg-red-50/30">
+                            Tot. Egresos</th>
+                        <th
+                            class="p-4 text-xs font-black text-blue-800 uppercase tracking-wider bg-blue-50 border-l border-slate-200/50 whitespace-nowrap text-right pr-8">
+                            Neto Recibir</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr *ngFor="let r of resumen" class="hover:bg-blue-50/30 transition-all group cursor-default">
+                        <td class="p-4 pl-8">
+                            <div class="font-black text-sm text-indigo-700 uppercase tracking-tight">{{r.mesNombre}}
+                            </div>
+                            <div class="text-[0.6rem] font-black text-slate-400 uppercase tracking-widest"
+                                *ngIf="vista==='anual'">{{r.anio}}</div>
+                        </td>
+                        <td class="p-3 text-center text-slate-500 text-xs font-bold">
+                            <span class="bg-slate-100 px-2 py-0.5 rounded-full">{{r.num_registros}} socios</span>
+                        </td>
+                        <td class="p-4 font-black text-emerald-600 text-sm tabular-nums text-right bg-emerald-50/10">
+                            {{r.ingresos_totales | currency}}</td>
+                        <td
+                            class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums border-l border-slate-100/50">
+                            {{r.cuota_admin | currency}}</td>
+                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                            {{r.renta_1pct | currency}}</td>
+                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                            {{r.cade | currency}}</td>
+                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                            {{r.anticipo | currency}}</td>
+                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                            {{r.prestamo | currency}}</td>
+                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                            {{r.buseta | currency}}</td>
+                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                            {{r.com_cia | currency}}</td>
+                        <td
+                            class="p-4 text-right font-black text-red-600 text-sm tabular-nums border-l border-slate-100/50 bg-red-50/10">
+                            {{r.tot_egresos | currency}}</td>
+                        <td
+                            class="p-4 font-black text-blue-900 text-base bg-blue-50/80 tabular-nums border-l border-slate-100/50 text-right pr-8">
+                            {{r.neto_recibir | currency}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="bg-slate-900 text-white">
+                        <td class="p-4 pl-8 font-black text-sm uppercase tracking-wider text-white" colspan="2">
+                            Total {{vista==='anual' ? 'Anual ' + anio : MESES[mes-1] + ' ' + anio}}
+                        </td>
+                        <td class="p-4 font-black text-emerald-400 text-sm tabular-nums text-right">
+                            {{getTotal('ingresos_totales') | currency}}</td>
+                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                            {{getTotal('cuota_admin') | currency}}</td>
+                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                            {{getTotal('renta_1pct') | currency}}</td>
+                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                            {{getTotal('cade') | currency}}</td>
+                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                            {{getTotal('anticipo') | currency}}</td>
+                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                            {{getTotal('prestamo') | currency}}</td>
+                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                            {{getTotal('buseta') | currency}}</td>
+                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                            {{getTotal('com_cia') | currency}}</td>
+                        <td class="p-4 font-black text-red-400 text-sm tabular-nums text-right">
+                            {{getTotal('tot_egresos') | currency}}</td>
+                        <td class="p-4 font-black text-blue-400 text-xl tabular-nums text-right pr-8">
+                            {{getTotal('neto_recibir') | currency}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

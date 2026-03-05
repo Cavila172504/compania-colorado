@@ -68,7 +68,8 @@ export class FlujoCajaFormComponent implements OnInit {
             aplicativo_buseta: 0,
             comision_compania: 0,
             total_egresos: 0,
-            total_recibir: 0
+            total_recibir: 0,
+            num_estudiantes: 0
         };
     }
 
@@ -105,10 +106,10 @@ export class FlujoCajaFormComponent implements OnInit {
                 const rutas = await this.rutasService.getRutas();
                 const rutasConductor = rutas.filter(r => r.conductor_id == this.selectedConductorId);
                 this.numEstudiantes = rutasConductor.reduce((sum, r) => sum + (r.num_estudiantes || 0), 0);
-                // Only set if no existing record or cade is 0
-                if (!existing) {
-                    this.flujo.comision_cade = this.numEstudiantes * 2;
-                }
+                this.flujo.num_estudiantes = this.numEstudiantes; // Sync total students
+
+                // Sincronizar el valor de CADE con las rutas ($2 por estudiante)
+                this.flujo.comision_cade = this.numEstudiantes * 2;
             } catch (e) { console.error('Error loading rutas for CADE:', e); }
 
         } catch (error) {

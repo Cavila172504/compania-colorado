@@ -17,6 +17,9 @@ export interface FlujoCaja {
   total_egresos: number;
   total_recibir: number;
   nro_cheque?: string;
+  nro_cheque_anticipo?: string;
+  nro_factura?: string;
+  num_estudiantes?: number;
   // Join info
   conductor_nombre?: string;
 }
@@ -46,12 +49,12 @@ export class FlujoCajaService {
         query: `UPDATE flujo_caja SET 
                 total_ingresos=?, cuota_administrativa=?, renta_1pct=?, comision_cade=?, 
                 anticipo_socio=?, abono_prestamo=?, aplicativo_buseta=?, comision_compania=?, 
-                total_egresos=?, total_recibir=?, nro_cheque=? 
+                total_egresos=?, total_recibir=?, nro_cheque=?, nro_cheque_anticipo=?, nro_factura=?, num_estudiantes=? 
                 WHERE id=?`,
         params: [
           f.total_ingresos, f.cuota_administrativa, f.renta_1pct, f.comision_cade,
           f.anticipo_socio, f.abono_prestamo, f.aplicativo_buseta, f.comision_compania,
-          f.total_egresos, f.total_recibir, f.nro_cheque || null, f.id
+          f.total_egresos, f.total_recibir, f.nro_cheque || null, f.nro_cheque_anticipo || null, f.nro_factura || null, f.num_estudiantes || 0, f.id
         ]
       });
     } else {
@@ -59,12 +62,14 @@ export class FlujoCajaService {
         query: `INSERT INTO flujo_caja (
                   conductor_id, mes, anio, total_ingresos, cuota_administrativa, 
                   renta_1pct, comision_cade, anticipo_socio, abono_prestamo, 
-                  aplicativo_buseta, comision_compania, total_egresos, total_recibir, nro_cheque
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                  aplicativo_buseta, comision_compania, total_egresos, total_recibir, 
+                  nro_cheque, nro_cheque_anticipo, nro_factura, num_estudiantes
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         params: [
           f.conductor_id, f.mes, f.anio, f.total_ingresos, f.cuota_administrativa,
           f.renta_1pct, f.comision_cade, f.anticipo_socio, f.abono_prestamo,
-          f.aplicativo_buseta, f.comision_compania, f.total_egresos, f.total_recibir, f.nro_cheque || null
+          f.aplicativo_buseta, f.comision_compania, f.total_egresos, f.total_recibir,
+          f.nro_cheque || null, f.nro_cheque_anticipo || null, f.nro_factura || null, f.num_estudiantes || 0
         ]
       });
     }

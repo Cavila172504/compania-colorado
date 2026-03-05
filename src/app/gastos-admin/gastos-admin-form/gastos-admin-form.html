@@ -3,8 +3,7 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
             <h1 class="text-3xl font-bold !text-slate-900 tracking-tight">Gastos Administrativos</h1>
-            <p class="text-slate-500 mt-1 font-medium italic">Control de egresos con cuotas administrativas • Colorado
-                Express</p>
+            <p class="text-slate-500 mt-1 font-medium italic">Control de egresos administrativos • Colorado Express</p>
         </div>
         <div class="flex items-center gap-3 bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
             <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-100">
@@ -35,9 +34,9 @@
 
     <!-- Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 slide-up">
-        <div class="bg-white border border-slate-200 p-8 rounded-2xl relative overflow-hidden group shadow-sm">
-            <span class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">Ingreso Cuotas
-                Admin ($53)</span>
+        <div class="bg-white border border-slate-200 p-6 rounded-2xl relative overflow-hidden group shadow-sm">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">Ingreso Cuotas Admin
+                ($53)</span>
             <div class="flex items-baseline gap-2">
                 <span class="text-3xl font-bold text-emerald-600 tracking-tight">{{totalCuotaAdmin |
                     currency:'USD'}}</span>
@@ -47,8 +46,8 @@
                 class="absolute -right-4 -bottom-4 text-6xl opacity-5 grayscale group-hover:scale-110 transition-transform">
                 🏢</div>
         </div>
-        <div class="bg-white border border-slate-200 p-8 rounded-2xl relative overflow-hidden group shadow-sm">
-            <span class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">Total Egresos
+        <div class="bg-white border border-slate-200 p-6 rounded-2xl relative overflow-hidden group shadow-sm">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">Total Egresos
                 Registrados</span>
             <div class="flex items-baseline gap-2">
                 <span class="text-3xl font-bold text-red-600 tracking-tight">{{totalGastos | currency:'USD'}}</span>
@@ -58,8 +57,8 @@
                 class="absolute -right-4 -bottom-4 text-6xl opacity-5 grayscale group-hover:scale-110 transition-transform">
                 📉</div>
         </div>
-        <div class="bg-emerald-600 p-8 rounded-2xl relative overflow-hidden group shadow-lg shadow-emerald-900/10">
-            <span class="text-[0.65rem] font-bold text-emerald-100 uppercase tracking-[0.2em] block mb-2">Saldo Neto
+        <div class="bg-emerald-600 p-6 rounded-2xl relative overflow-hidden group shadow-lg shadow-emerald-900/10">
+            <span class="text-xs font-bold text-emerald-100 uppercase tracking-[0.2em] block mb-2">Saldo Neto
                 Disponible</span>
             <div class="flex items-baseline gap-2">
                 <span class="text-3xl font-bold text-white tracking-tight">{{saldoDisponible | currency:'USD'}}</span>
@@ -70,105 +69,105 @@
         </div>
     </div>
 
-    <!-- Detail Form -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <!-- Gastos Column -->
-        <div class="bg-white border border-slate-200 p-8 rounded-2xl shadow-sm space-y-8 slide-up">
-            <h3
-                class="text-xs font-bold text-red-600 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-4">
-                <span class="w-1.5 h-6 bg-red-500 rounded-full"></span>
-                Registro de Gastos Administrativos
-            </h3>
-
-            <!-- Insumos de Oficina -->
-            <div class="space-y-2">
-                <label class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-widest px-0.5">Compra de
-                    Insumos de Oficina ($)</label>
-                <div class="relative group">
-                    <span
-                        class="absolute left-6 top-1/2 -translate-y-1/2 text-2xl text-slate-400 font-bold group-focus-within:text-blue-600 transition-colors">$</span>
-                    <input type="number" [(ngModel)]="gasto.insumos_oficina" placeholder="0.00"
-                        class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-12 pr-6 py-5 !text-slate-900 text-4xl font-bold focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 outline-none transition-all shadow-inner"
-                        min="0">
-                </div>
-            </div>
-
-            <!-- Varios -->
-            <div class="space-y-2">
-                <label class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-widest px-0.5">Varios - Otros
-                    Gastos ($)</label>
-                <div class="relative group">
-                    <span
-                        class="absolute left-6 top-1/2 -translate-y-1/2 text-2xl text-slate-400 font-bold group-focus-within:text-blue-600 transition-colors">$</span>
-                    <input type="number" [(ngModel)]="gasto.varios_valor" placeholder="0.00"
-                        class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-12 pr-6 py-5 !text-slate-900 text-4xl font-bold focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 outline-none transition-all shadow-inner"
-                        min="0">
-                </div>
-            </div>
-
-            <div class="space-y-2">
-                <label class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-widest px-0.5">Motivo /
-                    Descripción del gasto</label>
-                <textarea [(ngModel)]="gasto.varios_descripcion" rows="3"
-                    placeholder="Ej: Reparación de equipo, compra de uniformes..."
-                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-6 py-4 text-slate-900 font-bold focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 outline-none transition-all resize-none italic shadow-inner"></textarea>
-            </div>
+    <!-- Expense Items List -->
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden slide-up">
+        <div class="px-8 py-4 bg-red-50/80 border-b border-red-100 flex items-center gap-2">
+            <span class="w-1.5 h-6 bg-red-500 rounded-full"></span>
+            <h3 class="text-sm font-bold text-red-700 uppercase tracking-widest">Registro de Gastos Administrativos</h3>
         </div>
 
-        <!-- Pago y Cheque Column -->
-        <div class="space-y-8">
-            <div class="bg-white border border-slate-200 p-8 rounded-2xl shadow-sm space-y-8 slide-up"
-                style="animation-delay: 0.1s">
-                <h3
-                    class="text-xs font-bold text-blue-700 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-4">
-                    <span class="w-1.5 h-6 bg-blue-600 rounded-full"></span>
-                    Referencia de Pago Certificado
-                </h3>
-
-                <div class="space-y-2">
-                    <label class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-widest px-0.5">Número de
-                        Cheque / Transferencia</label>
-                    <input type="text" [(ngModel)]="gasto.nro_cheque" placeholder="Ej: 001234" autocomplete="off"
-                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-6 py-5 text-slate-900 text-xl font-bold focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 outline-none transition-all shadow-inner">
-                </div>
-
-                <div *ngIf="gasto.nro_cheque"
-                    class="bg-blue-50 border border-blue-100 rounded-xl p-5 flex items-center gap-4 animate-in shadow-sm">
-                    <span class="text-3xl">🧾</span>
-                    <div>
-                        <div class="text-[0.6rem] font-bold text-blue-600 uppercase tracking-widest">Documento
-                            Registrado</div>
-                        <div class="text-lg font-bold text-slate-900">NRO. {{gasto.nro_cheque}}</div>
+        <div class="divide-y divide-slate-100">
+            <!-- Dynamic expense items -->
+            <div *ngFor="let item of gastoItems"
+                class="p-6 grid grid-cols-1 md:grid-cols-3 gap-4 hover:bg-slate-50/50 transition-colors">
+                <!-- Label + Amount -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
+                        <span>{{item.icon}}</span> {{item.label}}
+                    </label>
+                    <div class="relative group">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-lg">$</span>
+                        <input type="number" [ngModel]="getVal(item.field)" (ngModelChange)="setVal(item.field, $event)"
+                            placeholder="0.00" min="0"
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-4 py-3 text-slate-900 text-xl font-bold focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none transition-all">
                     </div>
+                </div>
+                <!-- Cheque -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">🧾 Nº Cheque</label>
+                    <input type="text" [ngModel]="getStr(item.chequeField)"
+                        (ngModelChange)="setStr(item.chequeField, $event)" placeholder="Ej: 001234"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 font-bold text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none transition-all">
+                </div>
+                <!-- Factura -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">📄 Nº Factura</label>
+                    <input type="text" [ngModel]="getStr(item.facturaField)"
+                        (ngModelChange)="setStr(item.facturaField, $event)" placeholder="Ej: 001-001-123456"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 font-bold text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none transition-all">
                 </div>
             </div>
 
-            <!-- Actions -->
-            <div class="bg-white border border-slate-200 p-8 rounded-2xl shadow-sm space-y-6 slide-up"
-                style="animation-delay: 0.2s">
-                <div class="flex items-center gap-6 flex-wrap">
-                    <div *ngIf="saveSuccess"
-                        class="text-emerald-600 font-bold uppercase text-xs tracking-widest flex items-center gap-2">
-                        <span>✅</span> ¡Datos Guardados!
+            <!-- Gastos Varios (special: includes description) -->
+            <div class="p-6 bg-amber-50/40 space-y-4">
+                <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-5 bg-amber-400 rounded-full"></span>
+                    <h4 class="text-xs font-bold text-amber-700 uppercase tracking-widest">📦 Gastos Varios</h4>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">Monto ($)</label>
+                        <div class="relative">
+                            <span
+                                class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-lg">$</span>
+                            <input type="number" [(ngModel)]="gasto.varios_valor" placeholder="0.00" min="0"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-4 py-3 text-slate-900 text-xl font-bold focus:border-amber-400 focus:ring-2 focus:ring-amber-400/10 outline-none transition-all">
+                        </div>
                     </div>
-                    <div *ngIf="errorMessage" class="text-red-600 font-bold text-xs flex items-center gap-2">
-                        <span>⚠️</span> {{errorMessage}}
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">🧾 Nº Cheque</label>
+                        <input type="text" [(ngModel)]="gasto.varios_cheque" placeholder="Ej: 001234"
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 font-bold text-sm focus:border-amber-400 focus:ring-2 focus:ring-amber-400/10 outline-none transition-all">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">📄 Nº Factura</label>
+                        <input type="text" [(ngModel)]="gasto.varios_factura" placeholder="Ej: 001-001-123456"
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 font-bold text-sm focus:border-amber-400 focus:ring-2 focus:ring-amber-400/10 outline-none transition-all">
                     </div>
                 </div>
-
-                <div class="flex gap-4">
-                    <button (click)="save()" [disabled]="saving"
-                        class="flex-1 bg-blue-700 hover:bg-blue-800 text-white px-8 py-5 rounded-2xl font-bold text-lg transition-all shadow-lg shadow-blue-800/20 active:scale-95 group flex items-center justify-center gap-3 disabled:opacity-50">
-                        <span *ngIf="saving" class="animate-spin text-2xl">⏳</span>
-                        <span>{{ saving ? 'Procesando...' : 'Cerrar Registro 💾' }}</span>
-                    </button>
-
-                    <button (click)="printPdf()" [disabled]="totalCuotaAdmin === 0"
-                        class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-5 rounded-2xl font-bold text-lg transition-all active:scale-95 flex items-center gap-3 border border-slate-200 disabled:opacity-30">
-                        <span>📄</span> PDF
-                    </button>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">✏️ Motivo / Descripción
+                        del gasto</label>
+                    <textarea [(ngModel)]="gasto.varios_descripcion" rows="2"
+                        placeholder="Ej: Reparación de equipo, compra de uniformes, refrigerio reunión..."
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 font-medium text-sm focus:border-amber-400 focus:ring-2 focus:ring-amber-400/10 outline-none transition-all resize-none"></textarea>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div
+        class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-4 slide-up">
+        <div class="flex items-center gap-4">
+            <div *ngIf="saveSuccess"
+                class="text-emerald-600 font-bold uppercase text-xs tracking-widest flex items-center gap-2">
+                <span>✅</span> ¡Datos Guardados!
+            </div>
+            <div *ngIf="errorMessage" class="text-red-600 font-bold text-xs flex items-center gap-2">
+                <span>⚠️</span> {{errorMessage}}
+            </div>
+        </div>
+        <div class="flex gap-4">
+            <button (click)="printPdf()" [disabled]="totalCuotaAdmin === 0"
+                class="px-8 py-4 bg-slate-700 hover:bg-slate-800 text-white rounded-2xl font-bold text-base transition-all shadow-lg active:scale-95 flex items-center gap-3 disabled:opacity-30">
+                <span>📄</span> PDF
+            </button>
+            <button (click)="save()" [disabled]="saving"
+                class="px-8 py-4 bg-blue-700 hover:bg-blue-800 text-white rounded-2xl font-bold text-base transition-all shadow-lg shadow-blue-800/20 active:scale-95 flex items-center gap-3 disabled:opacity-50">
+                <span *ngIf="saving" class="animate-spin">⏳</span>
+                {{ saving ? 'Procesando...' : 'Cerrar Registro 💾' }}
+            </button>
         </div>
     </div>
 </div>

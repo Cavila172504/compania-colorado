@@ -2,8 +2,8 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Personal: Conductores</h1>
-            <p class="text-slate-500 mt-1 font-medium italic">Gestión de conductores y transportistas • Colorado Express
+            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Personal: Socios</h1>
+            <p class="text-slate-500 mt-1 font-medium italic">Gestión de socios y transportistas • Colorado Express
             </p>
         </div>
         <div class="flex items-center gap-3">
@@ -13,7 +13,7 @@
                 <span class="text-slate-700 font-bold">Exportar Excel</span>
             </button>
             <button (click)="openModal()" class="btn-primary">
-                <span class="text-xl font-bold">+</span> Nuevo Conductor
+                <span class="text-xl font-bold">+</span> Nuevo Socio
             </button>
         </div>
     </div>
@@ -29,7 +29,7 @@
         <div class="flex-1"></div>
         <div
             class="px-4 py-2 rounded-lg bg-white border border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500 shadow-sm">
-            Total: <span class="text-blue-700">{{filteredConductores.length}}</span> conductores
+            Total: <span class="text-blue-700">{{filteredConductores.length}}</span> socios
         </div>
     </div>
 
@@ -118,8 +118,8 @@
             <!-- Header -->
             <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <div>
-                    <h2 class="text-xl font-bold text-slate-900">{{ editingConductor ? 'Editar Registro' : 'Nuevo
-                        Registro' }}</h2>
+                    <h2 class="text-xl font-bold text-slate-900">{{ editingConductor ? 'Editar Socio' : 'Nuevo Socio' }}
+                    </h2>
                     <p class="text-slate-500 text-[0.65rem] font-bold uppercase mt-1 tracking-widest">Colorado Express
                         S.A.</p>
                 </div>
@@ -178,7 +178,7 @@
 
                 <button type="button" (click)="saveConductor(false)" [disabled]="!canSave || saving"
                     class="btn-primary !px-8 shadow-md">
-                    {{ saving ? 'Procesando...' : (editingConductor ? 'Actualizar Ficha' : 'Guardar Conductor') }}
+                    {{ saving ? 'Procesando...' : (editingConductor ? 'Actualizar Ficha' : 'Guardar Socio') }}
                 </button>
             </div>
         </div>

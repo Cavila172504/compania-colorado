@@ -23,6 +23,9 @@ export class CreditoSocioListComponent implements OnInit {
     filterTerm = '';
     editingCredito: CreditoSocio | null = null;
     newCredito: CreditoSocio = this.resetCredito();
+    isRefinancing = false;
+    montoAumentar: number = 0;
+    activeCreditFound: CreditoSocio | null = null;
 
     constructor(
         private creditosService: CreditosService,
@@ -90,6 +93,10 @@ export class CreditoSocioListComponent implements OnInit {
     }
 
     openModal(c?: CreditoSocio) {
+        this.isRefinancing = false;
+        this.montoAumentar = 0;
+        this.activeCreditFound = null;
+
         if (c) {
             this.editingCredito = c;
             this.newCredito = { ...c };
@@ -103,21 +110,53 @@ export class CreditoSocioListComponent implements OnInit {
         this.cdr.detectChanges();
     }
 
+    async onConductorChange() {
+        if (this.editingCredito || this.newCredito.conductor_id === 0) return;
+
+        this.isRefinancing = false;
+        this.activeCreditFound = null;
+        this.montoAumentar = 0;
+
+        const active = await this.creditosService.getCreditoActivoByConductor(this.newCredito.conductor_id);
+        if (active) {
+            this.activeCreditFound = active;
+            this.isRefinancing = true;
+            // Al refinanciar, cargamos los datos del crédito existente
+            this.newCredito = { ...active };
+            // El número de cheque podría ser nuevo para la ampliación
+            this.newCredito.numero_cheque = '';
+        }
+    }
+
+    updateSaldoNuevo(val: number) {
+        if (!this.editingCredito && !this.isRefinancing) {
+            // Solo para créditos NUEVOS puros: saldo pendiente se puede ingresar manualmente
+            // pero se inicializa igual al valor del préstamo
+            this.newCredito.saldo_pendiente = val;
+        }
+    }
+
     closeModal() {
         if (this.saving) return;
         this.showModal = false;
         this.cdr.detectChanges();
     }
 
-    updateSaldoNuevo(val: number) {
-        if (!this.editingCredito) {
-            // Solo para créditos NUEVOS: saldo pendiente se puede ingresar manualmente
-            // pero se inicializa igual al valor del préstamo
-            this.newCredito.saldo_pendiente = val;
+    updateRefinanciacion() {
+        if (this.isRefinancing && this.activeCreditFound) {
+            const montoExtra = parseFloat(this.montoAumentar?.toString() || '0') || 0;
+            const prestamoBase = parseFloat(this.activeCreditFound.valor_prestamo?.toString() || '0') || 0;
+            const saldoBase = parseFloat(this.activeCreditFound.saldo_pendiente?.toString() || '0') || 0;
+
+            this.newCredito.valor_prestamo = prestamoBase + montoExtra;
+            this.newCredito.saldo_pendiente = saldoBase + montoExtra;
         }
     }
 
     get canSave(): boolean {
+        if (this.isRefinancing) {
+            return this.newCredito.conductor_id > 0 && this.montoAumentar > 0 && !this.saving;
+        }
         return this.newCredito.conductor_id > 0 && this.newCredito.valor_prestamo > 0 && !this.saving;
     }
 
@@ -129,9 +168,15 @@ export class CreditoSocioListComponent implements OnInit {
         this.cdr.detectChanges();
 
         try {
-            const res = this.editingCredito
-                ? await this.creditosService.updateCredito(this.newCredito)
-                : await this.creditosService.addCredito(this.newCredito);
+            let res;
+            if (this.editingCredito) {
+                res = await this.creditosService.updateCredito(this.newCredito);
+            } else if (this.isRefinancing) {
+                // Para refinanciar usamos el updateCredito pero con los valores aumentados
+                res = await this.creditosService.updateCredito(this.newCredito);
+            } else {
+                res = await this.creditosService.addCredito(this.newCredito);
+            }
 
             if (res && res.success) {
                 this.saveSuccess = true;
