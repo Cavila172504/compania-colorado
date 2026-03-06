@@ -4,7 +4,7 @@
 
 @layer base {
     body {
-        @apply bg-slate-50 text-slate-800 antialiased selection:bg-blue-200 selection:text-blue-900;
+        @apply bg-slate-50 text-slate-800 antialiased selection:bg-blue-200 selection:text-blue-900 text-base;
     }
 }
 
@@ -15,15 +15,15 @@
     }
 
     .glass-input {
-        @apply w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 outline-none transition-all placeholder:text-slate-400 font-medium text-sm;
+        @apply w-full bg-white border border-slate-300 rounded-lg px-4 py-3 text-slate-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 outline-none transition-all placeholder:text-slate-400 font-medium text-base;
     }
 
     .btn-primary {
-        @apply bg-[#1e40af] hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95 disabled:opacity-50 disabled:pointer-events-none text-sm;
+        @apply bg-[#1e40af] hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-bold flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95 disabled:opacity-50 disabled:pointer-events-none text-base;
     }
 
     .btn-secondary {
-        @apply bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 px-5 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all active:scale-95 text-sm;
+        @apply bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 px-6 py-3 rounded-lg font-bold flex items-center justify-center gap-2 transition-all active:scale-95 text-base;
     }
 
     .fade-in {
@@ -79,7 +79,7 @@
 
     /* Enterprise Navigation Styles */
     .nav-item {
-        @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-600 font-medium text-sm transition-all relative overflow-hidden active:scale-[0.98] hover:bg-slate-100 hover:text-slate-900;
+        @apply flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 font-bold text-base transition-all relative overflow-hidden active:scale-[0.98] hover:bg-slate-100 hover:text-slate-900;
     }
 
     .nav-active {

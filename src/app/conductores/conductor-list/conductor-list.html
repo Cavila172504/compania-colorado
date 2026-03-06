@@ -28,7 +28,7 @@
         </div>
         <div class="flex-1"></div>
         <div
-            class="px-4 py-2 rounded-lg bg-white border border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500 shadow-sm">
+            class="px-4 py-2 rounded-lg bg-white border border-slate-200 text-[0.8rem] font-bold uppercase tracking-wider text-slate-500 shadow-sm">
             Total: <span class="text-blue-700">{{filteredConductores.length}}</span> socios
         </div>
     </div>
@@ -39,7 +39,7 @@
             <table class="w-full text-left border-collapse table-fixed">
                 <thead>
                     <tr
-                        class="bg-slate-50 text-[0.7rem] uppercase tracking-wider font-bold text-slate-500 border-b border-slate-200">
+                        class="bg-slate-50 text-[0.85rem] uppercase tracking-wider font-bold text-slate-500 border-b border-slate-200">
                         <th class="px-8 py-5 w-[40%]">Nombre Completo</th>
                         <th class="px-8 py-5 w-[20%] text-center">Cédula</th>
                         <th class="px-8 py-5 w-[20%] text-center">Celular</th>
@@ -76,11 +76,12 @@
                         </td>
                         <td class="px-8 py-5 text-center">
                             <span
-                                class="px-3 py-1 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700">
+                                class="px-3 py-1 bg-slate-100 border border-slate-200 rounded-lg text-base font-semibold text-slate-700">
                                 {{c.doc_identidad}}
                             </span>
                         </td>
-                        <td class="px-8 py-5 text-center text-slate-500 font-medium italic">{{c.telefono}}</td>
+                        <td class="px-8 py-5 text-center text-slate-500 text-base font-medium italic">{{c.telefono}}
+                        </td>
                         <td class="px-8 py-5 text-right">
                             <div class="flex items-center justify-end gap-2">
                                 <button (click)="openModal(c)"
@@ -118,9 +119,10 @@
             <!-- Header -->
             <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <div>
-                    <h2 class="text-xl font-bold text-slate-900">{{ editingConductor ? 'Editar Socio' : 'Nuevo Socio' }}
+                    <h2 class="text-2xl font-bold text-slate-900">{{ editingConductor ? 'Editar Socio' : 'Nuevo Socio'
+                        }}
                     </h2>
-                    <p class="text-slate-500 text-[0.65rem] font-bold uppercase mt-1 tracking-widest">Colorado Express
+                    <p class="text-slate-500 text-[0.75rem] font-bold uppercase mt-1 tracking-widest">Colorado Express
                         S.A.</p>
                 </div>
                 <button (click)="closeModal()"
@@ -131,7 +133,7 @@
             <div class="flex-1 overflow-y-auto p-8 lg:px-10">
                 <div class="space-y-6">
                     <div class="space-y-2">
-                        <label class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Nombre
+                        <label class="text-[0.75rem] font-bold text-slate-400 uppercase tracking-wider px-0.5">Nombre
                             Completo</label>
                         <input type="text" [(ngModel)]="newConductor.nombre" name="nombre" placeholder="Ej: JUAN PÉREZ"
                             autocomplete="off" class="glass-input text-lg font-bold uppercase">
@@ -140,14 +142,14 @@
                     <div class="grid grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label
-                                class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Cédula</label>
+                                class="text-[0.75rem] font-bold text-slate-400 uppercase tracking-wider px-0.5">Cédula</label>
                             <input type="text" [(ngModel)]="newConductor.doc_identidad" name="doc_identidad"
                                 placeholder="0000000000" maxlength="10" (keypress)="onlyNumbers($event)"
                                 autocomplete="off" class="glass-input font-bold">
                         </div>
                         <div class="space-y-2">
                             <label
-                                class="text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider px-0.5">Celular</label>
+                                class="text-[0.75rem] font-bold text-slate-400 uppercase tracking-wider px-0.5">Celular</label>
                             <input type="text" [(ngModel)]="newConductor.telefono" name="telefono"
                                 placeholder="0999999999" maxlength="10" (keypress)="onlyNumbers($event)"
                                 autocomplete="off" class="glass-input font-bold">

@@ -92,13 +92,14 @@
                     <div class="grid grid-cols-2 gap-3 pt-3 border-t border-blue-100/50">
                         <div class="space-y-0.5">
                             <span
-                                class="text-[0.55rem] font-black text-slate-400 uppercase tracking-widest">Cédula</span>
+                                class="text-[0.75rem] font-black text-slate-500 uppercase tracking-[0.1em] px-1">Anticipo
+                                Socio</span>
                             <p class="text-[0.7rem] font-black text-slate-700">{{ selectedConductor.doc_identidad }}</p>
                         </div>
                         <div class="space-y-0.5 text-right">
-                            <span
-                                class="text-[0.55rem] font-black text-slate-400 uppercase tracking-widest">Contacto</span>
-                            <p class="text-[0.7rem] font-black text-slate-700">{{ selectedConductor.telefono }}</p>
+                            <span class="text-[0.75rem] font-black text-slate-400 uppercase tracking-widest">Total
+                                Ingresos Brutos (Ventas)</span>
+                            <p class="text-[0.85rem] font-black text-slate-700">{{ selectedConductor.telefono }}</p>
                         </div>
                     </div>
 
@@ -106,7 +107,7 @@
                     <div class="pt-1">
                         <div
                             class="flex items-center justify-between bg-white px-4 py-3 rounded-xl border-2 border-blue-100 shadow-sm">
-                            <span class="text-[0.55rem] font-black text-slate-500 uppercase tracking-[0.1em]">Saldo
+                            <span class="text-[0.75rem] font-black text-slate-500 uppercase tracking-[0.1em]">Saldo
                                 Neto</span>
                             <span class="text-xl font-black"
                                 [class]="flujo.total_recibir >= 0 ? 'text-emerald-600' : 'text-red-600'">
@@ -144,8 +145,8 @@
                         class="bg-blue-600/5 p-8 rounded-2xl border-2 border-blue-100/50 shadow-inner relative overflow-hidden">
                         <div class="absolute -right-4 -top-4 text-8xl text-blue-600 opacity-5 rotate-12">💰</div>
                         <h3
-                            class="text-[0.65rem] font-black text-blue-700 uppercase tracking-[0.2em] flex items-center gap-3 mb-6">
-                            <span class="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+                            class="text-[0.8rem] font-black text-red-600 uppercase tracking-[0.2em] flex items-center gap-3 mb-8">
+                            <span class="w-2 h-7 bg-red-600 rounded-full"></span>
                             Ingresos Mensuales Certificados
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
@@ -185,11 +186,11 @@
                             <div class="space-y-4">
                                 <div
                                     class="bg-slate-50/50 p-4 rounded-xl border-2 border-slate-100 flex items-center justify-between shadow-sm group hover:border-slate-300 transition-all">
-                                    <div class="space-y-0.5">
+                                    <div class="space-y-1">
                                         <span
-                                            class="text-[0.55rem] font-black text-slate-500 uppercase tracking-[0.1em]">Cuota
+                                            class="text-[0.75rem] font-black text-slate-500 uppercase tracking-[0.1em]">Cuota
                                             Administrativa (Fijo)</span>
-                                        <div class="text-xl font-black text-slate-900 tracking-tighter">
+                                        <div class="text-2xl font-black text-slate-800 tracking-tighter">
                                             {{flujo.cuota_administrativa | currency}}</div>
                                     </div>
                                     <span
@@ -198,11 +199,11 @@
 
                                 <div
                                     class="bg-slate-50/50 p-4 rounded-xl border-2 border-slate-100 flex items-center justify-between shadow-sm group hover:border-slate-300 transition-all">
-                                    <div class="space-y-0.5">
+                                    <div class="space-y-1">
                                         <span
-                                            class="text-[0.55rem] font-black text-slate-500 uppercase tracking-[0.1em]">Renta
+                                            class="text-[0.75rem] font-black text-slate-500 uppercase tracking-[0.1em]">Renta
                                             Retención (1%)</span>
-                                        <div class="text-xl font-black text-slate-800 tracking-tighter">
+                                        <div class="text-2xl font-black text-slate-800 tracking-tighter">
                                             {{flujo.renta_1pct | currency}}</div>
                                     </div>
                                     <span
@@ -211,11 +212,11 @@
 
                                 <div
                                     class="bg-slate-50/50 p-4 rounded-xl border-2 border-slate-100 flex items-center justify-between shadow-sm group hover:border-slate-300 transition-all">
-                                    <div class="space-y-0.5">
+                                    <div class="space-y-1">
                                         <span
-                                            class="text-[0.55rem] font-black text-slate-500 uppercase tracking-[0.1em]">Comisión
+                                            class="text-[0.75rem] font-black text-slate-500 uppercase tracking-[0.1em]">Comisión
                                             CADE ($2 x {{numEstudiantes}})</span>
-                                        <div class="text-xl font-black text-slate-800 tracking-tighter">
+                                        <div class="text-2xl font-black text-slate-800 tracking-tighter">
                                             {{flujo.comision_cade | currency}}</div>
                                     </div>
                                     <span

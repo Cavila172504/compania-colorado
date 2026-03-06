@@ -146,7 +146,7 @@ export class PdfReportService {
 
         doc.line(125, finalY, 180, finalY);
         doc.setFont('helvetica', 'bold');
-        doc.text('FIRMA RESPONSABLE (GERENTE)', 152.5, finalY + 5, { align: 'center' });
+        doc.text('FIRMA RESPONSABLE (PRESIDENTE)', 152.5, finalY + 5, { align: 'center' });
         doc.setFont('helvetica', 'normal');
         doc.text('FREIRE CAICEDO JHONY GERALD', 152.5, finalY + 10, { align: 'center' });
 

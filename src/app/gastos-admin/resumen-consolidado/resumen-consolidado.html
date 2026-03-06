@@ -10,7 +10,7 @@
                 <h1 class="text-4xl font-black text-slate-900 tracking-tighter">Resumen Consolidado</h1>
             </div>
             <p
-                class="text-slate-500 font-black italic uppercase text-[0.65rem] tracking-[0.3em] flex items-center gap-2">
+                class="text-slate-500 font-black italic uppercase text-[0.75rem] tracking-[0.3em] flex items-center gap-2">
                 <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
                 Auditoría de Flujos · Colorado Express S.A.
             </p>
@@ -36,9 +36,9 @@
             <!-- Mes selector (mensual only) -->
             <div *ngIf="vista==='mensual'"
                 class="flex items-center gap-2 bg-white border-2 border-slate-200 px-4 py-2 rounded-2xl">
-                <span class="text-[0.65rem] font-black text-slate-400 uppercase tracking-widest">Periodo</span>
+                <span class="text-[0.75rem] font-black text-slate-400 uppercase tracking-widest">Periodo</span>
                 <select [(ngModel)]="mes" (change)="load()"
-                    class="bg-transparent text-slate-900 font-black outline-none cursor-pointer text-sm">
+                    class="bg-transparent text-slate-900 font-black outline-none cursor-pointer text-base">
                     <option [value]="1">Enero</option>
                     <option [value]="2">Febrero</option>
                     <option [value]="3">Marzo</option>
@@ -56,9 +56,9 @@
 
             <!-- Año selector -->
             <div class="flex items-center gap-2 bg-white border-2 border-slate-200 px-4 py-2 rounded-2xl">
-                <span class="text-[0.65rem] font-black text-slate-400 uppercase tracking-widest">Año</span>
+                <span class="text-[0.75rem] font-black text-slate-400 uppercase tracking-widest">Año</span>
                 <input type="number" [(ngModel)]="anio" (change)="load()"
-                    class="bg-transparent text-slate-900 font-black w-20 outline-none text-sm">
+                    class="bg-transparent text-slate-900 font-black w-20 outline-none text-base">
             </div>
 
             <!-- Export buttons -->
@@ -95,85 +95,85 @@
         <div class="px-6 py-4 bg-indigo-50/80 border-b border-indigo-100 flex items-center justify-between">
             <h3 class="text-sm font-black text-indigo-900 uppercase tracking-[0.15em]">{{tableTitle}}</h3>
             <span
-                class="bg-white px-3 py-1 border border-indigo-200 rounded-full text-xs font-black text-indigo-600 uppercase tracking-widest shadow-sm">
+                class="bg-white px-3 py-1 border border-indigo-200 rounded-full text-sm font-black text-indigo-600 uppercase tracking-widest shadow-sm">
                 {{resumen.length}} {{vista==='mensual' ? 'MES' : 'MESES'}}
             </span>
         </div>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto max-h-[70vh] overflow-y-auto custom-scrollbar">
             <table class="w-full text-left border-collapse" id="resumen-table">
                 <thead>
                     <tr class="bg-slate-100/70">
                         <th
-                            class="p-4 text-xs font-black text-slate-600 uppercase tracking-wider whitespace-nowrap pl-8">
+                            class="sticky top-0 z-20 bg-slate-100 p-4 text-sm font-black text-slate-600 uppercase tracking-wider whitespace-nowrap pl-8 shadow-sm">
                             {{firstColLabel}}</th>
                         <th
-                            class="p-3 text-xs font-black text-slate-600 uppercase tracking-wider whitespace-nowrap text-center">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-slate-600 uppercase tracking-wider whitespace-nowrap text-center shadow-sm">
                             Socios</th>
                         <th
-                            class="p-4 text-xs font-black text-emerald-700 uppercase tracking-wider whitespace-nowrap text-right bg-emerald-50/50">
+                            class="sticky top-0 z-20 bg-emerald-50 p-4 text-sm font-black text-emerald-700 uppercase tracking-wider whitespace-nowrap text-right shadow-sm">
                             Ingresos Totales</th>
                         <th
-                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center border-l border-slate-200/50 whitespace-nowrap">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center border-l border-slate-200/50 whitespace-nowrap shadow-sm">
                             C. Admin</th>
                         <th
-                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-sm">
                             Renta 1%</th>
                         <th
-                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-sm">
                             CADE</th>
                         <th
-                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-sm">
                             Anticipo</th>
                         <th
-                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-sm">
                             Préstamo</th>
                         <th
-                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-sm">
                             Buseta</th>
                         <th
-                            class="p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-sm">
                             Com. Cía</th>
                         <th
-                            class="p-4 text-xs font-black text-red-700 uppercase tracking-wider text-right border-l border-slate-200/50 whitespace-nowrap bg-red-50/30">
+                            class="sticky top-0 z-20 bg-red-50 p-4 text-sm font-black text-red-700 uppercase tracking-wider text-right border-l border-slate-200/50 whitespace-nowrap shadow-sm">
                             Tot. Egresos</th>
                         <th
-                            class="p-4 text-xs font-black text-blue-800 uppercase tracking-wider bg-blue-50 border-l border-slate-200/50 whitespace-nowrap text-right pr-8">
+                            class="sticky top-0 z-20 bg-blue-100 p-4 text-sm font-black text-blue-800 uppercase tracking-wider border-l border-slate-200/50 whitespace-nowrap text-right pr-8 shadow-sm">
                             Neto Recibir</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     <tr *ngFor="let r of resumen" class="hover:bg-blue-50/30 transition-all group cursor-default">
                         <td class="p-4 pl-8">
-                            <div class="font-black text-sm text-indigo-700 uppercase tracking-tight">{{r.mesNombre}}
+                            <div class="font-black text-base text-indigo-700 uppercase tracking-tight">{{r.mesNombre}}
                             </div>
-                            <div class="text-[0.6rem] font-black text-slate-400 uppercase tracking-widest"
+                            <div class="text-[0.75rem] font-black text-slate-400 uppercase tracking-widest"
                                 *ngIf="vista==='anual'">{{r.anio}}</div>
                         </td>
-                        <td class="p-3 text-center text-slate-500 text-xs font-bold">
+                        <td class="p-3 text-center text-slate-500 text-sm font-bold">
                             <span class="bg-slate-100 px-2 py-0.5 rounded-full">{{r.num_registros}} socios</span>
                         </td>
-                        <td class="p-4 font-black text-emerald-600 text-sm tabular-nums text-right bg-emerald-50/10">
+                        <td class="p-4 font-black text-emerald-600 text-base tabular-nums text-right bg-emerald-50/10">
                             {{r.ingresos_totales | currency}}</td>
                         <td
-                            class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums border-l border-slate-100/50">
+                            class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums border-l border-slate-100/50">
                             {{r.cuota_admin | currency}}</td>
-                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums">
                             {{r.renta_1pct | currency}}</td>
-                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums">
                             {{r.cade | currency}}</td>
-                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums">
                             {{r.anticipo | currency}}</td>
-                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums">
                             {{r.prestamo | currency}}</td>
-                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums">
                             {{r.buseta | currency}}</td>
-                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums">
                             {{r.com_cia | currency}}</td>
                         <td
-                            class="p-4 text-right font-black text-red-600 text-sm tabular-nums border-l border-slate-100/50 bg-red-50/10">
+                            class="p-4 text-right font-black text-red-600 text-base tabular-nums border-l border-slate-100/50 bg-red-50/10">
                             {{r.tot_egresos | currency}}</td>
                         <td
-                            class="p-4 font-black text-blue-900 text-base bg-blue-50/80 tabular-nums border-l border-slate-100/50 text-right pr-8">
+                            class="p-4 font-black text-blue-900 text-lg bg-blue-50/80 tabular-nums border-l border-slate-100/50 text-right pr-8">
                             {{r.neto_recibir | currency}}</td>
                     </tr>
                 </tbody>
@@ -182,23 +182,23 @@
                         <td class="p-4 pl-8 font-black text-sm uppercase tracking-wider text-white" colspan="2">
                             Total {{vista==='anual' ? 'Anual ' + anio : MESES[mes-1] + ' ' + anio}}
                         </td>
-                        <td class="p-4 font-black text-emerald-400 text-sm tabular-nums text-right">
+                        <td class="p-4 font-black text-emerald-400 text-base tabular-nums text-right">
                             {{getTotal('ingresos_totales') | currency}}</td>
-                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-300 text-sm font-bold tabular-nums">
                             {{getTotal('cuota_admin') | currency}}</td>
-                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-300 text-sm font-bold tabular-nums">
                             {{getTotal('renta_1pct') | currency}}</td>
-                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-300 text-sm font-bold tabular-nums">
                             {{getTotal('cade') | currency}}</td>
-                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-300 text-sm font-bold tabular-nums">
                             {{getTotal('anticipo') | currency}}</td>
-                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-300 text-sm font-bold tabular-nums">
                             {{getTotal('prestamo') | currency}}</td>
-                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-300 text-sm font-bold tabular-nums">
                             {{getTotal('buseta') | currency}}</td>
-                        <td class="p-3 text-center text-slate-300 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-300 text-sm font-bold tabular-nums">
                             {{getTotal('com_cia') | currency}}</td>
-                        <td class="p-4 font-black text-red-400 text-sm tabular-nums text-right">
+                        <td class="p-4 font-black text-red-400 text-base tabular-nums text-right">
                             {{getTotal('tot_egresos') | currency}}</td>
                         <td class="p-4 font-black text-blue-400 text-xl tabular-nums text-right pr-8">
                             {{getTotal('neto_recibir') | currency}}</td>

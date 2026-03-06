@@ -7,9 +7,9 @@
         </div>
         <div class="flex items-center gap-3 bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
             <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-100">
-                <span class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest">Mes</span>
+                <span class="text-[0.75rem] font-bold text-slate-400 uppercase tracking-widest">Mes</span>
                 <select [(ngModel)]="mes" (change)="loadData()"
-                    class="bg-transparent text-slate-900 font-bold outline-none cursor-pointer text-sm">
+                    class="bg-transparent text-slate-900 font-bold outline-none cursor-pointer text-base">
                     <option [value]="1">Enero</option>
                     <option [value]="2">Febrero</option>
                     <option [value]="3">Marzo</option>
@@ -25,9 +25,9 @@
                 </select>
             </div>
             <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-100">
-                <span class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest">Año</span>
+                <span class="text-[0.75rem] font-bold text-slate-400 uppercase tracking-widest">Año</span>
                 <input type="number" [(ngModel)]="anio" (change)="loadData()"
-                    class="bg-transparent text-slate-900 font-bold w-16 outline-none text-sm">
+                    class="bg-transparent text-slate-900 font-bold w-16 outline-none text-base">
             </div>
         </div>
     </div>
@@ -35,34 +35,34 @@
     <!-- Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 slide-up">
         <div class="bg-white border border-slate-200 p-6 rounded-2xl relative overflow-hidden group shadow-sm">
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">Ingreso Cuotas Admin
+            <span class="text-sm font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">Ingreso Cuotas Admin
                 ($53)</span>
             <div class="flex items-baseline gap-2">
-                <span class="text-3xl font-bold text-emerald-600 tracking-tight">{{totalCuotaAdmin |
+                <span class="text-4xl font-bold text-emerald-600 tracking-tight">{{totalCuotaAdmin |
                     currency:'USD'}}</span>
-                <span class="text-[10px] text-slate-400 font-bold uppercase">Recaudado</span>
+                <span class="text-[12px] text-slate-400 font-bold uppercase">Recaudado</span>
             </div>
             <div
                 class="absolute -right-4 -bottom-4 text-6xl opacity-5 grayscale group-hover:scale-110 transition-transform">
                 🏢</div>
         </div>
         <div class="bg-white border border-slate-200 p-6 rounded-2xl relative overflow-hidden group shadow-sm">
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">Total Egresos
+            <span class="text-sm font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">Total Egresos
                 Registrados</span>
             <div class="flex items-baseline gap-2">
-                <span class="text-3xl font-bold text-red-600 tracking-tight">{{totalGastos | currency:'USD'}}</span>
-                <span class="text-[10px] text-slate-400 font-bold uppercase">Deducciones</span>
+                <span class="text-4xl font-bold text-red-600 tracking-tight">{{totalGastos | currency:'USD'}}</span>
+                <span class="text-[12px] text-slate-400 font-bold uppercase">Deducciones</span>
             </div>
             <div
                 class="absolute -right-4 -bottom-4 text-6xl opacity-5 grayscale group-hover:scale-110 transition-transform">
                 📉</div>
         </div>
         <div class="bg-emerald-600 p-6 rounded-2xl relative overflow-hidden group shadow-lg shadow-emerald-900/10">
-            <span class="text-xs font-bold text-emerald-100 uppercase tracking-[0.2em] block mb-2">Saldo Neto
+            <span class="text-sm font-bold text-emerald-100 uppercase tracking-[0.2em] block mb-2">Saldo Neto
                 Disponible</span>
             <div class="flex items-baseline gap-2">
-                <span class="text-3xl font-bold text-white tracking-tight">{{saldoDisponible | currency:'USD'}}</span>
-                <span class="text-[10px] text-emerald-200 font-bold uppercase">Fondo</span>
+                <span class="text-4xl font-bold text-white tracking-tight">{{saldoDisponible | currency:'USD'}}</span>
+                <span class="text-[12px] text-emerald-200 font-bold uppercase">Fondo</span>
             </div>
             <div class="absolute -right-4 -bottom-4 text-6xl opacity-10 group-hover:scale-110 transition-transform">💎
             </div>
@@ -73,7 +73,8 @@
     <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden slide-up">
         <div class="px-8 py-4 bg-red-50/80 border-b border-red-100 flex items-center gap-2">
             <span class="w-1.5 h-6 bg-red-500 rounded-full"></span>
-            <h3 class="text-sm font-bold text-red-700 uppercase tracking-widest">Registro de Gastos Administrativos</h3>
+            <h3 class="text-base font-bold text-red-700 uppercase tracking-widest">Registro de Gastos Administrativos
+            </h3>
         </div>
 
         <div class="divide-y divide-slate-100">
@@ -82,7 +83,7 @@
                 class="p-6 grid grid-cols-1 md:grid-cols-3 gap-4 hover:bg-slate-50/50 transition-colors">
                 <!-- Label + Amount -->
                 <div class="space-y-1.5">
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
+                    <label class="text-sm font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
                         <span>{{item.icon}}</span> {{item.label}}
                     </label>
                     <div class="relative group">
@@ -94,14 +95,14 @@
                 </div>
                 <!-- Cheque -->
                 <div class="space-y-1.5">
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">🧾 Nº Cheque</label>
+                    <label class="text-sm font-bold text-slate-500 uppercase tracking-widest">🧾 Nº Cheque</label>
                     <input type="text" [ngModel]="getStr(item.chequeField)"
                         (ngModelChange)="setStr(item.chequeField, $event)" placeholder="Ej: 001234"
                         class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 font-bold text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none transition-all">
                 </div>
                 <!-- Factura -->
                 <div class="space-y-1.5">
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">📄 Nº Factura</label>
+                    <label class="text-sm font-bold text-slate-500 uppercase tracking-widest">📄 Nº Factura</label>
                     <input type="text" [ngModel]="getStr(item.facturaField)"
                         (ngModelChange)="setStr(item.facturaField, $event)" placeholder="Ej: 001-001-123456"
                         class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 font-bold text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none transition-all">
@@ -112,11 +113,11 @@
             <div class="p-6 bg-amber-50/40 space-y-4">
                 <div class="flex items-center gap-2">
                     <span class="w-1.5 h-5 bg-amber-400 rounded-full"></span>
-                    <h4 class="text-xs font-bold text-amber-700 uppercase tracking-widest">📦 Gastos Varios</h4>
+                    <h4 class="text-sm font-bold text-amber-700 uppercase tracking-widest">📦 Gastos Varios</h4>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="space-y-1.5">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">Monto ($)</label>
+                        <label class="text-sm font-bold text-slate-500 uppercase tracking-widest">Monto ($)</label>
                         <div class="relative">
                             <span
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-lg">$</span>
@@ -125,18 +126,18 @@
                         </div>
                     </div>
                     <div class="space-y-1.5">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">🧾 Nº Cheque</label>
+                        <label class="text-sm font-bold text-slate-500 uppercase tracking-widest">🧾 Nº Cheque</label>
                         <input type="text" [(ngModel)]="gasto.varios_cheque" placeholder="Ej: 001234"
                             class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 font-bold text-sm focus:border-amber-400 focus:ring-2 focus:ring-amber-400/10 outline-none transition-all">
                     </div>
                     <div class="space-y-1.5">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">📄 Nº Factura</label>
+                        <label class="text-sm font-bold text-slate-500 uppercase tracking-widest">📄 Nº Factura</label>
                         <input type="text" [(ngModel)]="gasto.varios_factura" placeholder="Ej: 001-001-123456"
                             class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 font-bold text-sm focus:border-amber-400 focus:ring-2 focus:ring-amber-400/10 outline-none transition-all">
                     </div>
                 </div>
                 <div class="space-y-1.5">
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">✏️ Motivo / Descripción
+                    <label class="text-sm font-bold text-slate-500 uppercase tracking-widest">✏️ Motivo / Descripción
                         del gasto</label>
                     <textarea [(ngModel)]="gasto.varios_descripcion" rows="2"
                         placeholder="Ej: Reparación de equipo, compra de uniformes, refrigerio reunión..."
