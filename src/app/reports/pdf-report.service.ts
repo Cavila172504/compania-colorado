@@ -56,9 +56,9 @@ export class PdfReportService {
         doc.text(`${flujo.conductor_nombre}`, 65, 65);
 
         doc.setFont('helvetica', 'normal');
-        doc.text(`ESTUDIANTES REGISTRADOS (CADE):`, 20, 72);
+        doc.text(`ESTUDIANTES REGISTRADOS (CADE) : `, 20, 72);
         doc.setFont('helvetica', 'bold');
-        doc.text(`${flujo.num_estudiantes || 0}`, 85, 72);
+        doc.text(`${flujo.num_estudiantes || 0}`, 90, 72);
 
         doc.setFont('helvetica', 'normal');
         doc.text(`FECHA DE EMISIÓN:`, 20, 79);
@@ -140,15 +140,17 @@ export class PdfReportService {
         doc.line(30, finalY, 85, finalY);
         doc.setFontSize(9);
         doc.setFont('helvetica', 'bold');
-        doc.text('FIRMA DEL SOCIO / BENEFICIARIO', 57.5, finalY + 5, { align: 'center' });
+        doc.text('FIRMA DEL SOCIO', 57.5, finalY + 5, { align: 'center' });
+        doc.text('BENEFICIARIO', 57.5, finalY + 10, { align: 'center' });
         doc.setFont('helvetica', 'normal');
-        doc.text(`${flujo.conductor_nombre}`, 57.5, finalY + 10, { align: 'center' });
+        doc.text(`${flujo.conductor_nombre}`, 57.5, finalY + 15, { align: 'center' });
 
         doc.line(125, finalY, 180, finalY);
         doc.setFont('helvetica', 'bold');
-        doc.text('FIRMA RESPONSABLE /GERENTE', 152.5, finalY + 5, { align: 'center' });
+        doc.text('FIRMA RESPONSABLE ', 152.5, finalY + 5, { align: 'center' });
+        doc.text('GERENTE', 152.5, finalY + 10, { align: 'center' });
         doc.setFont('helvetica', 'normal');
-        doc.text('FREIRE CAICEDO JHONY GERALD', 152.5, finalY + 10, { align: 'center' });
+        doc.text('FREIRE CAICEDO JHONY GERALD', 152.5, finalY + 15, { align: 'center' });
 
         doc.save(`Rol_${flujo.conductor_nombre}_${flujo.mes}_${flujo.anio}.pdf`);
     }
