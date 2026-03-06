@@ -10,7 +10,7 @@
                 <h1 class="text-4xl font-black text-slate-900 tracking-tighter">Consolidado Mensual Total</h1>
             </div>
             <p
-                class="text-slate-500 font-black italic uppercase text-[0.65rem] tracking-[0.3em] flex items-center gap-2">
+                class="text-slate-500 font-black italic uppercase text-[0.75rem] tracking-[0.3em] flex items-center gap-2">
                 <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
                 Auditoría de Flujos • Colorado Express S.A.
             </p>
@@ -19,9 +19,9 @@
         <div class="flex flex-wrap items-center gap-4">
             <div class="flex items-center gap-3 bg-white border-2 border-slate-200 p-2 rounded-2xl shadow-xl">
                 <div class="flex items-center gap-3 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100">
-                    <span class="text-[0.65rem] font-black text-slate-400 uppercase tracking-widest">Periodo</span>
+                    <span class="text-[0.75rem] font-black text-slate-400 uppercase tracking-widest">Periodo</span>
                     <select [(ngModel)]="mes" (change)="loadConsolidado()"
-                        class="bg-transparent text-slate-900 font-black outline-none cursor-pointer text-sm">
+                        class="bg-transparent text-slate-900 font-black outline-none cursor-pointer text-base">
                         <option [value]="1">Enero</option>
                         <option [value]="2">Febrero</option>
                         <option [value]="3">Marzo</option>
@@ -37,9 +37,9 @@
                     </select>
                 </div>
                 <div class="flex items-center gap-3 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100">
-                    <span class="text-[0.65rem] font-black text-slate-400 uppercase tracking-widest">Año</span>
+                    <span class="text-[0.75rem] font-black text-slate-400 uppercase tracking-widest">Año</span>
                     <input type="number" [(ngModel)]="anio" (change)="loadConsolidado()"
-                        class="bg-transparent text-slate-900 font-black w-20 outline-none text-sm">
+                        class="bg-transparent text-slate-900 font-black w-20 outline-none text-base">
                 </div>
             </div>
 
@@ -57,10 +57,10 @@
         <div
             class="bg-white border-2 border-slate-200 p-6 rounded-2xl relative overflow-hidden group shadow-sm hover:shadow-lg transition-all duration-500">
             <div class="relative z-10">
-                <span class="text-[0.6rem] font-black text-slate-400 uppercase tracking-[0.2em] block mb-2">Ingresos
+                <span class="text-[0.75rem] font-black text-slate-400 uppercase tracking-[0.2em] block mb-2">Ingresos
                     Brutos Totales</span>
                 <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-black text-emerald-600 tracking-tighter">{{getTotalIngresos() |
+                    <span class="text-4xl font-black text-emerald-600 tracking-tighter">{{getTotalIngresos() |
                         currency}}</span>
                     <span
                         class="text-[0.55rem] text-slate-400 font-black uppercase tracking-widest bg-slate-50 px-1.5 py-0.5 rounded">Bruto</span>
@@ -76,10 +76,10 @@
         <div
             class="bg-white border-2 border-slate-200 p-6 rounded-2xl relative overflow-hidden group shadow-sm hover:shadow-lg transition-all duration-500">
             <div class="relative z-10">
-                <span class="text-[0.6rem] font-black text-slate-400 uppercase tracking-[0.2em] block mb-2">Total
+                <span class="text-[0.75rem] font-black text-slate-400 uppercase tracking-[0.2em] block mb-2">Total
                     Egresos / Retenciones</span>
                 <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-black text-red-600 tracking-tighter">{{getTotalEgresos() |
+                    <span class="text-4xl font-black text-red-600 tracking-tighter">{{getTotalEgresos() |
                         currency}}</span>
                     <span
                         class="text-[0.55rem] text-slate-400 font-black uppercase tracking-widest bg-slate-50 px-1.5 py-0.5 rounded">Deducciones</span>
@@ -95,10 +95,10 @@
         <div
             class="bg-blue-700 p-6 rounded-2xl relative overflow-hidden group shadow-xl shadow-blue-800/20 hover:shadow-blue-800/40 transition-all duration-500">
             <div class="relative z-10">
-                <span class="text-[0.6rem] font-black text-blue-200 uppercase tracking-[0.2em] block mb-2">Neto Total
+                <span class="text-[0.75rem] font-black text-blue-200 uppercase tracking-[0.2em] block mb-2">Neto Total
                     Disponible</span>
                 <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-black text-white tracking-tighter">{{getTotalPagar() | currency}}</span>
+                    <span class="text-4xl font-black text-white tracking-tighter">{{getTotalPagar() | currency}}</span>
                     <span
                         class="text-[0.55rem] text-blue-300 font-black uppercase tracking-widest bg-white/10 px-1.5 py-0.5 rounded">Liquidativo</span>
                 </div>
@@ -114,9 +114,9 @@
     <div class="bg-white border-2 border-slate-200 rounded-2xl shadow-lg overflow-hidden slide-up"
         style="animation-delay: 0.1s">
         <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
-            <h3 class="text-xs font-black text-slate-900 uppercase tracking-[0.15em]">Detalle Individual por Socio</h3>
+            <h3 class="text-sm font-black text-slate-900 uppercase tracking-[0.15em]">Detalle Individual por Socio</h3>
             <span
-                class="bg-white px-3 py-1 border border-slate-200 rounded-full text-[0.55rem] font-black text-slate-500 uppercase tracking-widest shadow-sm">
+                class="bg-white px-3 py-1 border border-slate-200 rounded-full text-[0.75rem] font-black text-slate-500 uppercase tracking-widest shadow-sm">
                 {{flujos.length}} REGISTROS EN {{mes}}/{{anio}}
             </span>
         </div>
@@ -125,43 +125,43 @@
                 <thead>
                     <tr class="bg-slate-100">
                         <th
-                            class="sticky top-0 z-20 bg-slate-100 p-4 text-xs font-black text-slate-600 uppercase tracking-wider whitespace-nowrap pl-8 shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
+                            class="sticky top-0 z-20 bg-slate-100 p-4 text-sm font-black text-slate-600 uppercase tracking-wider whitespace-nowrap pl-8 shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
                             Socio / Beneficiario</th>
                         <th
-                            class="sticky top-0 z-20 bg-emerald-50 p-4 text-xs font-black text-slate-600 uppercase tracking-wider whitespace-nowrap text-right shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
+                            class="sticky top-0 z-20 bg-emerald-50 p-4 text-sm font-black text-slate-600 uppercase tracking-wider whitespace-nowrap text-right shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
                             Ingresos Totales</th>
 
                         <!-- Egresos Headers -->
                         <th
-                            class="sticky top-0 z-20 bg-slate-100 p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center border-l border-slate-200/50 whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center border-l border-slate-200/50 whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
                             C. Admin</th>
                         <th
-                            class="sticky top-0 z-20 bg-slate-100 p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
                             Renta 1%</th>
                         <th
-                            class="sticky top-0 z-20 bg-slate-100 p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
                             CADE (Est.)</th>
                         <th
-                            class="sticky top-0 z-20 bg-slate-100 p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
                             Anticipo</th>
                         <th
-                            class="sticky top-0 z-20 bg-slate-100 p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
                             Préstamo</th>
                         <th
-                            class="sticky top-0 z-20 bg-slate-100 p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
                             Buseta</th>
                         <th
-                            class="sticky top-0 z-20 bg-slate-100 p-3 text-xs font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
+                            class="sticky top-0 z-20 bg-slate-100 p-3 text-sm font-black text-red-600 uppercase tracking-tighter text-center whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
                             Com. Cía</th>
 
                         <th
-                            class="sticky top-0 z-20 bg-red-50 p-4 text-xs font-black text-red-700 uppercase tracking-wider text-right border-l border-slate-200/50 whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
+                            class="sticky top-0 z-20 bg-red-50 p-4 text-sm font-black text-red-700 uppercase tracking-wider text-right border-l border-slate-200/50 whitespace-nowrap shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
                             Tot. Egresos</th>
                         <th
-                            class="sticky top-0 z-20 bg-blue-100 p-4 text-xs font-black text-blue-800 uppercase tracking-wider border-l border-slate-200/50 whitespace-nowrap text-right pr-6 shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
+                            class="sticky top-0 z-20 bg-blue-100 p-4 text-sm font-black text-blue-800 uppercase tracking-wider border-l border-slate-200/50 whitespace-nowrap text-right pr-6 shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
                             Neto Recibir</th>
                         <th
-                            class="sticky top-0 z-20 bg-slate-100 p-4 text-center text-xs font-black text-slate-500 uppercase tracking-wider whitespace-nowrap pr-8 shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
+                            class="sticky top-0 z-20 bg-slate-100 p-4 text-center text-sm font-black text-slate-500 uppercase tracking-wider whitespace-nowrap pr-8 shadow-[0_2px_2px_-1px_rgba(0,0,0,0.1)]">
                             Estado / Acciones</th>
                     </tr>
                 </thead>
@@ -170,63 +170,63 @@
                     <tr *ngFor="let f of flujos" class="hover:bg-blue-50/40 transition-all group cursor-default">
                         <td class="p-4 pl-8">
                             <div
-                                class="font-black text-sm text-slate-900 group-hover:text-blue-700 transition-colors uppercase tracking-tight whitespace-nowrap leading-none mb-1">
+                                class="font-black text-base text-slate-900 group-hover:text-blue-700 transition-colors uppercase tracking-tight whitespace-nowrap leading-none mb-2">
                                 {{f.conductor_nombre}}
                             </div>
                             <div
-                                class="text-[0.55rem] font-black text-slate-400 uppercase tracking-[0.15em] flex items-center gap-1.5">
-                                <span class="w-1 h-1 bg-emerald-500 rounded-full"></span>
+                                class="text-[0.7rem] font-black text-slate-400 uppercase tracking-[0.15em] flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
                                 Socio Activo #{{f.conductor_id}}
                             </div>
                         </td>
                         <td
-                            class="p-4 font-black text-emerald-600 text-base tabular-nums whitespace-nowrap text-right bg-emerald-50/10">
+                            class="p-4 font-black text-emerald-600 text-lg tabular-nums whitespace-nowrap text-right bg-emerald-50/10">
                             {{f.total_ingresos | currency}}
                         </td>
 
                         <!-- Egresos Values -->
                         <td
-                            class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums border-l border-slate-100/50">
+                            class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums border-l border-slate-100/50">
                             {{(f.cuota_administrativa || 0) | currency}}
                         </td>
-                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums">
                             {{(f.renta_1pct || 0) | currency}}
                         </td>
-                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums">
                             <div class="flex flex-col items-center">
                                 <span>{{(f.comision_cade || 0) | currency}}</span>
                                 <span
-                                    class="text-[0.45rem] font-black text-blue-600 bg-blue-50 px-1 py-0.5 rounded leading-none mt-1">
+                                    class="text-[0.65rem] font-black text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded leading-none mt-1">
                                     {{f.num_estudiantes || 0}} EST.
                                 </span>
                             </div>
                         </td>
-                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums">
                             <div class="flex flex-col items-center">
                                 <span>{{(f.anticipo_socio || 0) | currency}}</span>
                                 <span *ngIf="f.nro_cheque_anticipo"
-                                    class="text-[0.45rem] font-black text-amber-600 bg-amber-50 px-1 py-0.5 rounded leading-none mt-1">
+                                    class="text-[0.65rem] font-black text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded leading-none mt-1">
                                     CH #{{f.nro_cheque_anticipo}}
                                 </span>
                             </div>
                         </td>
-                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums">
                             {{(f.abono_prestamo || 0) | currency}}
                         </td>
-                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums">
                             {{(f.aplicativo_buseta || 0) | currency}}
                         </td>
-                        <td class="p-3 text-center text-slate-700 text-xs font-bold tabular-nums">
+                        <td class="p-3 text-center text-slate-700 text-sm font-bold tabular-nums">
                             {{(f.comision_compania || 0) | currency}}
                         </td>
 
                         <td
-                            class="p-4 text-right font-black text-red-600 text-sm tabular-nums border-l border-slate-100/50 whitespace-nowrap bg-red-50/10">
+                            class="p-4 text-right font-black text-red-600 text-base tabular-nums border-l border-slate-100/50 whitespace-nowrap bg-red-50/10">
                             {{f.total_egresos | currency}}
                         </td>
 
                         <td
-                            class="p-4 font-black text-blue-900 font-bold text-base bg-blue-50/80 tabular-nums border-l border-slate-100/50 whitespace-nowrap text-right pr-6">
+                            class="p-4 font-black text-blue-900 text-lg bg-blue-50/80 tabular-nums border-l border-slate-100/50 whitespace-nowrap text-right pr-6">
                             {{f.total_recibir | currency}}
                         </td>
 
@@ -244,7 +244,7 @@
                                 </button>
                             </div>
                             <div *ngIf="f.nro_cheque"
-                                class="text-[0.5rem] font-black text-emerald-600 mt-1 uppercase tracking-[0.1em] bg-emerald-50 px-1.5 py-0.5 rounded-full inline-block">
+                                class="text-[0.65rem] font-black text-emerald-600 mt-1 uppercase tracking-[0.1em] bg-emerald-50 px-2 py-1 rounded-full inline-block">
                                 CH #{{f.nro_cheque}}
                             </div>
                         </td>
